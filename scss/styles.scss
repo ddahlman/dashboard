@@ -11,8 +11,14 @@ $show: block;
 /* ---------------------------------------------------- */
 
 .mdl-layout__drawer,
-.mdl-layout__header-row {
+.mdl-layout__header-row,
+.mdl-layout__header {
     background-color: $trippus-primary;
+}
+
+.mdl-layout__header-row,
+.mdl-layout__header {
+    height: 3em;
 }
 
 .mdl-button--fab.mdl-button--colored,
