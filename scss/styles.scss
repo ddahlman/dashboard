@@ -1,5 +1,27 @@
+:root {
+    --numRows: 4;
+    --numCols: 5;
+    --gridHeight: 200px;
+}
+
+$trippus-primary: #444f63;
+$trippus-seconday: #ee7365;
+$show: block;
+
+/* ---------------------------------------------------- */
+
+.mdl-layout__drawer,
+.mdl-layout__header-row {
+    background-color: $trippus-primary;
+}
+
+.mdl-button--fab.mdl-button--colored,
+.mdl-button--fab.mdl-button--colored:hover {
+    background-color: $trippus-seconday;
+}
+
 .overlay {
-    display: block;
+    display: $show;
     right: 0;
     bottom: 0;
     left: 0;
@@ -42,7 +64,7 @@
 }
 
 .animation {
-    display: block;
+    display: $show;
     animation-name: speeddial;
     animation-duration: 0.2s;
 }
@@ -53,7 +75,7 @@
         opacity: 0;
     }
     1% {
-        display: block;
+        display: $show;
         opacity: 0;
         transform: scale(0);
     }
@@ -70,6 +92,17 @@
     font-size: 0;
 }
 
-.test {
-    height: 800px;
+
+/* ------ css grid ---------------------- */
+
+.grid {
+    display: grid;
+    grid-template-rows: repeat(var(--numRows), var(--gridHeight));
+    grid-template-columns: repeat(var(--numCols), 19%);
+    grid-gap: 10px;
+    grid-auto-flow: row dense;
+}
+
+.hej {
+    color: $trippus-primary;
 }

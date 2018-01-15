@@ -1,19 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <title>dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_orange-red.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.min.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
+    <!--  <nav>
+        <ul>
+            <li>
+                <a href='#'>hej</a>
+            </li>
+            <li>
+                <a href='#'>hur</a>
+            </li>
+            <li>
+                <a href='#'>mår</a>
+            </li>
+            <li>
+                <a href='#'>du</a>
+            </li>
+            <li>
+                <a href='#'>idag</a>
+            </li>
+        </ul>
+    </nav> -->
 
     <div class='plus-btn-container'>
-        <button id="plus-btn" class='plus-btn mdl-button mdl-js-button mdl-shadow--8dp mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-color--blue-grey-900'>
+        <button id="plus-btn" class='plus-btn mdl-button mdl-js-button mdl-shadow--8dp mdl-button--fab mdl-js-ripple-effect mdl-button--colored'>
             <i class='material-icons'>add</i>
         </button>
         <div class='plus-option'>
@@ -81,7 +101,7 @@
                 </div>
             </div>
         </header>
-        <div class='mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50'>
+        <div class='mdl-layout__drawer mdl-color-text--blue-grey-50'>
             <span class='mdl-layout__title'>Dashboard</span>
             <nav class='mdl-navigation'>
                 <a class='mdl-navigation__link mdl-color-text--blue-grey-400' href="#">
@@ -96,13 +116,9 @@
             </nav>
         </div>
         <main class='mdl-layout__content'>
-            <div id='diagrams' class="mdl-grid"></div>
+            <section id='grid' class="grid"></section>
         </main>
     </div>
-
-
-    <script src='https://www.gstatic.com/charts/loader.js'></script>
-    <script src='https://www.google.com/jsapi'></script>
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
     <script src='js/script.js'></script>
 </body>
