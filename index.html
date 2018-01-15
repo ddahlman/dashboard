@@ -7,15 +7,104 @@
     <title>dashboard</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.deep_orange-red.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
+    <div class='plus-btn-container'>
+        <button id="plus-btn" class='plus-btn mdl-button mdl-js-button mdl-shadow--8dp mdl-button--fab mdl-js-ripple-effect mdl-button--colored mdl-color--blue-grey-900'>
+            <i class='material-icons'>add</i>
+        </button>
+        <div class='plus-option'>
+            <p class='plus-option-txt'>
+                <strong>linjediagram</strong>
+            </p>
+            <button id="linechart" class='svg-font mdl-button mdl-js-button mdl-shadow--8dp mdl-button--fab mdl-js-ripple-effect mdl-button--mini-fab mdl-button--colored mdl-color--green'>
+                <img src="img/.svg" alt="line-chart">
+            </button>
+        </div>
+        <div class='plus-option'>
+            <p class='plus-option-txt'>
+                <strong>cirkeldiagram</strong>
+            </p>
+            <button id="piechart" class='svg-font mdl-button mdl-js-button mdl-shadow--8dp mdl-button--fab mdl-js-ripple-effect mdl-button--mini-fab mdl-button--colored mdl-color--blue'>
+                <img src="img/.svg" alt="pie-chart">
+            </button>
+        </div>
+        <div class='plus-option'>
+            <p class='plus-option-txt'>
+                <strong>geo-diagram</strong>
+            </p>
+            <button id="geochart" class='svg-font mdl-button mdl-js-button mdl-shadow--8dp mdl-button--fab mdl-js-ripple-effect mdl-button--mini-fab mdl-button--colored mdl-color--purple'>
+                <img src="img/.svg" alt="globe">
+            </button>
+        </div>
+        <div class='plus-option'>
+            <p class='plus-option-txt'>
+                <strong>områdesdiagram</strong>
+            </p>
+            <button id="areachart" class='svg-font mdl-button mdl-js-button mdl-shadow--8dp mdl-button--fab mdl-js-ripple-effect mdl-button--mini-fab mdl-button--colored mdl-color--red'>
+                <img src="img/.svg" alt="area-chart">
+            </button>
+        </div>
+        <div class='plus-option'>
+            <p class='plus-option-txt'>
+                <strong>stapeldiagram</strong>
+            </p>
+            <button id="barchart" class='svg-font mdl-button mdl-js-button mdl-shadow--8dp mdl-button--fab mdl-js-ripple-effect mdl-button--mini-fab mdl-button--colored mdl-color--brown'>
+                <img src="img/.svg" alt="bar-chart">
+            </button>
+        </div>
+        <div class='plus-option'>
+            <p class='plus-option-txt'>
+                <strong>sammanställd info</strong>
+            </p>
+            <button id="card" class='svg-font mdl-button mdl-js-button mdl-shadow--8dp mdl-button--fab mdl-js-ripple-effect mdl-button--mini-fab mdl-button--colored mdl-color--pink'>
+                <i class='material-icons'>list</i>
+            </button>
+        </div>
+    </div>
+    <section id='overlay'></section>
+    <div class='mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header'>
+        <header class="mdl-layout__header">
+            <div class='mdl-layout__header-row'>
+                <span class='mdl-layout__title'>Dashboard</span>
+                <div class='mdl-layout-spacer'></div>
+                <div class='mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right'>
+                    <label class='mdl-button mdl-js-button mdl-button--icon' for="fixed-header-drawer-exp">
+                        <i class='material-icons'>search</i>
+                    </label>
+                    <div class='mdl-textfield__expandable-holder'>
+                        <input class="mdl-textfield__input" id="fixed-header-drawer-exp">
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class='mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50'>
+            <span class='mdl-layout__title'>Dashboard</span>
+            <nav class='mdl-navigation'>
+                <a class='mdl-navigation__link mdl-color-text--blue-grey-400' href="#">
+                    <strong>link 1</strong>
+                </a>
+                <a class='mdl-navigation__link mdl-color-text--blue-grey-400' href="#">
+                    <strong>link 2</strong>
+                </a>
+                <a class='mdl-navigation__link mdl-color-text--blue-grey-400' href="#">
+                    <strong>link 3</strong>
+                </a>
+            </nav>
+        </div>
+        <main class='mdl-layout__content'>
+            <div id='diagrams' class="mdl-grid"></div>
+        </main>
+    </div>
+
+
     <script src='https://www.gstatic.com/charts/loader.js'></script>
     <script src='https://www.google.com/jsapi'></script>
     <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
-    <script src='script.js'></script>
+    <script src='js/script.js'></script>
 </body>
 
 </html>
