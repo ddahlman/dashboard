@@ -14,7 +14,7 @@
   grid-area: span 1/ span 2;
   background-color: green; }
 
-.donut {
+.pie {
   grid-area: span 1/ span 1;
   background-color: blue; }
 
@@ -37,12 +37,6 @@
   grid-template-columns: repeat(var(--numCols), 19%);
   grid-gap: 10px;
   grid-auto-flow: row dense; }
-
-body {
-  min-height: 100vh;
-  min-width: 100vw;
-  margin: 0;
-  overflow: hidden; }
 
 .first-grid {
   display: grid;

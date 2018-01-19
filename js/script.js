@@ -1,23 +1,5 @@
 (function () {
-
-    var container1 = document.querySelector('#container-1');
-    var container2 = document.querySelector('#container-2');
-    /* var box = document.querySelector('#box');
-    var menu = document.querySelector('#menu');
-    var reportContainer = [container1, box, menu]; */
-
-    document.querySelector('.box').addEventListener('click', function () {
-        container1.classList.add('open');
-    });
-
-
-    document.querySelector('#close').addEventListener('click', function () {
-        console.log(container1.classList);
-        container1.classList.add('scale-down');
-        container1.tabIndex = -1;
-    });
-
-    /* Tab-bar MDC --------------------------------- */
+    /* Tab-bar MDC funtions--------------------------------- */
     var dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar'));
     var panels = document.querySelector('.panels');
 
@@ -41,7 +23,35 @@
         updatePanel(nthChildIndex);
     });
 
+    /* grid function using css-variables, add rows */
+    function updateCssVar() {
+        let htmlStyles = window.getComputedStyle(document.getElementsByTagName('html')[0]);
+        let numRows = parseInt(htmlStyles.getPropertyValue("--numRows"));
+        console.log(numRows);
+        let numCols = parseInt(htmlStyles.getPropertyValue("--numCols"));
+        let gridItemsCount = document.querySelectorAll('.draggable').length;
+        document.documentElement.style.setProperty('--numRows', Math.ceil(gridItemsCount / numCols) * 4);
+    }
+
     /* end of mdc-functions------------------------------------------------- */
+    (function init() {
+        showDashboard();
+    })();
+
+
+    var container1 = document.querySelector('#container-1');
+    var container2 = document.querySelector('#container-2');
+
+    document.querySelector('.box').addEventListener('click', function () {
+        container1.classList.add('open');
+    });
+
+    /* close container-1 that holds the report-buttons -- still a work in progress */
+    document.querySelector('#close').addEventListener('click', function () {
+        console.log(container1.classList);
+        container1.classList.add('scale-down');
+        container1.tabIndex = -1;
+    });
 
     /* the function that gets the dashboard */
     function getDashboard() {
@@ -100,6 +110,7 @@
             return btn.classList.contains('selected');
         });
         var id = selected[0].getAttribute('id');
+        console.log(id);
         switch (id) {
             case "report1": return $.get(root + "/posts/1");
             case "report2": return $.get(root + "/posts/2");
@@ -120,18 +131,20 @@
             var type = chartBtn.getAttribute('id');
             var charts = getDashboard();
             var currentObject = isSelected();
+            console.log(currentObject);
             currentObject.done(function (chartData) {
                 chartData.type = type;
                 charts.push(chartData);
                 localStorage.setItem('dashboard', JSON.stringify(charts));
             });
+            updateCssVar();
             showDashboard();
         });
     });
 
     /* creates a div with specified css-class and properties */
     function createChart(cssClass, eventObject) {
-        var div = `<div class='${cssClass}'>${eventObject.name}<br>${eventObject.age}<br>${eventObject.country}</div>`;
+        var div = `<div class='draggable ${cssClass}'>${eventObject.userId}<br>${eventObject.title}<br>${eventObject.type}</div>`;
         return div;
     }
 
