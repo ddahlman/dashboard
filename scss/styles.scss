@@ -45,18 +45,18 @@ $show: block;
 
 /* ------ css grid ---------------------- */
 
+.first-grid {
+    display: grid;
+    grid-template-columns: 100px auto 100px;
+    grid-template-rows: 25% auto;
+}
+
 .grid {
     display: grid;
     grid-template-rows: repeat(var(--numRows), var(--gridHeight));
     grid-template-columns: repeat(var(--numCols), 19%);
     grid-gap: 10px;
     grid-auto-flow: row dense;
-}
-
-.first-grid {
-    display: grid;
-    grid-template-columns: 40px 50px auto 50px 40px;
-    grid-template-rows: 25% 100px auto;
 }
 
 
@@ -88,7 +88,7 @@ $show: block;
     position: relative;
     background: var(--mdc-theme-secondary);
     border-radius: 50%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     transition: all 0.3s, box-shadow 0s cubic-bezier(0.4, 0.0, 0.2, 1) 300ms;
 }
@@ -151,7 +151,7 @@ $show: block;
 /* container-2----------------------------------------------------------------------------------- */
 
 .out-of-sight {
-    transform: translate3d(0, -100%, 0);
+    transform: translate3d(0, -115%, 0);
     transition-timing-function: cubic-bezier(.4, 0, 1, 1);
 }
 
@@ -159,11 +159,11 @@ $show: block;
     transition: transform 375ms cubic-bezier(0.0, 0.0, 0.2, 1);
     background-color: var(--mdc-theme-secondary);
     border-radius: 1%;
-    grid-column: 3 / span 1;
+    grid-column: 2 / span 1;
     grid-row: 1 / span 1;
 }
 
-.scale-down {
+.fade-out {
     animation-name: fade-out;
     animation-duration: 300ms;
 }

@@ -22,36 +22,11 @@
         var nthChildIndex = tabs.activeTabIndex;
         updatePanel(nthChildIndex);
     });
-
-    /* grid function using css-variables, add rows */
-    function updateCssVar() {
-        let htmlStyles = window.getComputedStyle(document.getElementsByTagName('html')[0]);
-        let numRows = parseInt(htmlStyles.getPropertyValue("--numRows"));
-        console.log(numRows);
-        let numCols = parseInt(htmlStyles.getPropertyValue("--numCols"));
-        let gridItemsCount = document.querySelectorAll('.draggable').length;
-        document.documentElement.style.setProperty('--numRows', Math.ceil(gridItemsCount / numCols) * 4);
-    }
-
     /* end of mdc-functions------------------------------------------------- */
+
     (function init() {
         showDashboard();
     })();
-
-
-    var container1 = document.querySelector('#container-1');
-    var container2 = document.querySelector('#container-2');
-
-    document.querySelector('.box').addEventListener('click', function () {
-        container1.classList.add('open');
-    });
-
-    /* close container-1 that holds the report-buttons -- still a work in progress */
-    document.querySelector('#close').addEventListener('click', function () {
-        console.log(container1.classList);
-        container1.classList.add('scale-down');
-        container1.tabIndex = -1;
-    });
 
     /* the function that gets the dashboard */
     function getDashboard() {
@@ -60,12 +35,28 @@
         return charts;
     }
 
-    /* filter which graph-buttons to show when clicking one of the report-buttons */
+    /* the global variables */
+    var container1 = document.querySelector('#container-1');
+    var container2 = document.querySelector('#container-2');
+
+    /* open plus-button into a tab-menu */
+    document.querySelector('.box').addEventListener('click', function () {
+        container1.classList.add('open');
+    });
+
+    /* close container-1 that holds the tab-menu -- still a work in progress */
+    document.querySelector('#close').addEventListener('click', function () {
+        console.log(container1.classList);
+        container1.classList.add('fade-out');
+        container1.tabIndex = -1;
+    });
+
+    /* fades out container-1 and pulls down a filtered container-2 that holds chart-buttons */
     [...document.querySelectorAll('.add-container-2')].map((card) => {
         card.addEventListener('click', function (e) {
             var id = card.getAttribute('id');
             container2.classList.remove('out-of-sight');
-            container1.classList.add('scale-down');
+            container1.classList.add('fade-out');
 
             setTimeout(function () {
                 container1.style.display = 'none';
@@ -141,6 +132,17 @@
             showDashboard();
         });
     });
+
+    /* grid function using css-variables, add rows */
+    function updateCssVar() {
+        let htmlStyles = window.getComputedStyle(document.getElementsByTagName('html')[0]);
+        let numRows = parseInt(htmlStyles.getPropertyValue("--numRows"));
+        let numCols = parseInt(htmlStyles.getPropertyValue("--numCols"));
+        let gridItemsCount = document.querySelectorAll('.draggable').length;
+        document.documentElement.style.setProperty('--numRows', Math.ceil(gridItemsCount / numCols) * 4);
+        console.log(numRows);
+    }
+
 
     /* creates a div with specified css-class and properties */
     function createChart(cssClass, eventObject) {
