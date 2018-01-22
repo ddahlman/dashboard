@@ -26,12 +26,6 @@ document.querySelector('.box').addEventListener('click', function () {
     container1.classList.add('open');
 });
 
-/* close container-1 that holds the tab-menu -- still a work in progress */
-document.querySelector('#close').addEventListener('click', function () {
-    console.log(container1.classList);
-    container1.classList.add('fade-out');
-    container1.tabIndex = -1;
-});
 
 /* fades out container-1 and pulls down a filtered container-2 that holds chart-buttons */
 [...document.querySelectorAll('.add-container-2')].map((card) => {
