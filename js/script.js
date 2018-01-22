@@ -1,6 +1,12 @@
 (function () {
     function init() {
-        showDashboard();
+        google.charts.load('current', {
+            'packages': ['corechart', 'geochart'],
+            'mapsApiKey': 'AIzaSyDMPDZMkd7YLnBpiKeBAq2HZYfjdWS8FA4'
+        });
+        google.charts.setOnLoadCallback(function () {
+            showDashboard();
+        });
     }
 })();
 
@@ -91,7 +97,8 @@ function isSelected() {
     }
 }
 
-/* push current object to array when clicking on chart-button*/
+/* push current object to array when clicking on chart-button + add type to object 
+so we know what chart-type to draw*/
 [...document.querySelectorAll('.card2')].map(function (chartBtn) {
     chartBtn.addEventListener('click', function () {
         var type = chartBtn.getAttribute('id');
@@ -157,7 +164,7 @@ document.querySelector('#clear').addEventListener('click', function (e) {
     showDashboard();
 });
 
-/* Tab-bar MDC funtions--------------------------------- */
+/* Tab-bar Material Design funtions--------------------------------- */
 var dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar'));
 var panels = document.querySelector('.panels');
 
@@ -180,4 +187,4 @@ dynamicTabBar.listen("MDCTabBar:change", function (t) {
     var nthChildIndex = tabs.activeTabIndex;
     updatePanel(nthChildIndex);
 });
-/* end of mdc-functions------------------------------------------------- */
+/* end of Material Design-functions------------------------------------------------- */
