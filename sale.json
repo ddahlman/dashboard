@@ -1,0 +1,92 @@
+{
+    "data": {
+        "cols": [{
+                "id": "",
+                "label": "År",
+                "pattern": "",
+                "type": "string"
+            },
+            {
+                "id": "",
+                "label": "Utgifter",
+                "pattern": "",
+                "type": "number"
+            },
+            {
+                "id": "",
+                "label": "Vinst",
+                "pattern": "",
+                "type": "number"
+            }
+        ],
+        "rows": [{
+                "c": [{
+                    "v": "2014",
+                    "f": null
+                }, {
+                    "v": 800,
+                    "f": null
+                }, {
+                    "v": 747,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "2015",
+                    "f": null
+                }, {
+                    "v": 489,
+                    "f": null
+                }, {
+                    "v": 585,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "2016",
+                    "f": null
+                }, {
+                    "v": 1020,
+                    "f": null
+                }, {
+                    "v": 302,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "2017",
+                    "f": null
+                }, {
+                    "v": 525,
+                    "f": null
+                }, {
+                    "v": 391,
+                    "f": null
+                }]
+            }
+        ]
+    },
+    "options": {
+        "title": "Företags prestanda",
+        "isStacked": true,
+        "axisTitlesPosition": "out",
+        "chartArea": {
+            "left": "17%",
+            "top": "13%",
+            "height": "60%",
+            "width": "60%"
+        },
+        "hAxis": {
+            "title": "År",
+            "titleTextStyle": {
+                "color": "#333"
+            }
+        },
+        "vAxis": {
+            "minValue": 0
+        }
+    }
+}

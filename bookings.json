@@ -1,0 +1,74 @@
+{
+    "data": {
+        "cols": [{
+                "id": "",
+                "label": "Biljett",
+                "pattern": "",
+                "type": "string"
+            },
+            {
+                "id": "",
+                "label": "Antal bokningar",
+                "pattern": "",
+                "type": "number"
+            }
+        ],
+        "rows": [{
+                "c": [{
+                    "v": "Premium",
+                    "f": null
+                }, {
+                    "v": 3,
+                    "f": "premium"
+                }]
+            },
+            {
+                "c": [{
+                    "v": "Business",
+                    "f": null
+                }, {
+                    "v": 1,
+                    "f": "business"
+                }]
+            },
+            {
+                "c": [{
+                    "v": "Basic",
+                    "f": null
+                }, {
+                    "v": 1,
+                    "f": "basic"
+                }]
+            },
+            {
+                "c": [{
+                    "v": "Economy",
+                    "f": null
+                }, {
+                    "v": 1,
+                    "f": "economy"
+                }]
+            },
+            {
+                "c": [{
+                    "v": "Simple",
+                    "f": null
+                }, {
+                    "v": 2,
+                    "f": "simple"
+                }]
+            }
+        ]
+    },
+    "options": {
+        "title": "Antal bokningar",
+        "chartArea": {
+            "left": "25%",
+            "top": "13%",
+            "height": "80%",
+            "width": "100%"
+        },
+        "pieHole": "0.4"
+    }
+
+}

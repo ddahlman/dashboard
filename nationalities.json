@@ -1,0 +1,66 @@
+{
+    "data": {
+        "cols": [{
+                "id": "",
+                "label": "Land",
+                "pattern": "",
+                "type": "string"
+            },
+            {
+                "id": "",
+                "label": "Antal",
+                "pattern": "",
+                "type": "number"
+            }
+        ],
+        "rows": [{
+                "c": [{
+                    "v": "Sverige",
+                    "f": null
+                }, {
+                    "v": 300,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "Tyskland",
+                    "f": null
+                }, {
+                    "v": 100,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "USA",
+                    "f": null
+                }, {
+                    "v": 100,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "Brasilien",
+                    "f": null
+                }, {
+                    "v": 200,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "Kanada",
+                    "f": null
+                }, {
+                    "v": 250,
+                    "f": null
+                }]
+            }
+        ]
+    },
+    "options": {
+        "keepAspectRatio": true
+    }
+}

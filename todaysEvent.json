@@ -1,0 +1,139 @@
+{
+    "data": {
+        "cols": [{
+                "id": "",
+                "label": "Land",
+                "pattern": "",
+                "type": "string"
+            },
+            {
+                "id": "",
+                "label": "Män",
+                "pattern": "",
+                "type": "number"
+            },
+            {
+                "id": "",
+                "label": "Kvinnor",
+                "pattern": "",
+                "type": "number"
+            }
+        ],
+        "rows": [{
+                "c": [{
+                    "v": "Sverige",
+                    "f": null
+                }, {
+                    "v": 300,
+                    "f": null
+                }, {
+                    "v": 700,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "Norge",
+                    "f": null
+                }, {
+                    "v": 550,
+                    "f": null
+                }, {
+                    "v": 200,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "Danmark",
+                    "f": null
+                }, {
+                    "v": 57,
+                    "f": null
+                }, {
+                    "v": 1000,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "Tyskland",
+                    "f": null
+                }, {
+                    "v": 600,
+                    "f": null
+                }, {
+                    "v": 600,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "USA",
+                    "f": null
+                }, {
+                    "v": 2000,
+                    "f": null
+                }, {
+                    "v": 1,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "Finland",
+                    "f": null
+                }, {
+                    "v": 157,
+                    "f": null
+                }, {
+                    "v": 339,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "Schweiz",
+                    "f": null
+                }, {
+                    "v": 150,
+                    "f": null
+                }, {
+                    "v": 491,
+                    "f": null
+                }]
+            },
+            {
+                "c": [{
+                    "v": "Spanien",
+                    "f": null
+                }, {
+                    "v": 296,
+                    "f": null
+                }, {
+                    "v": 239,
+                    "f": null
+                }]
+            }
+        ]
+    },
+    "options": {
+        "title": "Dagens Event",
+        "axisTitlesPosition": "out",
+        "isStacked": true,
+        "pieSliceText": "percentage",
+        "colors": ["#0598d8", "#f97263"],
+        "chartArea": {
+            "left": "15%",
+            "top": "23%",
+            "height": "60%",
+            "width": "100%"
+        },
+        "vAxis": {
+            "title": "Länder"
+        },
+        "hAxis": {
+            "title": "Antal deltagande"
+        }
+    }
+}

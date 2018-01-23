@@ -181,8 +181,7 @@
   background-color: red; }
 
 .bar {
-  grid-area: span 2/ span 2;
-  background-color: yellow; }
+  grid-area: span 2/ span 2; }
 
 .line {
   grid-area: span 1/ span 2;
