@@ -88,6 +88,11 @@
         },
         "vAxis": {
             "minValue": 0
+        },
+        "animation": {
+            "startup": true,
+            "duration": 600,
+            "easing": "out"
         }
     }
 }

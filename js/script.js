@@ -1,7 +1,7 @@
 
 
 google.charts.load('current', {
-    'packages': ['corechart', 'geochart'],
+    'packages': ['corechart', 'bar', 'line', 'geochart'],
     'mapsApiKey': 'AIzaSyDMPDZMkd7YLnBpiKeBAq2HZYfjdWS8FA4'
 });
 google.charts.setOnLoadCallback(function () {
@@ -120,6 +120,7 @@ function showDashboard() {
     }
 }
 
+/* The chart-constructors ------------------------------------------------------ */
 function BarChart(response, div) {
     this.data = new google.visualization.DataTable(response.data);
     this.options = response.options;
@@ -159,7 +160,7 @@ function GeoChart(response, div) {
         new google.visualization.GeoChart(div).draw(this.data, this.options);
     };
 }
-
+/* end of chart-constructors---------------------------------------------------------- */
 /* grid function using css-variables, add rows */
 function updateCssVar() {
     let htmlStyles = window.getComputedStyle(document.getElementsByTagName('html')[0]);

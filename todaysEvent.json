@@ -134,6 +134,11 @@
         },
         "hAxis": {
             "title": "Antal deltagande"
+        },
+        "animation": {
+            "startup": true,
+            "duration": 600,
+            "easing": "out"
         }
     }
 }
