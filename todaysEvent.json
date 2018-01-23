@@ -122,7 +122,7 @@
         "axisTitlesPosition": "out",
         "isStacked": true,
         "pieSliceText": "percentage",
-        "colors": ["#0598d8", "#f97263"],
+        "colors": ["#ee7365", "#444f63"],
         "chartArea": {
             "left": "15%",
             "top": "23%",

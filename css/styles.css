@@ -169,20 +169,23 @@
 /* ---------------------------------------------------- */
 /* charts */
 .area {
-  grid-area: span 1/ span 2;
-  background-color: green; }
+  grid-area: span 1/ span 2; }
 
 .pie {
-  grid-area: span 1/ span 1;
-  background-color: blue; }
+  grid-area: span 1/ span 1; }
 
 .geo {
-  grid-area: span 2/ span 2;
-  background-color: red; }
+  grid-area: span 2/ span 2; }
 
 .bar {
   grid-area: span 2/ span 2; }
 
 .line {
-  grid-area: span 1/ span 2;
-  background-color: purple; }
+  grid-area: span 1/ span 2; }
+
+.area,
+.pie,
+.geo,
+.bar,
+.line {
+  box-shadow: 1px 3px 4px rgba(0, 0, 0, 0.3); }

@@ -62,6 +62,7 @@
     },
     "options": {
         "title": "Antal bokningar",
+        "colors": ["#ee7365", "#444f63"],
         "chartArea": {
             "left": "25%",
             "top": "13%",

@@ -54,15 +54,15 @@ function showAvailableCharts(reportId) {
     }
 
     switch (reportId) {
-        case "sale": availableCharts(['bar', 'line']); break;
-        case "expenditure": availableCharts(['area']); break;
-        case "nrOfVisitors": availableCharts(['geo']); break;
-        case "socialMedia": availableCharts(['bar', 'line', 'area']); break;
-        case "compiledInfo": availableCharts(['area']); break;
-        case "nationalities": availableCharts(['geo']); break;
-        case "todaysEvent": availableCharts(['bar', 'line', 'geo']); break;
-        case "bookings": availableCharts(['area']); break;
-        case "mood": availableCharts(['geo']); break;
+        case "sale": availableCharts(['bar', 'line', 'area', 'pie']); break;
+        case "expenditure": availableCharts(['bar', 'line', 'area', 'geo']); break;
+        case "nrOfVisitors": availableCharts(['bar', 'line', 'pie', 'geo']); break;
+        case "socialMedia": availableCharts(['bar', 'area', 'pie', 'geo']); break;
+        case "compiledInfo": availableCharts(['line', 'area', 'pie', 'geo']); break;
+        case "nationalities": availableCharts(['bar', 'line', 'area']); break;
+        case "todaysEvent": availableCharts(['bar', 'pie', 'geo']); break;
+        case "bookings": availableCharts(['bar', 'area', 'pie', 'geo']); break;
+        case "mood": availableCharts(['bar', 'line', 'pie', 'geo']); break;
         default: break;
     }
 }
@@ -83,9 +83,6 @@ function createDiv(cssClass) {
 }
 
 
-/* loops through the storage and uses createChart() to create a div with the right css-class 
-depending on what 'id' it has */
-/* inserts the newly created array in the container (and removes the old one) */
 function showDashboard() {
     updateCssVar();
     var container = document.querySelector('#grid');
@@ -96,29 +93,70 @@ function showDashboard() {
         selectedreportId.removeAttribute('[data-selected]');
     }
     var selectedChartType = this.id;
-
-    switch (selectedChartType) {
-        case 'bar':
-            $.get(report + '.json').done((data) => {
-                var div = createDiv('bar');
-                container.appendChild(div);
-                var barchart = new BarChart(data, div);
-                barchart.draw();
-            });
-            break;
-
-        default:
-            break;
+    if (report) {
+        $.get(report + '.json').done((data) => {
+            var div = createDiv(selectedChartType);
+            container.appendChild(div);
+            var chart;
+            switch (selectedChartType) {
+                case 'bar':
+                    chart = new BarChart(data, div);
+                    break;
+                case 'area':
+                    chart = new AreaChart(data, div);
+                    break;
+                case 'line':
+                    chart = new LineChart(data, div);
+                    break;
+                case 'pie':
+                    chart = new PieChart(data, div);
+                    break;
+                case 'geo':
+                    chart = new GeoChart(data, div);
+                    break;
+            }
+            chart.draw();
+        });
     }
-
-
 }
 
 function BarChart(response, div) {
     this.data = new google.visualization.DataTable(response.data);
     this.options = response.options;
     this.draw = function () {
+        new google.visualization.BarChart(div).draw(this.data, this.options);
+    };
+}
+
+function AreaChart(response, div) {
+    this.data = new google.visualization.DataTable(response.data);
+    this.options = response.options;
+    this.draw = function () {
         new google.visualization.AreaChart(div).draw(this.data, this.options);
+    };
+}
+
+function LineChart(response, div) {
+    this.data = new google.visualization.DataTable(response.data);
+    this.options = response.options;
+    this.draw = function () {
+        new google.visualization.LineChart(div).draw(this.data, this.options);
+    };
+}
+
+function PieChart(response, div) {
+    this.data = new google.visualization.DataTable(response.data);
+    this.options = response.options;
+    this.draw = function () {
+        new google.visualization.PieChart(div).draw(this.data, this.options);
+    };
+}
+
+function GeoChart(response, div) {
+    this.data = new google.visualization.DataTable(response.data);
+    this.options = response.options;
+    this.draw = function () {
+        new google.visualization.GeoChart(div).draw(this.data, this.options);
     };
 }
 

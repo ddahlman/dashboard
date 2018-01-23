@@ -61,6 +61,7 @@
         ]
     },
     "options": {
-        "keepAspectRatio": true
+        "keepAspectRatio": true,
+        "colors": ["#ee7365", "#444f63"]
     }
 }

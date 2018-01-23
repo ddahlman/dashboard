@@ -73,6 +73,7 @@
         "title": "Företags prestanda",
         "isStacked": true,
         "axisTitlesPosition": "out",
+        "colors": ["#ee7365", "#444f63"],
         "chartArea": {
             "left": "17%",
             "top": "13%",
