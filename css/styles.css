@@ -8,12 +8,16 @@
 * {
   font-family: 'Montserrat'; }
 
+html,
+body {
+  background-color: var(--mdc-theme-primary); }
+
 /* ------ css grid ---------------------- */
 .first-grid {
   display: grid;
   grid-template-columns: 100px auto 100px;
   /* grid-template-rows: 25% auto; */
-  grid-template-rows: 450px; }
+  grid-template-rows: 470px; }
 
 .grid {
   display: grid;
@@ -35,7 +39,7 @@
   left: 1rem;
   bottom: 8rem;
   transition: all 0.4s;
-  border-radius: 50%; }
+  border: none; }
 
 .container-1.open {
   /* transform: translate3d(300px, 0, 0);

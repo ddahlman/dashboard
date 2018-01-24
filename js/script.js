@@ -5,10 +5,13 @@ google.charts.load('current', {
     'mapsApiKey': 'AIzaSyDMPDZMkd7YLnBpiKeBAq2HZYfjdWS8FA4'
 });
 google.charts.setOnLoadCallback(function () {
+    getFirstThreeGraphs();
     showDashboard();
 });
 
-
+(function getFirstThreeGraphs() {
+    $
+})();
 
 /* the global variables */
 var container1 = document.querySelector('#container-1');
@@ -82,7 +85,6 @@ function createDiv(cssClass) {
     return div;
 }
 
-
 function showDashboard() {
     updateCssVar();
     var container = document.querySelector('#grid');
@@ -123,7 +125,7 @@ function showDashboard() {
 /* The chart-constructors ------------------------------------------------------ */
 function BarChart(response, div) {
     this.data = new google.visualization.DataTable(response.data);
-    this.options = response.options;
+    this.options = response.options.regular;
     this.draw = function () {
         new google.visualization.BarChart(div).draw(this.data, this.options);
     };
@@ -131,7 +133,7 @@ function BarChart(response, div) {
 
 function AreaChart(response, div) {
     this.data = new google.visualization.DataTable(response.data);
-    this.options = response.options;
+    this.options = response.options.regular;
     this.draw = function () {
         new google.visualization.AreaChart(div).draw(this.data, this.options);
     };
@@ -139,23 +141,34 @@ function AreaChart(response, div) {
 
 function LineChart(response, div) {
     this.data = new google.visualization.DataTable(response.data);
-    this.options = response.options;
+    this.options = response.options.regular;
     this.draw = function () {
         new google.visualization.LineChart(div).draw(this.data, this.options);
     };
 }
 
 function PieChart(response, div) {
-    this.data = new google.visualization.DataTable(response.data);
-    this.options = response.options;
-    this.draw = function () {
-        new google.visualization.PieChart(div).draw(this.data, this.options);
+    var self = this;
+    self.data = new google.visualization.DataTable(response.data);
+    self.options = response.options.pie;
+    self.options.pieStartAngle = 0;
+    self.draw = function () {
+        var chart = new google.visualization.PieChart(div);
+        google.visualization.events.addListener(chart, 'ready', function () {
+            if (self.options.pieStartAngle < 20) {
+                self.options.pieStartAngle++;
+                setTimeout(function () {
+                    chart.draw(self.data, self.options);
+                }, 0);
+            }
+        });
+        chart.draw(self.data, self.options);
     };
 }
 
 function GeoChart(response, div) {
     this.data = new google.visualization.DataTable(response.data);
-    this.options = response.options;
+    this.options = response.options.regular;
     this.draw = function () {
         new google.visualization.GeoChart(div).draw(this.data, this.options);
     };

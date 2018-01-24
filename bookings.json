@@ -61,20 +61,37 @@
         ]
     },
     "options": {
-        "title": "Antal bokningar",
-        "colors": ["#ee7365", "#444f63"],
-        "chartArea": {
-            "left": "25%",
-            "top": "13%",
-            "height": "80%",
-            "width": "100%"
+        "regular": {
+            "title": "Antal bokningar",
+            "colors": ["#ee7365", "#444f63"],
+            "chartArea": {
+                "left": "5%",
+                "top": "13%",
+                "height": "80%",
+                "width": "70%"
+            },
+            "animation": {
+                "startup": true,
+                "duration": 600,
+                "easing": "out"
+            }
         },
-        "animation": {
-            "startup": true,
-            "duration": 600,
-            "easing": "out"
-        },
-        "pieHole": "0.4"
+        "pie": {
+            "title": "Antal bokningar",
+            "colors": ["#ee7365", "#444f63"],
+            "chartArea": {
+                "left": "25%",
+                "top": "13%",
+                "height": "80%",
+                "width": "100%"
+            },
+            "animation": {
+                "startup": true,
+                "duration": 600,
+                "easing": "out"
+            },
+            "pieHole": "0.4"
+        }
     }
 
 }
