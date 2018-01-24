@@ -5,13 +5,13 @@ google.charts.load('current', {
     'mapsApiKey': 'AIzaSyDMPDZMkd7YLnBpiKeBAq2HZYfjdWS8FA4'
 });
 google.charts.setOnLoadCallback(function () {
-    getFirstThreeGraphs();
+    /*  getFirstThreeGraphs(); */
     showDashboard();
 });
 
-(function getFirstThreeGraphs() {
+/* (function getFirstThreeGraphs() {
     $
-})();
+})(); */
 
 /* the global variables */
 var container1 = document.querySelector('#container-1');
@@ -96,25 +96,25 @@ function showDashboard() {
     }
     var selectedChartType = this.id;
     if (report) {
-        $.get(report + '.json').done((data) => {
+        $.get('reports.json').done((response) => {
             var div = createDiv(selectedChartType);
             container.appendChild(div);
             var chart;
             switch (selectedChartType) {
                 case 'bar':
-                    chart = new BarChart(data, div);
+                    chart = new BarChart(response[report], div);
                     break;
                 case 'area':
-                    chart = new AreaChart(data, div);
+                    chart = new AreaChart(response[report], div);
                     break;
                 case 'line':
-                    chart = new LineChart(data, div);
+                    chart = new LineChart(response[report], div);
                     break;
                 case 'pie':
-                    chart = new PieChart(data, div);
+                    chart = new PieChart(response[report], div);
                     break;
                 case 'geo':
-                    chart = new GeoChart(data, div);
+                    chart = new GeoChart(response[report], div);
                     break;
             }
             chart.draw();

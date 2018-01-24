@@ -159,7 +159,7 @@
         },
         "options": {
             "regular": {
-                "title": "Antal bokningar",
+                "title": "Nationaliteter",
                 "colors": ["#ee7365", "#444f63"],
                 "chartArea": {
                     "left": "5%",
@@ -264,7 +264,7 @@
         },
         "options": {
             "regular": {
-                "title": "Antal bokningar",
+                "title": "Företags prestanda",
                 "colors": ["#ee7365", "#444f63"],
                 "chartArea": {
                     "left": "5%",
@@ -417,7 +417,7 @@
         },
         "options": {
             "regular": {
-                "title": "Antal bokningar",
+                "title": "Dagens event",
                 "colors": ["#ee7365", "#444f63"],
                 "chartArea": {
                     "left": "5%",
