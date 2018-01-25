@@ -1,3 +1,4 @@
+@import "material-components-web/material-components-web";
 :root {
     --mdc-theme-primary: #444f63;
     --mdc-theme-secondary: #ee7365;
@@ -52,7 +53,8 @@ body {
     left: 1rem;
     bottom: 8rem;
     transition: all 0.4s;
-    border: none
+    border: none;
+    z-index: 1;
 }
 
 .container-1.open {

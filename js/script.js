@@ -5,15 +5,34 @@ google.charts.load('current', {
     'mapsApiKey': 'AIzaSyDMPDZMkd7YLnBpiKeBAq2HZYfjdWS8FA4'
 });
 google.charts.setOnLoadCallback(function () {
-    /*  getFirstThreeGraphs(); */
+    getFirstThreeGraphs();
     showDashboard();
 });
 
-/* (function getFirstThreeGraphs() {
-    $
-})(); */
+function getFirstThreeGraphs() {
+    $.get('reports.json').done(function (response) {
+        var barContainer = createDiv('bar');
+        var lineContainer = createDiv('line');
+        var pieContainer = createDiv('pie');
+        var bar = new BarChart(response.bookings, barContainer);
+        var line = new LineChart(response.sale, lineContainer);
+        var pie = new PieChart(response.todaysEvent, pieContainer);
+
+        var containerArray = [barContainer, lineContainer, pieContainer];
+        var frag = document.createDocumentFragment();
+        containerArray.map(function (chartContainer) {
+            frag.appendChild(chartContainer);
+        });
+        container.appendChild(frag);
+        var chartArray = [bar, line, pie];
+        chartArray.map(function (chart) {
+            chart.draw();
+        });
+    });
+}
 
 /* the global variables */
+var container = document.querySelector('#grid');
 var container1 = document.querySelector('#container-1');
 var container2 = document.querySelector('#container-2');
 
@@ -87,7 +106,6 @@ function createDiv(cssClass) {
 
 function showDashboard() {
     updateCssVar();
-    var container = document.querySelector('#grid');
     var report;
     var selectedreportId = document.querySelector('[data-selected]');
     if (selectedreportId) {
@@ -121,6 +139,8 @@ function showDashboard() {
         });
     }
 }
+
+
 
 /* The chart-constructors ------------------------------------------------------ */
 function BarChart(response, div) {
