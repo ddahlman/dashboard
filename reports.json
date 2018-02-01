@@ -73,7 +73,7 @@
                 },
                 "animation": {
                     "startup": true,
-                    "duration": 600,
+                    "duration": 300,
                     "easing": "out"
                 }
             },
@@ -88,7 +88,7 @@
                 },
                 "animation": {
                     "startup": true,
-                    "duration": 600,
+                    "duration": 300,
                     "easing": "out"
                 },
                 "pieHole": "0.4"
@@ -169,7 +169,7 @@
                 },
                 "animation": {
                     "startup": true,
-                    "duration": 600,
+                    "duration": 300,
                     "easing": "out"
                 }
             },
@@ -184,7 +184,7 @@
                 },
                 "animation": {
                     "startup": true,
-                    "duration": 600,
+                    "duration": 300,
                     "easing": "out"
                 },
                 "pieHole": "0.4"
@@ -274,7 +274,7 @@
                 },
                 "animation": {
                     "startup": true,
-                    "duration": 600,
+                    "duration": 300,
                     "easing": "out"
                 }
             },
@@ -289,7 +289,7 @@
                 },
                 "animation": {
                     "startup": true,
-                    "duration": 600,
+                    "duration": 300,
                     "easing": "out"
                 },
                 "pieHole": "0.4"
@@ -427,7 +427,7 @@
                 },
                 "animation": {
                     "startup": true,
-                    "duration": 600,
+                    "duration": 300,
                     "easing": "out"
                 }
             },
@@ -442,7 +442,7 @@
                 },
                 "animation": {
                     "startup": true,
-                    "duration": 600,
+                    "duration": 300,
                     "easing": "out"
                 },
                 "pieHole": "0.4"

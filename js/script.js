@@ -32,15 +32,32 @@ function getFirstThreeGraphs() {
 }
 
 /* the global variables */
-var container = document.querySelector('#grid');
-var container1 = document.querySelector('#container-1');
-var container2 = document.querySelector('#container-2');
+var container = document.querySelector('#grid'),
+    container1 = document.querySelector('#container-1'),
+    container2 = document.querySelector('#container-2'),
+    toolbar = document.querySelector('.dashboard-toolbar'),
+    pseudoCircle = document.querySelector('.pseudo-circle'),
+    menu1 = document.querySelector('.menu-1'),
+    box = document.querySelector('.box'),
+    removeBox = document.querySelector('.close');
 
 /* open plus-button into a tab-menu */
-document.querySelector('.box').addEventListener('click', function () {
-    container1.classList.add('open');
+box.addEventListener('click', function () {
+    this.classList.add('open');
+    pseudoCircle.classList.add('open');
+    setTimeout(function () {
+        menu1.classList.add('show');
+    }, 300);
+    removeBox.style.display = 'block';
 });
 
+/* close tab-menu into plus-button */
+removeBox.addEventListener('click', function () {
+    this.style.display = 'none';
+    box.classList.remove('open');
+    pseudoCircle.classList.remove('open');
+    menu1.classList.remove('show');
+});
 
 /* fades out container-1 and pulls down a filtered container-2 that holds chart-buttons */
 [...document.querySelectorAll('.add-container-2')].map((card) => {
@@ -50,12 +67,12 @@ document.querySelector('.box').addEventListener('click', function () {
 function switchContainer(e) {
     var reportId = this.id;
     container2.classList.remove('out-of-sight');
-    container1.classList.add('fade-out');
+    toolbar.classList.add('fade-out');
 
     setTimeout(function () {
-        container1.style.display = 'none';
+        toolbar.style.display = 'none';
     }, 280);
-    container1.tabIndex = -1;
+    toolbar.tabIndex = -1;
     e.currentTarget.setAttribute('data-selected', 'selected');
     showAvailableCharts(reportId);
 }

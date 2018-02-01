@@ -8,163 +8,157 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <!--  <link rel="stylesheet" href="node_modules/material-components-web/dist/material-components-web.min.css"> -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body class='mdc-typography'>
-    <!-- <button id="clear">rensa</button> -->
+
     <main>
-        <div class='first-grid'>
-            <div class='container-2 out-of-sight' id='container-2'>
-                <section class='row'>
-                    <button id='bar' class='card card2 mdc-button material-icons' data-mdc-auto-init="MDCRipple">
-                        <i class="material-icons mdc-button__icon">insert_chart</i>stapeldiagram
-                    </button>
-                    <button id='area' class='card card2 mdc-button material-icons' data-mdc-auto-init="MDCRipple">
-                        <i class="material-icons mdc-button__icon">image</i>områdesdiagram
-                    </button>
-                    <button id='info' class='card card2 mdc-button material-icons' data-mdc-auto-init="MDCRipple">
-                        <i class="material-icons mdc-button__icon">subject</i>all info
-                    </button>
-                </section>
-                <section class='row'>
-                    <button id='geo' class='card card2 mdc-button material-icons' data-mdc-auto-init="MDCRipple">
-                        <i class="material-icons mdc-button__icon">public</i>geo-diagram
-                    </button>
-                    <button id='pie' class='card card2 mdc-button material-icons' data-mdc-auto-init="MDCRipple">
-                        <i class="material-icons mdc-button__icon">pie_chart</i>cirkeldiagram
-                    </button>
-                    <button id='line' class='card card2 mdc-button material-icons' data-mdc-auto-init="MDCRipple">
-                        <i class="material-icons mdc-button__icon">show_chart</i>linjediagram
-                    </button>
-                </section>
+        <section id='grid' class="grid"></section>
+
+        <div class='container-2 out-of-sight' id='container-2'>
+            <section class='row'>
+                <button id='bar' class='card card2 mdc-button material-icons' data-mdc-auto-init="MDCRipple">
+                    <i class="material-icons mdc-button__icon">insert_chart</i>stapeldiagram
+                </button>
+                <button id='area' class='card card2 mdc-button material-icons' data-mdc-auto-init="MDCRipple">
+                    <i class="material-icons mdc-button__icon">image</i>områdesdiagram
+                </button>
+                <button id='info' class='card card2 mdc-button material-icons' data-mdc-auto-init="MDCRipple">
+                    <i class="material-icons mdc-button__icon">subject</i>all info
+                </button>
+            </section>
+            <section class='row'>
+                <button id='geo' class='card card2 mdc-button material-icons' data-mdc-auto-init="MDCRipple">
+                    <i class="material-icons mdc-button__icon">public</i>geo-diagram
+                </button>
+                <button id='pie' class='card card2 mdc-button material-icons' data-mdc-auto-init="MDCRipple">
+                    <i class="material-icons mdc-button__icon">pie_chart</i>cirkeldiagram
+                </button>
+                <button id='line' class='card card2 mdc-button material-icons' data-mdc-auto-init="MDCRipple">
+                    <i class="material-icons mdc-button__icon">show_chart</i>linjediagram
+                </button>
+            </section>
+        </div>
+
+
+        <div class='box mdc-fab material-icons'>
+            <span class='mdc-fab__icon'>add</span>
+        </div>
+        <div class='dashboard-toolbar'>
+            <div>
+                <button class='mdc-button close'>close</button>
             </div>
-
-            <div class='container-1' id='container-1'>
-                <div class='box' id='box'>
-                    <div class='menu' id='menu'>
-
-                        <nav id="icon-text-tab-bar" class="mdc-tab-bar">
-                            <a role='tab' aria-controls="panel-1" class="mdc-tab mdc-tab--active">1</a>
-                            <a role='tab' aria-controls="panel-2" class="mdc-tab">2</a>
-                            <a role='tab' aria-controls="panel-3" class="mdc-tab">3</a>
-                            <span class="mdc-tab-bar__indicator"></span>
-                        </nav>
-                        <div class="panels" for='#icon-text-tab-bar'>
-                            <div class="panel is-active" role="tabpanel" aria-hidden="false">
-                                <section class='row'>
-                                    <button id='sale' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">attach_money</i>företags prestanda
-                                    </button>
-                                    <button id='expenditure' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">monetization_on</i>utgifter
-                                    </button>
-                                    <button id='nrOfVisitors' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">transfer_within_a_station</i>antal besökare
-                                    </button>
-                                </section>
-                                <section class='row'>
-                                    <button id='socialMedia' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">favorite_border</i>social media
-                                    </button>
-                                    <button id='compiledInfo' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">format_list_bulleted</i>info event
-                                    </button>
-                                    <button id='nationalities' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">public</i>nationaliteter
-                                    </button>
-                                </section>
-                                <section class='row'>
-                                    <button id='todaysEvent' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">event</i>dagens event
-                                    </button>
-                                    <button id='bookings' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">playlist_add_check</i>bokade
-                                    </button>
-                                    <button id='mood' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">mood</i>stämning
-                                    </button>
-                                </section>
-                            </div>
-                            <div class="panel" role="tabpanel" aria-hidden="true">
-                                <section class='row'>
-                                    <button id='report10' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">attach_money</i>intäkter
-                                    </button>
-                                    <button id='report11' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">monetization_on</i>utgifter
-                                    </button>
-                                    <button id='report12' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">transfer_within_a_station</i>antal besökare
-                                    </button>
-                                </section>
-                                <section class='row'>
-                                    <button id='report13' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">favorite_border</i>social media
-                                    </button>
-                                    <button id='report14' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">format_list_bulleted</i>info event
-                                    </button>
-                                    <button id='report15' class='report-btn card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">public</i>nationaliteter
-                                    </button>
-                                </section>
-                                <section class='row'>
-                                    <button id='report16' class='card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">event</i>bokade event
-                                    </button>
-                                    <button id='report17' class='card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">playlist_add_check</i>registrerade
-                                    </button>
-                                    <button id='report18' class='card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">mood</i>stämning
-                                    </button>
-                                </section>
-                            </div>
-                            <div class="panel" role="tabpanel" aria-hidden="true">
-                                <section class='row'>
-                                    <button id='report19' class='card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">attach_money</i>intäkter
-                                    </button>
-                                    <button id='report20' class='card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">monetization_on</i>utgifter
-                                    </button>
-                                    <button id='report21' class='card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">transfer_within_a_station</i>antal besökare
-                                    </button>
-                                </section>
-                                <section class='row'>
-                                    <button class='card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">favorite_border</i>social media
-                                    </button>
-                                    <button class='card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">format_list_bulleted</i>info event
-                                    </button>
-                                    <button class='card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">public</i>nationaliteter
-                                    </button>
-                                </section>
-                                <section class='row'>
-                                    <button class='card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">event</i>bokade event
-                                    </button>
-                                    <button class='card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">playlist_add_check</i>registrerade
-                                    </button>
-                                    <button class='card mdc-button material-icons add-container-2' data-mdc-auto-init="MDCRipple">
-                                        <i class="material-icons mdc-button__icon">mood</i>stämning
-                                    </button>
-                                </section>
-                            </div>
-                        </div>
+            <section class='menu-1'>
+                <nav id="icon-text-tab-bar" class="mdc-tab-bar">
+                    <a role='tab' aria-controls="panel-1" class="mdc-tab mdc-tab--active">1</a>
+                    <a role='tab' aria-controls="panel-2" class="mdc-tab">2</a>
+                    <a role='tab' aria-controls="panel-3" class="mdc-tab">3</a>
+                    <span class="mdc-tab-bar__indicator"></span>
+                </nav>
+                <div class="panels" for='#icon-text-tab-bar'>
+                    <div class="panel is-active" role="tabpanel" aria-hidden="false">
+                        <section class='panel-grid'>
+                            <button id='sale' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">attach_money</i>företags prestanda
+                            </button>
+                            <button id='expenditure' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">monetization_on</i>utgifter
+                            </button>
+                            <button id='nrOfVisitors' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">transfer_within_a_station</i>antal besökare
+                            </button>
+                            <button id='socialMedia' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">favorite_border</i>social media
+                            </button>
+                            <button id='compiledInfo' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">format_list_bulleted</i>info event
+                            </button>
+                            <button id='nationalities' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">public</i>nationaliteter
+                            </button>
+                            <button id='todaysEvent' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">event</i>dagens event
+                            </button>
+                            <button id='bookings' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">playlist_add_check</i>bokade
+                            </button>
+                            <button id='mood' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">mood</i>stämning
+                            </button>
+                        </section>
+                    </div>
+                    <div class="panel" role="tabpanel" aria-hidden="true">
+                        <section class='panel-grid'>
+                            <button id='report10' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">attach_money</i>intäkter
+                            </button>
+                            <button id='report11' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">monetization_on</i>utgifter
+                            </button>
+                            <button id='report12' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">transfer_within_a_station</i>antal besökare
+                            </button>
+                            <button id='report13' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">favorite_border</i>social media
+                            </button>
+                            <button id='report14' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">format_list_bulleted</i>info event
+                            </button>
+                            <button id='report15' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">public</i>nationaliteter
+                            </button>
+                            <button id='report16' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">event</i>bokade event
+                            </button>
+                            <button id='report17' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">playlist_add_check</i>registrerade
+                            </button>
+                            <button id='report18' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">mood</i>stämning
+                            </button>
+                        </section>
+                    </div>
+                    <div class="panel" role="tabpanel" aria-hidden="true">
+                        <section class='panel-grid'>
+                            <button id='report19' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">attach_money</i>intäkter
+                            </button>
+                            <button id='report20' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">monetization_on</i>utgifter
+                            </button>
+                            <button id='report21' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">transfer_within_a_station</i>antal besökare
+                            </button>
+                            <button class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">favorite_border</i>social media
+                            </button>
+                            <button class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">format_list_bulleted</i>info event
+                            </button>
+                            <button class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">public</i>nationaliteter
+                            </button>
+                            <button class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">event</i>bokade event
+                            </button>
+                            <button class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">playlist_add_check</i>registrerade
+                            </button>
+                            <button class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                                <i class="material-icons mdc-button__icon">mood</i>stämning
+                            </button>
+                        </section>
                     </div>
                 </div>
+            </section>
+            <div class='pseudo-circle'>
+                <div class='orange-background'></div>
             </div>
         </div>
 
 
-        <section id='grid' class="grid"></section>
+
     </main>
     <script src='https://www.gstatic.com/charts/loader.js'></script>
     <script src='https://www.google.com/jsapi'></script>
