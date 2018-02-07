@@ -9673,7 +9673,9 @@ a.mdc-list-item {
 
 :root {
   --mdc-theme-primary: #444f63;
+  --mdc-theme-primary-light: #525f77;
   --mdc-theme-secondary: #ee7365;
+  --mdc-theme-secondary-light: rgba(238, 115, 101, 0.8);
   --numRows: 4;
   --numCols: 5;
   --gridHeight: 200px; }
@@ -9683,7 +9685,7 @@ a.mdc-list-item {
 } */
 html,
 body {
-  background-color: var(--mdc-theme-primary); }
+  background-color: var(--mdc-theme-primary-light); }
 
 /* ------ css main grid ---------------------------------------- */
 .grid {
@@ -9698,8 +9700,9 @@ body {
 /* plus-button that turns into a box and scalable circle-------- */
 .pseudo-circle,
 .box {
+  position: absolute;
   z-index: 9998;
-  transform-origin: 50% 50%;
+  transform-origin: 20% 50%;
   left: 150px;
   top: 10px; }
 
@@ -9709,15 +9712,15 @@ body {
   border-radius: 50%;
   opacity: 0;
   overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0, 0, 0.2, 1), opacity 0.1s 0.2s; }
+  transition: transform 0.3s cubic-bezier(0.5, 0.5, 0.2, 1), opacity 0.1s 0.1s; }
 
 .pseudo-circle.open {
   transition-delay: 0.2s;
-  transform: scale(85);
+  transform: scale(45);
   opacity: 1; }
 
 .box {
-  transition: transform 0.2s cubic-bezier(0.4, 0, 1, 1), opacity 0.1s 0.1s, box-shadow 0.3s, z-index 0.2s;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 1, 1), opacity 0.2s 0.1s, z-index 0.2s;
   opacity: 1;
   left: 50px;
   top: 120px;
@@ -9725,7 +9728,7 @@ body {
   z-index: 9999; }
 
 .box.open {
-  transform: translate3d(-35px, -40px, 0); }
+  transform: translate3d(50px, -40px, 0); }
 
 .box.open,
 .box.open span {
@@ -9735,14 +9738,14 @@ body {
 .orange-background {
   width: 100vw;
   height: 100vh;
-  background-color: var(--mdc-theme-secondary); }
+  background-color: var(--mdc-theme-primary); }
 
 .dashboard-toolbar {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 400px;
+  height: 300px;
   overflow: hidden; }
 
 .menu-1 {
@@ -9755,6 +9758,7 @@ body {
   display: block; }
 
 .dashboard-toolbar .close {
+  color: #fff;
   position: absolute;
   z-index: 10000;
   display: none; }
@@ -9778,18 +9782,23 @@ body {
 .container-2 {
   position: fixed;
   transition: transform 375ms cubic-bezier(0, 0, 0.2, 1);
-  background-color: var(--mdc-theme-secondary);
-  border-radius: 10px;
+  background-color: var(--mdc-theme-primary);
   width: 100%;
   top: 0;
   left: 0; }
+
+.graph-btn-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  padding: 20px;
+  grid-gap: 15px; }
 
 /* tab-content----------------------------------------------------------------------------------- */
 .mdc-tab-bar {
   transition: opacity 0.4s; }
 
 .panels {
-  margin-top: 10px; }
+  margin-top: 15px; }
 
 .panel {
   display: none; }
@@ -9797,16 +9806,28 @@ body {
 .panel.is-active {
   display: block;
   animation-name: tab-animation;
-  animation-duration: 1s; }
+  animation-duration: .5s; }
 
 .panel-grid {
   display: grid;
-  grid-template-columns: repeat(4, 20%);
-  grid-gap: 20px;
+  grid-template-columns: repeat(4, 15%);
+  grid-gap: 15px;
   justify-content: center; }
 
 .report-btn {
-  height: 150px; }
+  height: 105px;
+  font-size: 0.8rem;
+  font-weight: 300;
+  font-family: "Montserrat";
+  border: 3px solid var(--mdc-theme-secondary); }
+
+.mdc-button__icon {
+  margin-right: 0;
+  width: 100%;
+  text-align: center; }
+
+.md-48 {
+  font-size: 48px; }
 
 @keyframes tab-animation {
   0% {
@@ -9819,7 +9840,9 @@ body {
     opacity: 1; } }
 
 .card.card2.mdc-button {
-  color: #fff; }
+  height: 105px;
+  color: #fff;
+  border: 3px solid var(--mdc-theme-secondary); }
 
 /* ---------------------------------------------------------------------------------- */
 /* charts ----------------------------------------------------------------------------*/

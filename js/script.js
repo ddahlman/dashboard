@@ -9,6 +9,28 @@ google.charts.setOnLoadCallback(function () {
     showDashboard();
 });
 
+/* modular pattern for accessing private variables */
+var globals = function () {
+    var container = document.querySelector('#grid'),
+        container1 = document.querySelector('#container-1'),
+        container2 = document.querySelector('#container-2'),
+        toolbar = document.querySelector('.dashboard-toolbar'),
+        pseudoCircle = document.querySelector('.pseudo-circle'),
+        menu1 = document.querySelector('.menu-1'),
+        box = document.querySelector('.box'),
+        removeBox = document.querySelector('.close');
+    return {
+        container: container,
+        container1: container1,
+        container2: container2,
+        toolbar: toolbar,
+        pseudoCircle: pseudoCircle,
+        menu1: menu1,
+        box: box,
+        removeBox: removeBox
+    };
+}();
+
 function getFirstThreeGraphs() {
     $.get('reports.json').done(function (response) {
         var barContainer = createDiv('bar');
@@ -23,7 +45,7 @@ function getFirstThreeGraphs() {
         containerArray.map(function (chartContainer) {
             frag.appendChild(chartContainer);
         });
-        container.appendChild(frag);
+        globals.container.appendChild(frag);
         var chartArray = [bar, line, pie];
         chartArray.map(function (chart) {
             chart.draw();
@@ -31,32 +53,22 @@ function getFirstThreeGraphs() {
     });
 }
 
-/* the global variables */
-var container = document.querySelector('#grid'),
-    container1 = document.querySelector('#container-1'),
-    container2 = document.querySelector('#container-2'),
-    toolbar = document.querySelector('.dashboard-toolbar'),
-    pseudoCircle = document.querySelector('.pseudo-circle'),
-    menu1 = document.querySelector('.menu-1'),
-    box = document.querySelector('.box'),
-    removeBox = document.querySelector('.close');
-
 /* open plus-button into a tab-menu */
-box.addEventListener('click', function () {
+globals.box.addEventListener('click', function () {
     this.classList.add('open');
-    pseudoCircle.classList.add('open');
+    globals.pseudoCircle.classList.add('open');
     setTimeout(function () {
-        menu1.classList.add('show');
+        globals.menu1.classList.add('show');
     }, 300);
-    removeBox.style.display = 'block';
+    globals.removeBox.style.display = 'block';
 });
 
 /* close tab-menu into plus-button */
-removeBox.addEventListener('click', function () {
+globals.removeBox.addEventListener('click', function () {
     this.style.display = 'none';
-    box.classList.remove('open');
-    pseudoCircle.classList.remove('open');
-    menu1.classList.remove('show');
+    globals.box.classList.remove('open');
+    globals.pseudoCircle.classList.remove('open');
+    globals.menu1.classList.remove('show');
 });
 
 /* fades out container-1 and pulls down a filtered container-2 that holds chart-buttons */
@@ -66,13 +78,13 @@ removeBox.addEventListener('click', function () {
 
 function switchContainer(e) {
     var reportId = this.id;
-    container2.classList.remove('out-of-sight');
-    toolbar.classList.add('fade-out');
+    globals.container2.classList.remove('out-of-sight');
+    globals.toolbar.classList.add('fade-out');
 
     setTimeout(function () {
-        toolbar.style.display = 'none';
+        globals.toolbar.style.display = 'none';
     }, 280);
-    toolbar.tabIndex = -1;
+    globals.toolbar.tabIndex = -1;
     e.currentTarget.setAttribute('data-selected', 'selected');
     showAvailableCharts(reportId);
 }
@@ -109,7 +121,7 @@ function showAvailableCharts(reportId) {
 /* push current object to array when clicking on chart-button + add type to object 
 so we know what chart-type to draw*/
 [...document.querySelectorAll('.card2')].map(function (chartBtn) {
-    chartBtn.addEventListener('click', showDashboard);
+    chartBtn.addEventListener('click', showDashboard, false);
 });
 
 
@@ -133,7 +145,7 @@ function showDashboard() {
     if (report) {
         $.get('reports.json').done((response) => {
             var div = createDiv(selectedChartType);
-            container.appendChild(div);
+            globals.container.appendChild(div);
             var chart;
             switch (selectedChartType) {
                 case 'bar':
