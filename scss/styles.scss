@@ -9,16 +9,19 @@
     --gridHeight: 200px;
 }
 
-/* * {
-    font-family: 'Montserrat';
-} */
-
+$white: #fff;
 $show: block;
 $google-shadow: 1px 3px 4px rgba(0, 0, 0, 0.3);
+$google-shadow-elevated: 0 19px 38px rgba(0, 0, 0, 0.30),
+0 15px 12px rgba(0, 0, 0, 0.22);
 $trippus-font: 'Montserrat';
 html,
 body {
-    background-color: var(--mdc-theme-primary-light);
+    background-color: #eee;
+}
+
+.white {
+    color: $white;
 }
 
 /* ------ css main grid ---------------------------------------- */
@@ -30,6 +33,7 @@ body {
     grid-gap: 10px;
     grid-auto-flow: row dense;
     min-height: 100vh;
+    margin-top: 10%;
 }
 
 /* ------------------------------------------------------------- */
@@ -67,6 +71,7 @@ body {
     top: 120px;
     position: fixed;
     z-index: 9999;
+    background-color: var(--mdc-theme-primary);
 }
 
 .box.open {
@@ -92,17 +97,28 @@ body {
     width: 100%;
     height: 300px;
     overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.dashboard-toolbar.open {
+    pointer-events: auto;
+    opacity: 1;
+}
+
+.shadow-elevated {
+    box-shadow: $google-shadow-elevated;
 }
 
 .menu-1 {
-    display: none;
+    opacity: 0;
 }
 
 .menu-1.show {
     position: absolute;
     z-index: 9999;
     width: 100%;
-    display: $show;
+    opacity: 1;
 }
 
 .dashboard-toolbar .close {
@@ -218,6 +234,10 @@ body {
 /* ---------------------------------------------------------------------------------- */
 
 /* charts ----------------------------------------------------------------------------*/
+
+svg[aria-label="A chart."]>g>g:last-child {
+    pointer-events: none;
+}
 
 .area {
     grid-area: span 1/ span 2;

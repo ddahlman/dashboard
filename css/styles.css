@@ -9680,12 +9680,12 @@ a.mdc-list-item {
   --numCols: 5;
   --gridHeight: 200px; }
 
-/* * {
-    font-family: 'Montserrat';
-} */
 html,
 body {
-  background-color: var(--mdc-theme-primary-light); }
+  background-color: #eee; }
+
+.white {
+  color: #fff; }
 
 /* ------ css main grid ---------------------------------------- */
 .grid {
@@ -9694,7 +9694,8 @@ body {
   grid-template-columns: repeat(var(--numCols), 19%);
   grid-gap: 10px;
   grid-auto-flow: row dense;
-  min-height: 100vh; }
+  min-height: 100vh;
+  margin-top: 10%; }
 
 /* ------------------------------------------------------------- */
 /* plus-button that turns into a box and scalable circle-------- */
@@ -9725,7 +9726,8 @@ body {
   left: 50px;
   top: 120px;
   position: fixed;
-  z-index: 9999; }
+  z-index: 9999;
+  background-color: var(--mdc-theme-primary); }
 
 .box.open {
   transform: translate3d(50px, -40px, 0); }
@@ -9746,16 +9748,25 @@ body {
   left: 0;
   width: 100%;
   height: 300px;
-  overflow: hidden; }
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none; }
+
+.dashboard-toolbar.open {
+  pointer-events: auto;
+  opacity: 1; }
+
+.shadow-elevated {
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22); }
 
 .menu-1 {
-  display: none; }
+  opacity: 0; }
 
 .menu-1.show {
   position: absolute;
   z-index: 9999;
   width: 100%;
-  display: block; }
+  opacity: 1; }
 
 .dashboard-toolbar .close {
   color: #fff;
@@ -9846,6 +9857,9 @@ body {
 
 /* ---------------------------------------------------------------------------------- */
 /* charts ----------------------------------------------------------------------------*/
+svg[aria-label="A chart."] > g > g:last-child {
+  pointer-events: none; }
+
 .area {
   grid-area: span 1/ span 2; }
 

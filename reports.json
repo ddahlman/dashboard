@@ -64,7 +64,7 @@
         "options": {
             "regular": {
                 "title": "Antal bokningar",
-                "colors": ["#ee7365", "#444f63"],
+                "colors": ["#ee7365", "#444f63", "#f9b035"],
                 "chartArea": {
                     "left": "15%",
                     "top": "13%",
@@ -79,7 +79,7 @@
             },
             "pie": {
                 "title": "Antal bokningar",
-                "colors": ["#ee7365", "#444f63"],
+                "colors": ["#ee7365", "#444f63", "#f9b035"],
                 "chartArea": {
                     "left": "25%",
                     "top": "13%",
@@ -160,7 +160,7 @@
         "options": {
             "regular": {
                 "title": "Nationaliteter",
-                "colors": ["#ee7365", "#444f63"],
+                "colors": ["#ee7365", "#444f63", "#f9b035"],
                 "chartArea": {
                     "left": "5%",
                     "top": "13%",
@@ -175,7 +175,7 @@
             },
             "pie": {
                 "title": "Nationaliteter",
-                "colors": ["#ee7365", "#444f63"],
+                "colors": ["#ee7365", "#444f63", "#f9b035"],
                 "chartArea": {
                     "left": "25%",
                     "top": "13%",
@@ -265,7 +265,7 @@
         "options": {
             "regular": {
                 "title": "Omsättning",
-                "colors": ["#ee7365", "#444f63"],
+                "colors": ["#ee7365", "#444f63", "#f9b035"],
                 "chartArea": {
                     "left": "5%",
                     "top": "13%",
@@ -280,7 +280,7 @@
             },
             "pie": {
                 "title": "Omsättning",
-                "colors": ["#ee7365", "#444f63"],
+                "colors": ["#ee7365", "#444f63", "#f9b035"],
                 "chartArea": {
                     "left": "25%",
                     "top": "13%",
@@ -418,7 +418,7 @@
         "options": {
             "regular": {
                 "title": "Dagens event",
-                "colors": ["#ee7365", "#444f63"],
+                "colors": ["#ee7365", "#444f63", "#f9b035"],
                 "chartArea": {
                     "left": "5%",
                     "top": "13%",
@@ -433,7 +433,7 @@
             },
             "pie": {
                 "title": "Dagens event",
-                "colors": ["#ee7365", "#444f63"],
+                "colors": ["#ee7365", "#444f63", "#f9b035"],
                 "chartArea": {
                     "left": "25%",
                     "top": "13%",

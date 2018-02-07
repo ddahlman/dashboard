@@ -29,6 +29,7 @@ var globals = function () {
     };
 }();
 
+
 function getFirstThreeGraphs() {
     $.get('reports.json').done(function (response) {
         var barContainer = createDiv('bar');
@@ -57,8 +58,10 @@ globals.box.addEventListener('click', function () {
     globals.pseudoCircle.classList.add('open');
     setTimeout(function () {
         globals.menu1.classList.add('show');
+        globals.toolbar.classList.add('open', 'shadow-elevated');
+        globals.toolbar.style.boxShadow = '0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);';
+        globals.removeBox.style.display = 'block';
     }, 300);
-    globals.removeBox.style.display = 'block';
 });
 
 /* close tab-menu into plus-button */
@@ -67,6 +70,10 @@ globals.removeBox.addEventListener('click', function () {
     globals.box.classList.remove('open');
     globals.pseudoCircle.classList.remove('open');
     globals.menu1.classList.remove('show');
+    setTimeout(function () {
+        globals.toolbar.classList.remove('open');
+    }, 300);
+    globals.toolbar.classList.remove('shadow-elevated');
 });
 
 /* fades out container-1 and pulls down a filtered container-2 that holds chart-buttons */
