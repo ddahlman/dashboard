@@ -64,6 +64,11 @@
         "options": {
             "regular": {
                 "title": "Antal bokningar",
+                "titleTextStyle": {
+                    "color": "#5c5c5c",
+                    "fontName": "Segoe UI Light",
+                    "fontSize": "36"
+                },
                 "colors": ["#ee7365", "#444f63", "#f9b035"],
                 "chartArea": {
                     "left": "15%",
