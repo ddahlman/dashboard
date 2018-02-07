@@ -12,7 +12,6 @@ google.charts.setOnLoadCallback(function () {
 /* modular pattern for accessing private variables */
 var globals = function () {
     var container = document.querySelector('#grid'),
-        container1 = document.querySelector('#container-1'),
         container2 = document.querySelector('#container-2'),
         toolbar = document.querySelector('.dashboard-toolbar'),
         pseudoCircle = document.querySelector('.pseudo-circle'),
@@ -21,7 +20,6 @@ var globals = function () {
         removeBox = document.querySelector('.close');
     return {
         container: container,
-        container1: container1,
         container2: container2,
         toolbar: toolbar,
         pseudoCircle: pseudoCircle,

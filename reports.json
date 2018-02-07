@@ -264,7 +264,7 @@
         },
         "options": {
             "regular": {
-                "title": "Företags prestanda",
+                "title": "Omsättning",
                 "colors": ["#ee7365", "#444f63"],
                 "chartArea": {
                     "left": "5%",
@@ -279,7 +279,7 @@
                 }
             },
             "pie": {
-                "title": "Företags prestanda",
+                "title": "Omsättning",
                 "colors": ["#ee7365", "#444f63"],
                 "chartArea": {
                     "left": "25%",
