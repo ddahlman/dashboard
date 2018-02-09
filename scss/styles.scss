@@ -98,12 +98,26 @@ body {
     height: 200px;
     overflow: hidden;
     pointer-events: none;
+    transition: opacity 0.3s;
 }
 
 .dashboard-toolbar.open {
     pointer-events: auto;
     box-shadow: $google-shadow-elevated;
     transition: box-shadow 0.1s 0.3s;
+}
+
+.dashboard-toolbar .close {
+    color: #fff;
+    position: absolute;
+    z-index: 10000;
+    display: none;
+}
+
+.fade-out {
+    opacity: 0;
+    pointer-events: none;
+    z-index: -100;
 }
 
 .menu-1 {
@@ -117,28 +131,6 @@ body {
     height: inherit;
     opacity: 1;
     transition: opacity 0.1s 0.3s;
-}
-
-.dashboard-toolbar .close {
-    color: #fff;
-    position: absolute;
-    z-index: 10000;
-    display: none;
-}
-
-.fade-out {
-    animation-name: fade-out;
-    animation-duration: 300ms;
-}
-
-@keyframes fade-out {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-        display: none;
-    }
 }
 
 /* container-2----------------------------------------------------------------------------------- */

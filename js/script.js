@@ -54,11 +54,12 @@ function getFirstThreeGraphs() {
 
 /* open plus-button into a tab-menu */
 globals.box.addEventListener('click', function () {
+    globals.removeBox.style.display = 'block';
     this.classList.add('open');
     globals.pseudoCircle.classList.add('open');
     globals.menu1.classList.add('show');
     globals.toolbar.classList.add('open');
-    globals.removeBox.style.display = 'block';
+    globals.toolbar.classList.remove('fade-out');
 });
 
 /* close tab-menu into plus-button */
@@ -80,10 +81,6 @@ function switchContainer(e) {
     globals.container2.classList.remove('out-of-sight');
     globals.toolbar.classList.add('fade-out');
 
-    setTimeout(function () {
-        globals.toolbar.style.display = 'none';
-    }, 280);
-    globals.toolbar.tabIndex = -1;
     e.currentTarget.setAttribute('data-selected', 'selected');
     showAvailableCharts(reportId);
 }
@@ -120,7 +117,14 @@ function showAvailableCharts(reportId) {
 /* push current object to array when clicking on chart-button + add type to object 
 so we know what chart-type to draw*/
 [...document.querySelectorAll('.card2')].map(function (chartBtn) {
-    chartBtn.addEventListener('click', showDashboard, false);
+    chartBtn.addEventListener('click', function () {
+        showDashboard(this);
+        globals.container2.classList.add('out-of-sight');
+        globals.box.classList.remove('open');
+        globals.pseudoCircle.classList.remove('open');
+        globals.menu1.classList.remove('show');
+        globals.toolbar.classList.remove('open');
+    }, false);
 });
 
 
@@ -132,16 +136,18 @@ function createDiv(cssClass) {
     return div;
 }
 
-function showDashboard() {
-    console.log(this);
+function showDashboard(button) {
     updateCssVar();
-    var report;
+    var report,
+        selectedChartType;
     var selectedreportId = document.querySelector('[data-selected]');
     if (selectedreportId) {
         report = selectedreportId.id;
         selectedreportId.removeAttribute('[data-selected]');
     }
-    var selectedChartType = this.id;
+    if (button) {
+        selectedChartType = button.id;
+    }
     if (report) {
         $.get('reports.json').done((response) => {
             var div = createDiv(selectedChartType);
