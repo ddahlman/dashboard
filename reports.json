@@ -64,16 +64,40 @@
         "options": {
             "regular": {
                 "title": "Antal bokningar",
+                "backgroundColor": "#444f63",
                 "titleTextStyle": {
-                    "color": "#5c5c5c",
-                    "fontName": "Segoe UI Light",
-                    "fontSize": "36"
+                    "color": "#fff",
+                    "fontName": "Open Sans",
+                    "fontSize": "26"
                 },
-                "colors": ["#ee7365", "#444f63", "#f9b035"],
+                "hAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "gridlines": {
+                        "color": "#fff"
+                    }
+
+                },
+                "vAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "titleTextStyle": {
+                        "color": "#fff"
+                    },
+                    "baseLineColor": "#fff"
+                },
+                "legend": {
+                    "textStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "colors": ["#f9b035", "#ee7365", "#525f77"],
                 "chartArea": {
                     "left": "15%",
-                    "top": "13%",
-                    "height": "80%",
+                    "top": "23%",
+                    "height": "60%",
                     "width": "60%"
                 },
                 "animation": {
@@ -84,11 +108,38 @@
             },
             "pie": {
                 "title": "Antal bokningar",
-                "colors": ["#ee7365", "#444f63", "#f9b035"],
+                "backgroundColor": "#444f63",
+                "titleTextStyle": {
+                    "color": "#fff",
+                    "fontName": "Open Sans",
+                    "fontSize": "26"
+                },
+                "hAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "gridlines": {
+                        "color": "#fff"
+                    }
+                },
+                "vAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "titleTextStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "legend": {
+                    "textStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "colors": ["#f9b035", "#ee7365", "#525f77"],
                 "chartArea": {
                     "left": "25%",
-                    "top": "13%",
-                    "height": "80%",
+                    "top": "25%",
+                    "height": "70%",
                     "width": "100%"
                 },
                 "animation": {
@@ -165,7 +216,34 @@
         "options": {
             "regular": {
                 "title": "Nationaliteter",
-                "colors": ["#ee7365", "#444f63", "#f9b035"],
+                "backgroundColor": "#444f63",
+                "titleTextStyle": {
+                    "color": "#fff",
+                    "fontName": "Open Sans",
+                    "fontSize": "26"
+                },
+                "hAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "gridlines": {
+                        "color": "#fff"
+                    }
+                },
+                "vAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "titleTextStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "legend": {
+                    "textStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "colors": ["#f9b035", "#ee7365", "#525f77"],
                 "chartArea": {
                     "left": "5%",
                     "top": "13%",
@@ -180,11 +258,38 @@
             },
             "pie": {
                 "title": "Nationaliteter",
-                "colors": ["#ee7365", "#444f63", "#f9b035"],
+                "backgroundColor": "#444f63",
+                "titleTextStyle": {
+                    "color": "#fff",
+                    "fontName": "Open Sans",
+                    "fontSize": "26"
+                },
+                "hAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "gridlines": {
+                        "color": "#fff"
+                    }
+                },
+                "vAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "titleTextStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "legend": {
+                    "textStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "colors": ["#f9b035", "#ee7365", "#525f77"],
                 "chartArea": {
                     "left": "25%",
-                    "top": "13%",
-                    "height": "80%",
+                    "top": "25%",
+                    "height": "70%",
                     "width": "100%"
                 },
                 "animation": {
@@ -206,13 +311,13 @@
                 },
                 {
                     "id": "",
-                    "label": "Utgifter",
+                    "label": "Kort",
                     "pattern": "",
                     "type": "number"
                 },
                 {
                     "id": "",
-                    "label": "Vinst",
+                    "label": "Faktura",
                     "pattern": "",
                     "type": "number"
                 }
@@ -270,11 +375,38 @@
         "options": {
             "regular": {
                 "title": "Omsättning",
-                "colors": ["#ee7365", "#444f63", "#f9b035"],
+                "backgroundColor": "#444f63",
+                "titleTextStyle": {
+                    "color": "#fff",
+                    "fontName": "Open Sans",
+                    "fontSize": "26"
+                },
+                "hAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "gridlines": {
+                        "color": "#fff"
+                    }
+                },
+                "vAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "titleTextStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "legend": {
+                    "textStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "colors": ["#f9b035", "#ee7365", "#525f77"],
                 "chartArea": {
-                    "left": "5%",
-                    "top": "13%",
-                    "height": "80%",
+                    "left": "15%",
+                    "top": "23%",
+                    "height": "60%",
                     "width": "70%"
                 },
                 "animation": {
@@ -285,11 +417,38 @@
             },
             "pie": {
                 "title": "Omsättning",
-                "colors": ["#ee7365", "#444f63", "#f9b035"],
+                "backgroundColor": "#444f63",
+                "titleTextStyle": {
+                    "color": "#fff",
+                    "fontName": "Open Sans",
+                    "fontSize": "26"
+                },
+                "hAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "gridlines": {
+                        "color": "#fff"
+                    }
+                },
+                "vAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "titleTextStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "legend": {
+                    "textStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "colors": ["#f9b035", "#ee7365", "#525f77"],
                 "chartArea": {
                     "left": "25%",
-                    "top": "13%",
-                    "height": "80%",
+                    "top": "25%",
+                    "height": "70%",
                     "width": "100%"
                 },
                 "animation": {
@@ -422,12 +581,39 @@
         },
         "options": {
             "regular": {
-                "title": "Dagens event",
-                "colors": ["#ee7365", "#444f63", "#f9b035"],
+                "title": "Geografisk fördelning bokningar",
+                "backgroundColor": "#444f63",
+                "titleTextStyle": {
+                    "color": "#fff",
+                    "fontName": "Open Sans",
+                    "fontSize": "16"
+                },
+                "hAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "gridlines": {
+                        "color": "#fff"
+                    }
+                },
+                "vAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "titleTextStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "legend": {
+                    "textStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "colors": ["#f9b035", "#ee7365", "#525f77"],
                 "chartArea": {
-                    "left": "5%",
-                    "top": "13%",
-                    "height": "80%",
+                    "left": "10%",
+                    "top": "23%",
+                    "height": "60%",
                     "width": "70%"
                 },
                 "animation": {
@@ -438,11 +624,38 @@
             },
             "pie": {
                 "title": "Dagens event",
-                "colors": ["#ee7365", "#444f63", "#f9b035"],
+                "backgroundColor": "#444f63",
+                "titleTextStyle": {
+                    "color": "#fff",
+                    "fontName": "Open Sans",
+                    "fontSize": "26"
+                },
+                "hAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "gridlines": {
+                        "color": "#fff"
+                    }
+                },
+                "vAxis": {
+                    "textStyle": {
+                        "color": "#fff"
+                    },
+                    "titleTextStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "legend": {
+                    "textStyle": {
+                        "color": "#fff"
+                    }
+                },
+                "colors": ["#f9b035", "#ee7365", "#525f77"],
                 "chartArea": {
                     "left": "25%",
-                    "top": "13%",
-                    "height": "80%",
+                    "top": "25%",
+                    "height": "70%",
                     "width": "100%"
                 },
                 "animation": {

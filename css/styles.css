@@ -9695,7 +9695,7 @@ body {
   grid-gap: 10px;
   grid-auto-flow: row dense;
   min-height: 100vh;
-  margin-top: 10%; }
+  margin-top: 7%; }
 
 /* ------------------------------------------------------------- */
 /* plus-button that turns into a box and scalable circle-------- */
@@ -9705,7 +9705,7 @@ body {
   z-index: 9998;
   transform-origin: 20% 50%;
   left: 150px;
-  top: 10px; }
+  top: 0; }
 
 .pseudo-circle {
   width: 56px;
@@ -9721,16 +9721,16 @@ body {
   opacity: 1; }
 
 .box {
-  transition: transform 0.3s cubic-bezier(0.4, 0, 1, 1), opacity 0.2s 0.1s, z-index 0.2s;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 1, 1), opacity 0.1s 0.1s, z-index 0.2s;
   opacity: 1;
   left: 50px;
-  top: 120px;
+  top: 20px;
   position: fixed;
   z-index: 9999;
   background-color: var(--mdc-theme-primary); }
 
 .box.open {
-  transform: translate3d(50px, -40px, 0); }
+  transform: translate3d(50px, -30px, 0); }
 
 .box.open,
 .box.open span {
@@ -9747,17 +9747,14 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 300px;
+  height: 200px;
   overflow: hidden;
-  opacity: 0;
   pointer-events: none; }
 
 .dashboard-toolbar.open {
   pointer-events: auto;
-  opacity: 1; }
-
-.shadow-elevated {
-  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22); }
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+  transition: box-shadow 0.1s 0.3s; }
 
 .menu-1 {
   opacity: 0; }
@@ -9766,7 +9763,9 @@ body {
   position: absolute;
   z-index: 9999;
   width: 100%;
-  opacity: 1; }
+  height: inherit;
+  opacity: 1;
+  transition: opacity 0.1s 0.3s; }
 
 .dashboard-toolbar .close {
   color: #fff;
@@ -9796,7 +9795,8 @@ body {
   background-color: var(--mdc-theme-primary);
   width: 100%;
   top: 0;
-  left: 0; }
+  left: 0;
+  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22); }
 
 .graph-btn-grid {
   display: grid;
@@ -9829,7 +9829,7 @@ body {
   height: 105px;
   font-size: 0.8rem;
   font-weight: 300;
-  font-family: "Montserrat";
+  font-family: "Open Sans";
   border: 3px solid var(--mdc-theme-secondary); }
 
 .mdc-button__icon {

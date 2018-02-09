@@ -32,20 +32,20 @@ var globals = function () {
 
 function getFirstThreeGraphs() {
     $.get('reports.json').done(function (response) {
-        var barContainer = createDiv('bar');
-        var lineContainer = createDiv('line');
         var pieContainer = createDiv('pie');
-        var bar = new BarChart(response.bookings, barContainer);
+        var lineContainer = createDiv('line');
+        var geoContainer = createDiv('geo');
+        var pie = new PieChart(response.bookings, pieContainer);
         var line = new LineChart(response.sale, lineContainer);
-        var pie = new PieChart(response.todaysEvent, pieContainer);
+        var geo = new GeoChart(response.nationalities, geoContainer);
 
-        var containerArray = [barContainer, lineContainer, pieContainer];
+        var containerArray = [geoContainer, lineContainer, pieContainer];
         var frag = document.createDocumentFragment();
         containerArray.map(function (chartContainer) {
             frag.appendChild(chartContainer);
         });
         globals.container.appendChild(frag);
-        var chartArray = [bar, line, pie];
+        var chartArray = [geo, line, pie];
         chartArray.map(function (chart) {
             chart.draw();
         });
@@ -56,12 +56,9 @@ function getFirstThreeGraphs() {
 globals.box.addEventListener('click', function () {
     this.classList.add('open');
     globals.pseudoCircle.classList.add('open');
-    setTimeout(function () {
-        globals.menu1.classList.add('show');
-        globals.toolbar.classList.add('open', 'shadow-elevated');
-        globals.toolbar.style.boxShadow = '0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);';
-        globals.removeBox.style.display = 'block';
-    }, 300);
+    globals.menu1.classList.add('show');
+    globals.toolbar.classList.add('open');
+    globals.removeBox.style.display = 'block';
 });
 
 /* close tab-menu into plus-button */
@@ -70,10 +67,7 @@ globals.removeBox.addEventListener('click', function () {
     globals.box.classList.remove('open');
     globals.pseudoCircle.classList.remove('open');
     globals.menu1.classList.remove('show');
-    setTimeout(function () {
-        globals.toolbar.classList.remove('open');
-    }, 300);
-    globals.toolbar.classList.remove('shadow-elevated');
+    globals.toolbar.classList.remove('open');
 });
 
 /* fades out container-1 and pulls down a filtered container-2 that holds chart-buttons */
@@ -110,13 +104,13 @@ function showAvailableCharts(reportId) {
     }
 
     switch (reportId) {
-        case "sale": availableCharts(['bar', 'line', 'area', 'pie']); break;
+        case "sale": availableCharts(['bar', 'line', 'area']); break;
         case "expenditure": availableCharts(['bar', 'line', 'area', 'geo']); break;
         case "nrOfVisitors": availableCharts(['bar', 'line', 'pie', 'geo']); break;
         case "socialMedia": availableCharts(['bar', 'area', 'pie', 'geo']); break;
         case "compiledInfo": availableCharts(['line', 'area', 'pie', 'geo']); break;
         case "nationalities": availableCharts(['bar', 'line', 'area']); break;
-        case "todaysEvent": availableCharts(['bar', 'pie', 'geo']); break;
+        case "todaysEvent": availableCharts(['bar', 'line', 'area']); break;
         case "bookings": availableCharts(['bar', 'area', 'pie', 'geo']); break;
         case "mood": availableCharts(['bar', 'line', 'pie', 'geo']); break;
         default: break;
@@ -139,6 +133,7 @@ function createDiv(cssClass) {
 }
 
 function showDashboard() {
+    console.log(this);
     updateCssVar();
     var report;
     var selectedreportId = document.querySelector('[data-selected]');
@@ -209,7 +204,7 @@ function PieChart(response, div) {
     self.draw = function () {
         var chart = new google.visualization.PieChart(div);
         google.visualization.events.addListener(chart, 'ready', function () {
-            if (self.options.pieStartAngle < 20) {
+            if (self.options.pieStartAngle < 10) {
                 self.options.pieStartAngle++;
                 setTimeout(function () {
                     chart.draw(self.data, self.options);
