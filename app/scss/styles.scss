@@ -142,11 +142,14 @@ body {
 
 .container-2 {
     position: fixed;
-    transition: transform 375ms cubic-bezier(0.0, 0.0, 0.2, 1);
+    transition: transform 300ms cubic-bezier(0.0, 0.0, 0.2, 1);
     background-color: var(--mdc-theme-primary);
     width: 100%;
     top: 0;
     left: 0;
+}
+
+.shadow {
     box-shadow: $google-shadow-elevated;
 }
 

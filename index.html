@@ -8,7 +8,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="dist/css/styles.css">
 </head>
 
 <body class='mdc-typography'>
@@ -146,14 +146,15 @@
 
 
     </main>
+    <script src="node_modules/babel-polyfill/dist/polyfill.min.js"></script>
     <script src='https://www.gstatic.com/charts/loader.js'></script>
     <script src='https://www.google.com/jsapi'></script>
     <script src='node_modules/material-components-web/dist/material-components-web.min.js'></script>
+    <script src="dist/jquery-3.1.1.min.js"></script>
+    <script src='dist/script.js'></script>
     <script>
         mdc.autoInit()
     </script>
-    <script src="js/jquery-3.1.1.min.js"></script>
-    <script src='js/script.js'></script>
 </body>
 
 </html>

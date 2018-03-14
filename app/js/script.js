@@ -17,7 +17,9 @@ var globals = function () {
         pseudoCircle = document.querySelector('.pseudo-circle'),
         menu1 = document.querySelector('.menu-1'),
         box = document.querySelector('.box'),
-        removeBox = document.querySelector('.close');
+        removeBox = document.querySelector('.close'),
+        allCharts = [],
+        timeOut;
     return {
         container: container,
         container2: container2,
@@ -25,10 +27,22 @@ var globals = function () {
         pseudoCircle: pseudoCircle,
         menu1: menu1,
         box: box,
-        removeBox: removeBox
+        removeBox: removeBox,
+        allCharts: allCharts,
+        timeOut: timeOut
     };
 }();
 
+window.addEventListener('resize', function () {
+    if (!globals.timeOut) {
+        globals.timeOut = setTimeout(function () {
+
+            globals.allCharts.forEach(function (chart) {
+
+            });
+        }, 200);
+    }
+}, false);
 
 function getFirstThreeGraphs() {
     $.get('reports.json').done(function (response) {
@@ -48,6 +62,7 @@ function getFirstThreeGraphs() {
         var chartArray = [geo, line, pie];
         chartArray.map(function (chart) {
             chart.draw();
+            globals.allCharts.push(chart);
         });
     });
 }
@@ -65,11 +80,15 @@ globals.box.addEventListener('click', function () {
 /* close tab-menu into plus-button */
 globals.removeBox.addEventListener('click', function () {
     this.style.display = 'none';
+    removeMenu();
+});
+
+function removeMenu() {
     globals.box.classList.remove('open');
     globals.pseudoCircle.classList.remove('open');
     globals.menu1.classList.remove('show');
     globals.toolbar.classList.remove('open');
-});
+}
 
 /* fades out container-1 and pulls down a filtered container-2 that holds chart-buttons */
 [...document.querySelectorAll('.add-container-2')].map((card) => {
@@ -80,7 +99,9 @@ function switchContainer(e) {
     var reportId = this.id;
     globals.container2.classList.remove('out-of-sight');
     globals.toolbar.classList.add('fade-out');
-
+    setTimeout(function () {
+        globals.container2.classList.add('shadow');
+    }, 300);
     e.currentTarget.setAttribute('data-selected', 'selected');
     showAvailableCharts(reportId);
 }
@@ -120,10 +141,7 @@ so we know what chart-type to draw*/
     chartBtn.addEventListener('click', function () {
         showDashboard(this);
         globals.container2.classList.add('out-of-sight');
-        globals.box.classList.remove('open');
-        globals.pseudoCircle.classList.remove('open');
-        globals.menu1.classList.remove('show');
-        globals.toolbar.classList.remove('open');
+        removeMenu();
     }, false);
 });
 
@@ -135,6 +153,8 @@ function createDiv(cssClass) {
     div.classList.add(cssClass, 'draggable');
     return div;
 }
+
+console.log(globals.allCharts);
 
 function showDashboard(button) {
     updateCssVar();
@@ -171,6 +191,7 @@ function showDashboard(button) {
                     break;
             }
             chart.draw();
+            globals.allCharts.push(chart);
         });
     }
 }
@@ -236,7 +257,6 @@ function updateCssVar() {
     let numCols = parseInt(htmlStyles.getPropertyValue("--numCols"));
     let gridItemsCount = (document.querySelectorAll('.draggable').length + 1);
     document.documentElement.style.setProperty('--numRows', gridItemsCount * 2);
-    console.log(gridItemsCount);
 }
 
 
