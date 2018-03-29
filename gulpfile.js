@@ -15,6 +15,6 @@ gulp.task('babel', function () {
 });
 
 gulp.task('default', ['babel', 'sass'], function () {
-    gulp.watch('./scss/*.scss', ['sass']);
+    gulp.watch('./app/scss/**/*.scss', ['sass']);
     gulp.watch('./app/js/script.js', ['babel']);
 });

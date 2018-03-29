@@ -27,6 +27,12 @@ body {
 /* ------ css main grid ---------------------------------------- */
 
 .grid {
+    width: 1200px;
+    margin: 20px auto 0;
+    position: relative;
+}
+
+/* .grid {
     display: grid;
     grid-template-rows: repeat(var(--numRows), var(--gridHeight));
     grid-template-columns: repeat(var(--numCols), 19%);
@@ -34,7 +40,7 @@ body {
     grid-auto-flow: row dense;
     min-height: 100vh;
     margin-top: 7%;
-}
+} */
 
 /* ------------------------------------------------------------- */
 
@@ -233,7 +239,7 @@ svg[aria-label="A chart."]>g>g:last-child {
     pointer-events: none;
 }
 
-.area {
+/* .area {
     grid-area: span 1/ span 2;
 }
 
@@ -259,4 +265,57 @@ svg[aria-label="A chart."]>g>g:last-child {
 .bar,
 .line {
     box-shadow: $google-shadow;
+} */
+
+/* ful css för display */
+
+#dragDrop {
+    width: 1200px;
+    margin: 20px auto 0;
+    position: relative;
+}
+
+.dd-vc {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.dd-transition {
+    transition: all .3s ease;
+}
+
+.dd-shadow {
+    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.3);
+}
+
+.dd-slot {
+    float: left;
+    user-select: none;
+    outline: 2px dashed #ccc;
+    outline-offset: -15px;
+    position: relative;
+}
+
+.dd-slot-num {
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    font-size: 40px;
+    color: rgba(0, 0, 0, 0.1);
+}
+
+.dd-item {
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    z-index: 5;
+    padding: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.dd-selected {
+    z-index: 20;
 }
