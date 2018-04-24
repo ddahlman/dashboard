@@ -153,15 +153,15 @@ var addToSlotObjects = function addToSlotObjects(state) {
 var pieFunction = function pieFunction(pieChart, div) {
     var state = {
         pieChart: pieChart,
-        div: div,
-        pieStartAngle: 0
+        div: div
     };
     return {
         go: function go() {
+            state.pieChart.options.pieStartAngle = 0;
             var chart = new google.visualization.PieChart(state.div);
             google.visualization.events.addListener(chart, 'ready', function () {
-                if (state.pieChart.options[state.pieStartAngle] < 10) {
-                    state.pieChart.options[state.pieStartAngle]++;
+                if (state.pieChart.options.pieStartAngle < 10) {
+                    state.pieChart.options.pieStartAngle++;
                     setTimeout(function () {
                         chart.draw(state.pieChart.data, state.pieChart.options);
                     }, 0);
@@ -185,7 +185,6 @@ var chart = function chart(response, optionType, type, div) {
                         return pieFunction(obj, state.div).go();
                     };
                     break;
-
                 default:
                     obj.draw = function () {
                         return new google.visualization[state.type](state.div).draw(obj.data, obj.options);

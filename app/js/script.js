@@ -137,15 +137,15 @@ const addToSlotObjects = (state) => ({
 const pieFunction = (pieChart, div) => {
     let state = {
         pieChart,
-        div,
-        pieStartAngle: 0
+        div
     };
     return {
         go: () => {
+            state.pieChart.options.pieStartAngle = 0;
             let chart = new google.visualization.PieChart(state.div);
             google.visualization.events.addListener(chart, 'ready', function () {
-                if (state.pieChart.options[state.pieStartAngle] < 10) {
-                    state.pieChart.options[state.pieStartAngle]++;
+                if (state.pieChart.options.pieStartAngle < 10) {
+                    state.pieChart.options.pieStartAngle++;
                     setTimeout(function () {
                         chart.draw(state.pieChart.data, state.pieChart.options);
                     }, 0);
@@ -167,7 +167,6 @@ const chart = (response, optionType, type, div) => {
                 case 'PieChart':
                     obj.draw = () => pieFunction(obj, state.div).go();
                     break;
-
                 default:
                     obj.draw = () => new google.visualization[state.type](state.div).draw(obj.data, obj.options);
                     break;
