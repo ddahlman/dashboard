@@ -8,26 +8,36 @@ google.charts.setOnLoadCallback(function () {
 });
 
 const g = function () {
-    let slotObjects = [],
+    let container2 = document.getElementById('#container-2'),
+        toolbar = document.querySelector('.dashboard-toolbar'),
+        pseudoCircle = document.querySelector('.pseudo-circle'),
+        menu1 = document.querySelector('.menu-1'),
+        box = document.querySelector('.box'),
+        removeBox = document.querySelector('.close'),
+        wrap = document.getElementById('grid'),
+        slotObjects = [],
         dataId = [],
         allCharts = [],
         chartPositions = [],
         allSlots = [],
         slotsPerRow = 8,
-        firstSlots = 64,
-        wrap = document.getElementById('dragDrop'),
         selected = null,
         originalIndex = null,
         originalClickCoords = null,
         lastTouched = null;
     return {
+        container2: container2,
+        toolbar: toolbar,
+        pseudoCircle: pseudoCircle,
+        menu1: menu1,
+        box: box,
+        removeBox: removeBox,
         wrap: wrap,
         slotObjects: slotObjects,
         dataId: dataId,
         allCharts: allCharts,
         chartPositions: chartPositions,
         slotsPerRow: slotsPerRow,
-        firstSlots: firstSlots,
         allSlots: allSlots,
         selected: selected,
         originalIndex: originalIndex,
@@ -35,6 +45,7 @@ const g = function () {
         lastTouched: lastTouched
     };
 }();
+
 
 
 const slot = (num) => {
@@ -65,7 +76,7 @@ const createSlotDiv = (state) => ({
         div.setAttribute('data-slot-x', g.slotObjects[indx].xPos);
         div.setAttribute('data-slot-y', g.slotObjects[indx].yPos);
         div.setAttribute('data-status', g.slotObjects[indx].status);
-        div.innerHTML = `<p class="dd-slot-num dd-vc">${indx + 1}</p>`;
+        /* div.innerHTML = `<p class="dd-slot-num dd-vc">${indx + 1}</p>`; */
         return div;
     }
 });
@@ -123,37 +134,44 @@ const addToSlotObjects = (state) => ({
     })
 });
 
-
-const chart = (type, div) => {
+const pieFunction = (pieChart, div) => {
     let state = {
-        type,
-        div
+        pieChart,
+        div,
+        pieStartAngle: 0
     };
+    return {
+        go: () => {
+            let chart = new google.visualization.PieChart(state.div);
+            google.visualization.events.addListener(chart, 'ready', function () {
+                if (state.pieChart.options[state.pieStartAngle] < 10) {
+                    state.pieChart.options[state.pieStartAngle]++;
+                    setTimeout(function () {
+                        chart.draw(state.pieChart.data, state.pieChart.options);
+                    }, 0);
+                }
+            });
+            chart.draw(state.pieChart.data, state.pieChart.options);
+        }
+    };
+};
+
+const chart = (response, optionType, type, div) => {
+    let state = { response, optionType, type, div };
     return {
         getChart: () => {
             const obj = {};
-            obj.data = google.visualization.arrayToDataTable([
-                ['Task', 'Hours per Day'],
-                ['Work', 11],
-                ['Eat', 2],
-                ['Commutehakhkahkhakhakhakhkahiahiahiahpha', 2],
-                ['Watch TV', 2],
-                ['Sleep', 7]
-            ]);
+            obj.data = new google.visualization.DataTable(state.response.data);
+            obj.options = state.response.options[state.optionType];
+            switch (state.type) {
+                case 'PieChart':
+                    obj.draw = () => pieFunction(obj, state.div).go();
+                    break;
 
-            obj.options = {
-                title: 'My Daily Activities',
-                chartArea: {
-                    left: "10%",
-                    top: "13%",
-                    height: "70%",
-                    width: "80%"
-                },
-                pieHole: 0.6,
-            };
-            obj.draw = () => {
-                new google.visualization[state.type](state.div).draw(obj.data, obj.options);
-            };
+                default:
+                    obj.draw = () => new google.visualization[state.type](state.div).draw(obj.data, obj.options);
+                    break;
+            }
             return obj;
         }
     };
@@ -318,7 +336,8 @@ const placeCharts = ({ div, chart, indx, increment, width, height }) => {
             div.setAttribute('data-id', increment);
             g.wrap.appendChild(div);
             chart.draw();
-            div.childNodes[0].style.boxShadow = "0 0 3px 1px rgba(0,0,0,0.3)";
+            console.log(div.childNodes);
+            /* div.childNodes[0].style.boxShadow = "0 0 3px 1px rgba(0,0,0,0.3)"; */
             div.addEventListener('mousedown', chartMouseDown);
             div.addEventListener('mouseup', chartMouseUp);
             g.chartPositions[increment - 1] = { width: width, height: height, x: chartPos.x, y: chartPos.y };
@@ -474,30 +493,40 @@ function addFirstCharts() {
     const firstSlots = slot(64).createArray();
     const addFirstSlots = addSlotsToDOM(firstSlots).go();
     g.allSlots.push(...firstSlots);
-
-    const divArray = [chartDiv('area').createDiv(), chartDiv('geo').createDiv(), chartDiv('pie').createDiv()];
-    const chartArray = [chart('AreaChart', divArray[0]).getChart(), chart('GeoChart', divArray[1]).getChart(),
-    chart('PieChart', divArray[2]).getChart()];
-    let increment = 0;
-    g.allSlots.forEach((slotItem, i) => {
-        if (g.slotObjects[i].status === 'occupied') {
-            return;
-        }
-        increment++;
-        if (divArray[increment - 1] && chartArray[increment - 1]) {
-            let size = chartSize(divArray[increment - 1]).getSize();
-            let [width, height] = size;
-            let chartAttributes = {
-                div: divArray[increment - 1],
-                chart: chartArray[increment - 1],
-                indx: i,
-                increment: increment,
-                width: width,
-                height: height
-            };
-            placeCharts(chartAttributes).go();
-        }
-    });
+    fetch('reports.json').then(res => res.json())
+        .then(report => {
+            console.log(report);
+            const divArray = [
+                chartDiv('area').createDiv(),
+                chartDiv('geo').createDiv(),
+                chartDiv('pie').createDiv()
+            ];
+            const chartArray = [
+                chart(report.sale, 'regular', 'AreaChart', divArray[0]).getChart(),
+                chart(report.nationalities, 'regular', 'GeoChart', divArray[1]).getChart(),
+                chart(report.bookings, 'pie', 'PieChart', divArray[2]).getChart()
+            ];
+            let increment = 0;
+            g.allSlots.forEach((slotItem, i) => {
+                if (g.slotObjects[i].status === 'occupied') {
+                    return;
+                }
+                increment++;
+                if (divArray[increment - 1] && chartArray[increment - 1]) {
+                    let size = chartSize(divArray[increment - 1]).getSize();
+                    let [width, height] = size;
+                    let chartAttributes = {
+                        div: divArray[increment - 1],
+                        chart: chartArray[increment - 1],
+                        indx: i,
+                        increment: increment,
+                        width: width,
+                        height: height
+                    };
+                    placeCharts(chartAttributes).go();
+                }
+            });
+        })/* .catch(error => console.error('Error:', error)); */
 }
 
 

@@ -1,592 +1,602 @@
 'use strict';
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 google.charts.load('current', {
-    'packages': ['corechart', 'bar', 'line', 'geochart'],
+    'packages': ['corechart', 'geochart'],
     'mapsApiKey': 'AIzaSyDMPDZMkd7YLnBpiKeBAq2HZYfjdWS8FA4'
 });
+
 google.charts.setOnLoadCallback(function () {
-    getFirstThreeGraphs();
-    showDashboard();
+    addFirstCharts();
 });
 
-/* modular pattern for accessing private variables */
-var globals = function () {
-    var container = document.querySelector('#grid'),
-        container2 = document.querySelector('#container-2'),
+var g = function () {
+    var container2 = document.getElementById('#container-2'),
         toolbar = document.querySelector('.dashboard-toolbar'),
         pseudoCircle = document.querySelector('.pseudo-circle'),
         menu1 = document.querySelector('.menu-1'),
         box = document.querySelector('.box'),
         removeBox = document.querySelector('.close'),
-        allCharts = [],
-        timeOut,
-        numOfChartSlots = 64,
-        numOfSlotsPerRow = 8,
-        slotsPerRow,
-        rows,
-        slotwidth,
-        slotWidth2,
-        slotWidth3,
-        slotHeight,
-        slotHeight2,
-        slotHeight3,
-        increment = 0,
-        slotIncrement = 0,
-        imageAspectWidth = 1920,
-        imageAspectHeight = 1080,
-        imageSlots = [],
-        selectedChartElement = null,
-        originalImageSlot = null,
-        originalClickCoords = null,
-        lastTouchedSlotId = null,
+        wrap = document.getElementById('grid'),
         slotObjects = [],
-        dataId = [];
+        dataId = [],
+        allCharts = [],
+        chartPositions = [],
+        allSlots = [],
+        slotsPerRow = 8,
+        selected = null,
+        originalIndex = null,
+        originalClickCoords = null,
+        lastTouched = null;
     return {
-        container: container,
         container2: container2,
         toolbar: toolbar,
         pseudoCircle: pseudoCircle,
         menu1: menu1,
         box: box,
         removeBox: removeBox,
-        allCharts: allCharts,
-        timeOut: timeOut,
-        numOfChartSlots: numOfChartSlots,
-        numOfSlotsPerRow: numOfSlotsPerRow,
-        slotsPerRow: slotsPerRow,
-        rows: rows,
-        slotwidth: slotwidth,
-        slotWidth2: slotWidth2,
-        slotWidth3: slotWidth3,
-        slotHeight: slotHeight,
-        slotHeight2: slotHeight2,
-        slotHeight3: slotHeight3,
-        increment: increment,
-        slotIncrement: slotIncrement,
-        imageAspectWidth: imageAspectWidth,
-        imageAspectHeight: imageAspectHeight,
-        imageSlots: imageSlots,
-        selectedChartElement: selectedChartElement,
-        originalImageSlot: originalImageSlot,
-        originalClickCoords: originalClickCoords,
-        lastTouchedSlotId: lastTouchedSlotId,
+        wrap: wrap,
         slotObjects: slotObjects,
-        dataId: dataId
+        dataId: dataId,
+        allCharts: allCharts,
+        chartPositions: chartPositions,
+        slotsPerRow: slotsPerRow,
+        allSlots: allSlots,
+        selected: selected,
+        originalIndex: originalIndex,
+        originalClickCoords: originalClickCoords,
+        lastTouched: lastTouched
     };
 }();
 
-(function init() {
-    addFirstImageSlots();
-    getBounds();
-
-    /* _doc.getElementById('dragDrop').addEventListener('mousemove', imageMouseMove); */
-})();
-
-function createSlot(indx) {
-
-    var item = document.createElement('div');
-    item.setAttribute('class', 'dd-slot');
-    item.setAttribute('style', 'width:' + 100 / globals.numOfSlotsPerRow + '%;' + 'padding-bottom:' + 100 / globals.numOfSlotsPerRow * (globals.imageAspectHeight / globals.imageAspectWidth) + '%;');
-
-    globals.slotsPerRow = indx % globals.numOfSlotsPerRow + 1, globals.rows = Math.floor(indx / globals.numOfSlotsPerRow) + 1;
-
-    var slot = {
-        xPos: globals.rows,
-        yPos: globals.slotsPerRow,
-        status: 'available'
+var slot = function slot(num) {
+    var state = {
+        num: num,
+        aspectWidth: 1920,
+        aspectHeight: 1080
     };
-    globals.slotObjects.push(slot);
-    item.setAttribute('data-slot-x', globals.slotObjects[indx].xPos);
-    item.setAttribute('data-slot-y', globals.slotObjects[indx].yPos);
-    item.setAttribute('data-status', globals.slotObjects[indx].status);
-    /*  item.innerHTML = '<p class="dd-slot-num dd-vc">' + (indx + 1) + '</p>'; */
+    return Object.assign({}, createSlotDiv(state), createDivArray(state));
+};
 
-    return item;
-}
+var createSlotDiv = function createSlotDiv(state) {
+    return {
+        createDiv: function createDiv(indx) {
+            var div = document.createElement('div');
+            div.setAttribute('style', 'width: ' + 100 / g.slotsPerRow + '%; padding-bottom: ' + 100 / g.slotsPerRow * (state.aspectHeight / state.aspectWidth) + '%;');
+            div.setAttribute('class', 'dd-slot');
 
-function addFirstImageSlots() {
-    var item;
-    for (var i = 0; i < globals.numOfChartSlots; i++) {
-        item = createSlot(i);
-        globals.container.appendChild(item);
-    }
-}
+            var slotProp = {
+                xPos: Math.floor(indx / g.slotsPerRow) + 1,
+                yPos: indx % g.slotsPerRow + 1,
+                status: 'available'
+            };
+            g.slotObjects.push(slotProp);
+            div.setAttribute('data-slot-x', g.slotObjects[indx].xPos);
+            div.setAttribute('data-slot-y', g.slotObjects[indx].yPos);
+            div.setAttribute('data-status', g.slotObjects[indx].status);
+            /* div.innerHTML = `<p class="dd-slot-num dd-vc">${indx + 1}</p>`; */
+            return div;
+        }
+    };
+};
 
-function getBounds() {
-    var containerBounds = globals.container.getBoundingClientRect();
-    var slot = document.getElementsByClassName('dd-slot')[0],
-        bounds = slot.getBoundingClientRect();
-    var ddSlot = [].concat(_toConsumableArray(document.getElementsByClassName('dd-slot')));
-
-    globals.slotWidth = bounds.width, globals.slotWidth2 = bounds.width * 2, globals.slotWidth3 = bounds.width * 3, globals.slotHeight = bounds.height, globals.slotHeight2 = bounds.height * 2, globals.slotHeight3 = bounds.height * 3;
-
-    ddSlot.forEach(function (slot, i) {
-
-        var slotBounds = slot.getBoundingClientRect(),
-            relativeBounds = {
-            top: slotBounds.top - containerBounds.top,
-            left: slotBounds.left - containerBounds.left,
-            bottom: slotBounds.bottom - containerBounds.bottom,
-            right: slotBounds.right - containerBounds.right
-        };
-
-        globals.slotObjects[i].x = relativeBounds.left, globals.slotObjects[i].y = relativeBounds.top, globals.slotObjects[i].right = relativeBounds.right, globals.slotObjects[i].bottom = relativeBounds.bottom, globals.slotObjects[i].width = slotBounds.width, globals.slotObjects[i].height = slotBounds.height;
-    });
-    console.log(globals.slotObjects);
-}
-/* window.addEventListener('resize', function () {
-    if (!globals.timeOut) {
-        globals.timeOut = setTimeout(function () {
-
-            globals.allCharts.forEach(function (chart) {
-
+var createDivArray = function createDivArray(state) {
+    return {
+        createArray: function createArray() {
+            return [].concat(_toConsumableArray(Array(state.num))).map(function (el, i) {
+                return slot().createDiv(i);
             });
-        }, 200);
-    }
-}, false); */
+        }
+    };
+};
 
-function getFirstThreeGraphs() {
-    $.get('reports.json').done(function (response) {
-        var pieContainer = createDiv('pie', globals.slotWidth2, globals.slotHeight3);
-        var lineContainer = createDiv('line', globals.slotWidth2, globals.slotHeight2);
-        var geoContainer = createDiv('geo', globals.slotWidth3, globals.slotHeight3);
-        var pie = new PieChart(response.bookings, pieContainer);
-        var line = new LineChart(response.sale, lineContainer);
-        var geo = new GeoChart(response.nationalities, geoContainer);
+var slotBounds = function slotBounds(num) {
+    var state = {
+        wrapBounds: g.wrap.getBoundingClientRect(),
+        slotSize: document.getElementsByClassName('dd-slot')[0].getBoundingClientRect(),
+        num: num
+    };
+    return Object.assign({}, slotWidth(state), slotHeight(state), addToSlotObjects(state));
+};
 
-        var containerArray = [lineContainer, geoContainer, pieContainer];
-        var ddSlot = [].concat(_toConsumableArray(document.getElementsByClassName('dd-slot')));
+var slotWidth = function slotWidth(state) {
+    return {
+        width: function width() {
+            switch (state.num) {
+                case 2:
+                    return state.slotSize.width * 2;
+                case 3:
+                    return state.slotSize.width * 3;
+                default:
+                    return state.slotSize.width;
+            }
+        }
+    };
+};
 
-        var chartArray = [line, geo, pie];
+var slotHeight = function slotHeight(state) {
+    return {
+        height: function height() {
+            switch (state.num) {
+                case 2:
+                    return state.slotSize.height * 2;
+                case 3:
+                    return state.slotSize.height * 3;
+                default:
+                    return state.slotSize.height;
+            }
+        }
+    };
+};
 
-        ddSlot.forEach(function (slot, i) {
-            if (globals.slotObjects[i].status === 'occupied') {
+var addToSlotObjects = function addToSlotObjects(state) {
+    return {
+        add: function add() {
+            return [].concat(_toConsumableArray(document.getElementsByClassName('dd-slot'))).forEach(function (item, i) {
+                var slotBound = item.getBoundingClientRect();
+                Object.assign(g.slotObjects[i], {
+                    y: slotBound.top - state.wrapBounds.top,
+                    x: slotBound.left - state.wrapBounds.left,
+                    bottom: slotBound.bottom - state.wrapBounds.bottom,
+                    right: slotBound.right - state.wrapBounds.right,
+                    width: slotBound.width,
+                    height: slotBound.height
+                });
+            });
+        }
+    };
+};
+
+var pieFunction = function pieFunction(pieChart, div) {
+    var state = {
+        pieChart: pieChart,
+        div: div,
+        pieStartAngle: 0
+    };
+    return {
+        go: function go() {
+            var chart = new google.visualization.PieChart(state.div);
+            google.visualization.events.addListener(chart, 'ready', function () {
+                if (state.pieChart.options[state.pieStartAngle] < 10) {
+                    state.pieChart.options[state.pieStartAngle]++;
+                    setTimeout(function () {
+                        chart.draw(state.pieChart.data, state.pieChart.options);
+                    }, 0);
+                }
+            });
+            chart.draw(state.pieChart.data, state.pieChart.options);
+        }
+    };
+};
+
+var chart = function chart(response, optionType, type, div) {
+    var state = { response: response, optionType: optionType, type: type, div: div };
+    return {
+        getChart: function getChart() {
+            var obj = {};
+            obj.data = new google.visualization.DataTable(state.response.data);
+            obj.options = state.response.options[state.optionType];
+            switch (state.type) {
+                case 'PieChart':
+                    obj.draw = function () {
+                        return pieFunction(obj, state.div).go();
+                    };
+                    break;
+
+                default:
+                    obj.draw = function () {
+                        return new google.visualization[state.type](state.div).draw(obj.data, obj.options);
+                    };
+                    break;
+            }
+            return obj;
+        }
+    };
+};
+
+var chartDiv = function chartDiv(cssClass) {
+    var state = {
+        cssClass: cssClass,
+        width2: slotBounds(2).width(),
+        width3: slotBounds(3).width(),
+        height2: slotBounds(2).height(),
+        height3: slotBounds(3).height()
+    };
+    return {
+        createDiv: function createDiv() {
+            var div = document.createElement('div');
+            switch (state.cssClass) {
+                case 'pie':
+                    div.setAttribute('style', 'width:' + state.width2 + 'px; height:' + state.height3 + 'px;');break;
+                case 'area':
+                    div.setAttribute('style', 'width:' + state.width2 + 'px; height:' + state.height2 + 'px;');break;
+                case 'geo':
+                    div.setAttribute('style', 'width:' + state.width3 + 'px; height:' + state.height3 + 'px;');break;
+            }
+            div.classList.add(state.cssClass);
+            return div;
+        }
+    };
+};
+
+var chartSize = function chartSize(el) {
+    var ele = el;
+    return {
+        getSize: function getSize() {
+            var arr = [];
+            var widthPX = ele.style.width,
+                heightPX = ele.style.height,
+                elWidth = Math.round(widthPX.substring(0, widthPX.length - 2)),
+                elHeight = Number(heightPX.substring(0, heightPX.length - 2));
+            arr.push(elWidth, elHeight);
+            return arr;
+        }
+    };
+};
+
+var isNotOverlapping = function isNotOverlapping(i, chartWidth) {
+    var state = {
+        indx: i,
+        width: chartWidth,
+        width2: slotBounds(2).width(),
+        width3: slotBounds(3).width(),
+        yPos: g.slotObjects[i].yPos,
+        status: g.slotObjects[i].status,
+        nextStatus: g.slotObjects[i + 1].status,
+        afterNextStatus: g.slotObjects[i + 2].status,
+        status1Down: g.slotObjects[i + g.slotsPerRow].status,
+        status2Down: g.slotObjects[i + g.slotsPerRow * 2].status
+    };
+    return {
+        check: function check() {
+            switch (state.width) {
+                case state.width2:
+                    return state.yPos < 8 && state.status === 'available' && state.nextStatus === 'available' && state.status1Down === 'available' && state.status2Down === 'available';
+                case state.width3:
+                    return state.yPos < 7 && state.status === 'available' && state.nextStatus === 'available' && state.afterNextStatus === 'available';
+            }
+        }
+    };
+};
+
+var addSlotsToDOM = function addSlotsToDOM(array) {
+    var arr = array;
+    return {
+        go: function go() {
+            arr.forEach(function (slot, i) {
+                g.wrap.appendChild(slot);
+            });
+            slotBounds().add();
+        }
+    };
+};
+
+var filterOut = function filterOut(array, string) {
+    var state = {
+        arr: array,
+        str: string
+    };
+    return {
+        getThis: function getThis() {
+            return state.arr.filter(function (str) {
+                return str === state.str;
+            });
+        }
+    };
+};
+
+var getGridPositions = function getGridPositions(indx, div) {
+    var i = indx;
+    var ele = div;
+    return {
+        go: function go() {
+            var X = g.slotObjects[i];
+            var size = chartSize(ele).getSize();
+
+            var _size = _slicedToArray(size, 2),
+                width = _size[0],
+                height = _size[1];
+
+            var _ref = [Math.round(X.width), X.height],
+                slotWidth = _ref[0],
+                slotHeight = _ref[1];
+
+
+            var getSlotElem = function getSlotElem(x, y) {
+                return document.querySelector('[data-slot-x="' + x + '"][data-slot-y="' + y + '"]');
+            };
+
+            var _ref2 = [g.slotObjects[i + 1], g.slotObjects[i + 2], g.slotObjects[i + 2 + g.slotsPerRow], g.slotObjects[i + (g.slotsPerRow + 1)], g.slotObjects[i + g.slotsPerRow], g.slotObjects[i + g.slotsPerRow * 2], g.slotObjects[i + g.slotsPerRow * 2 + 1], g.slotObjects[i + g.slotsPerRow * 2 + 2]],
+                X1 = _ref2[0],
+                X2 = _ref2[1],
+                X2Y1 = _ref2[2],
+                X1Y1 = _ref2[3],
+                Y1 = _ref2[4],
+                Y2 = _ref2[5],
+                X1Y2 = _ref2[6],
+                X2Y2 = _ref2[7];
+            var _ref3 = [getSlotElem(X.xPos, X.yPos), getSlotElem(Y1.xPos, Y1.yPos), getSlotElem(X1.xPos, X1.yPos), getSlotElem(X2.xPos, X2.yPos), getSlotElem(X1Y1.xPos, X1Y1.yPos), getSlotElem(X2Y1.xPos, X2Y1.yPos), getSlotElem(Y2.xPos, Y2.yPos), getSlotElem(X1Y2.xPos, X1Y2.yPos), getSlotElem(X2Y2.xPos, X2Y2.yPos)],
+                el = _ref3[0],
+                elY1 = _ref3[1],
+                elX1 = _ref3[2],
+                elX2 = _ref3[3],
+                elX1Y1 = _ref3[4],
+                elX2Y1 = _ref3[5],
+                elY2 = _ref3[6],
+                elX1Y2 = _ref3[7],
+                elX2Y2 = _ref3[8];
+
+
+            if (width === slotWidth * 2 && height === slotHeight * 2) {
+                [X, Y1, X1, X1Y1, el.dataset, elY1.dataset, elX1.dataset, elX1Y1.dataset].map(function (obj) {
+                    return obj.status = 'occupied';
+                });
+                return { x: X.x, y: X.y, width: width, height: height };
+            } else if (width === slotWidth * 2 && height === slotHeight * 3) {
+                [X, Y1, X1, X1Y1, Y2, X1Y2, el.dataset, elY1.dataset, elX1.dataset, elX1Y1.dataset, elY2.dataset, elX1Y2.dataset].map(function (obj) {
+                    return obj.status = 'occupied';
+                });
+                return { x: X.x, y: X.y, width: width, height: height };
+            } else if (width === slotWidth * 3 && height === slotHeight * 3) {
+                [X, Y1, X1, X1Y1, Y2, X1Y2, X2, X2Y2, X2Y1, el.dataset, elY1.dataset, elX1.dataset, elX1Y1.dataset, elY2.dataset, elX1Y2.dataset, elX2.dataset, elX2Y2.dataset, elX2Y1.dataset].map(function (obj) {
+                    return obj.status = 'occupied';
+                });
+                return { x: X.x, y: X.y, width: width, height: height };
+            }
+        }
+    };
+};
+
+var placeCharts = function placeCharts(_ref4) {
+    var div = _ref4.div,
+        chart = _ref4.chart,
+        indx = _ref4.indx,
+        increment = _ref4.increment,
+        width = _ref4.width,
+        height = _ref4.height;
+
+    return {
+        go: function go() {
+            var chartPos = getGridPositions(indx, div).go();
+            div.classList.add('dd-item', 'dd-transition');
+            div.style.transform = 'translate3d(' + chartPos.x + 'px, ' + chartPos.y + 'px,0px)';
+            div.setAttribute('data-id', increment);
+            g.wrap.appendChild(div);
+            chart.draw();
+            console.log(div.childNodes);
+            /* div.childNodes[0].style.boxShadow = "0 0 3px 1px rgba(0,0,0,0.3)"; */
+            div.addEventListener('mousedown', chartMouseDown);
+            div.addEventListener('mouseup', chartMouseUp);
+            g.chartPositions[increment - 1] = { width: width, height: height, x: chartPos.x, y: chartPos.y };
+            g.dataId.push(div.dataset.id);
+            g.allCharts.push(div);
+        }
+    };
+};
+
+var addChartToDOM = function addChartToDOM(button) {
+    var state = {
+        chartType: button.id,
+        allSlots: g.allSlots,
+        wrap: g.wrap,
+        div: chartDiv(button.id).createDiv(),
+        len: g.dataId.length
+    };
+    return {
+        go: function go() {
+            var graph = void 0;
+            switch (state.chartType) {
+                case 'area':
+                    graph = chart('AreaChart', state.div).getChart();break;
+                case 'geo':
+                    graph = chart('GeoChart', state.div).getChart();break;
+                case 'pie':
+                    graph = chart('PieChart', state.div).getChart();break;
+            }
+            var size = chartSize(state.div).getSize();
+
+            var _size2 = _slicedToArray(size, 2),
+                width = _size2[0],
+                height = _size2[1];
+
+            var indx = availableIndex(width).get();
+            var chartAttributes = {
+                div: state.div,
+                chart: graph,
+                indx: indx,
+                increment: state.len + 1,
+                width: width,
+                height: height
+            };
+            placeCharts(chartAttributes).go();
+        }
+    };
+};
+
+var availableIndex = function availableIndex(width) {
+    var w = width;
+    return {
+        get: function get() {
+            return g.allSlots.findIndex(function (slot, i) {
+                return !isNotOverlapping(i, w).check() ? '' : i;
+            });
+        }
+    };
+};
+
+var arrangeItems = function arrangeItems() {
+    var state = {
+        dataId: g.dataId,
+        chartPos: g.chartPositions
+    };
+    return {
+        go: function go() {
+            return state.dataId.forEach(function (dataId, i) {
+                var pos = state.chartPos[i];
+                var el = document.querySelector('[data-id="' + dataId + '"]');
+                el.style.transform = 'translate3d(' + pos.x + 'px, ' + pos.y + 'px, 0px)';
+            });
+        }
+    };
+};
+
+var arrangeItemsMouseUp = function arrangeItemsMouseUp() {
+    var state = {
+        increment: 0,
+        allSlots: g.allSlots,
+        slotObjects: g.slotObjects,
+        chartPos: g.chartPositions,
+        dataId: g.dataId
+    };
+    return {
+        go: function go() {
+            return state.allSlots.map(function (slot, i, arr) {
+                if (state.slotObjects[i].status === 'occupied') {
+                    return;
+                }
+                state.increment++;
+                if (state.dataId[state.increment - 1] !== undefined) {
+                    var dataId = state.dataId[state.increment - 1];
+                    var el = document.querySelector('[data-id="' + dataId + '"]');
+                    var size = chartSize(el).getSize();
+
+                    var _size3 = _slicedToArray(size, 2),
+                        width = _size3[0],
+                        height = _size3[1];
+
+                    var pos = void 0;
+                    if (isNotOverlapping(i, width).check()) {
+                        pos = getGridPositions(i, el).go();
+                        el.style.transform = 'translate3d(' + pos.x + 'px, ' + pos.y + 'px,0px)';
+                        state.chartPos[state.increment - 1] = { width: pos.width, height: pos.height, x: pos.x, y: pos.y };
+                    } else {
+                        var indx = availableIndex(width).get();
+                        pos = getGridPositions(indx, el).go();
+                        el.style.transform = 'translate3d(' + pos.x + 'px, ' + pos.y + 'px,0px)';
+                        state.chartPos[state.increment - 1] = { width: pos.width, height: pos.height, x: pos.x, y: pos.y };
+                    }
+                }
+            });
+        }
+    };
+};
+
+var getChartIdByCoords = function getChartIdByCoords(coords) {
+    var chartPos = g.chartPositions;
+    return {
+        //get the current chart being hovered over  
+        go: function go() {
+            for (var id in chartPos) {
+                var chart = chartPos[id];
+                if (chart.x <= coords.x && coords.x <= chart.x + chart.width && chart.y <= coords.y && coords.y <= chart.y + chart.height) return id;
+            }
+        }
+    };
+};
+
+var getSlotIdByCoords = function getSlotIdByCoords(coords) {
+    var slotObjects = g.slotObjects;
+    return {
+        //get the current slot being hovered over  
+        go: function go() {
+            for (var id in slotObjects) {
+                var slot = slotObjects[id];
+                if (slot.x <= coords.x && coords.x <= slot.x + slot.width && slot.y <= coords.y && coords.y <= slot.y + slot.height) return id;
+            }
+        }
+    };
+};
+
+var getIndexOfChartId = function getIndexOfChartId(id) {
+    var len = g.dataId.length;
+    return {
+        go: function go() {
+            for (var i = 0; i < len; i++) {
+                if (g.dataId[i] === id) return i;
+            }
+        }
+    };
+};
+
+var changeSize = function changeSize() {};
+
+function addFirstCharts() {
+    var _g$allSlots;
+
+    var firstSlots = slot(64).createArray();
+    var addFirstSlots = addSlotsToDOM(firstSlots).go();
+    (_g$allSlots = g.allSlots).push.apply(_g$allSlots, _toConsumableArray(firstSlots));
+    fetch('reports.json').then(function (res) {
+        return res.json();
+    }).then(function (report) {
+        console.log(report);
+        var divArray = [chartDiv('area').createDiv(), chartDiv('geo').createDiv(), chartDiv('pie').createDiv()];
+        var chartArray = [chart(report.sale, 'regular', 'AreaChart', divArray[0]).getChart(), chart(report.nationalities, 'regular', 'GeoChart', divArray[1]).getChart(), chart(report.bookings, 'pie', 'PieChart', divArray[2]).getChart()];
+        var increment = 0;
+        g.allSlots.forEach(function (slotItem, i) {
+            if (g.slotObjects[i].status === 'occupied') {
                 return;
             }
-            globals.increment++;
-            if (containerArray[globals.increment - 1] !== undefined && chartArray[globals.increment - 1] !== undefined) {
-                var container = containerArray[globals.increment - 1],
-                    chart = chartArray[globals.increment - 1];
-                var widthPX = container.style.width,
-                    heightPX = container.style.height,
-                    containerWidth = Math.round(widthPX.substring(0, widthPX.length - 2)),
-                    containerHeight = Number(heightPX.substring(0, heightPX.length - 2));
+            increment++;
+            if (divArray[increment - 1] && chartArray[increment - 1]) {
+                var size = chartSize(divArray[increment - 1]).getSize();
 
-                container.classList.add('dd-item', 'dd-transition');
-                var itemPos = fillTheGrid(i, container);
-                container.style.transform = 'translate3d(' + itemPos.x + 'px,' + itemPos.y + 'px,0px)';
-                container.setAttribute('data-id', globals.increment);
-                globals.container.appendChild(container);
-                chart.draw();
-                /* container.childNodes[0].style.boxShadow = "0 0 3px 1px rgba(0,0,0,0.3)"; */
-                container.addEventListener('mousedown', imageMouseDown);
-                container.addEventListener('mouseup', imageMouseUp);
-                globals.imageSlots[globals.increment - 1] = { width: containerWidth, height: containerHeight, x: itemPos.x, y: itemPos.y };
-                globals.dataId.push(container.dataset.id);
-                globals.allCharts.push(container);
+                var _size4 = _slicedToArray(size, 2),
+                    width = _size4[0],
+                    height = _size4[1];
+
+                var chartAttributes = {
+                    div: divArray[increment - 1],
+                    chart: chartArray[increment - 1],
+                    indx: i,
+                    increment: increment,
+                    width: width,
+                    height: height
+                };
+                placeCharts(chartAttributes).go();
             }
         });
-    });
+    }); /* .catch(error => console.error('Error:', error)); */
 }
 
-/* open plus-button into a tab-menu */
-globals.box.addEventListener('click', function () {
-    globals.removeBox.style.display = 'block';
-    this.classList.add('open');
-    globals.pseudoCircle.classList.add('open');
-    globals.menu1.classList.add('show');
-    globals.toolbar.classList.add('open');
-    globals.toolbar.classList.remove('fade-out');
-});
-
-/* close tab-menu into plus-button */
-globals.removeBox.addEventListener('click', function () {
-    this.style.display = 'none';
-    removeMenu();
-});
-
-function removeMenu() {
-    globals.box.classList.remove('open');
-    globals.pseudoCircle.classList.remove('open');
-    globals.menu1.classList.remove('show');
-    globals.toolbar.classList.remove('open');
-}
-
-/* fades out container-1 and pulls down a filtered container-2 that holds chart-buttons */
-[].concat(_toConsumableArray(document.querySelectorAll('.add-container-2'))).map(function (card) {
-    card.addEventListener('click', switchContainer, false);
-});
-
-function switchContainer(e) {
-    var reportId = this.id;
-    globals.container2.classList.remove('out-of-sight');
-    globals.toolbar.classList.add('fade-out');
-    setTimeout(function () {
-        globals.container2.classList.add('shadow');
-    }, 300);
-    e.currentTarget.setAttribute('data-selected', 'selected');
-    showAvailableCharts(reportId);
-}
-
-/* the function that filters chart-buttons */
-function showAvailableCharts(reportId) {
-    var chartsBtns = [].concat(_toConsumableArray(document.querySelectorAll('.card2')));
-    chartsBtns.map(function (chartBtn) {
-        chartBtn.style.display = 'none';
-    });
-
-    function availableCharts(chartNames) {
-        chartsBtns.filter(function (chartBtn) {
-            var id = chartBtn.getAttribute('id');
-            /* send back that id that's equal to arrVal */
-            return chartNames.some(function (arrVal) {
-                return id === arrVal;
-            });
-        }).map(function (btn) {
-            return btn.style.display = 'block';
-        });
-    }
-
-    switch (reportId) {
-        case "sale":
-            availableCharts(['bar', 'line', 'area']);break;
-        case "expenditure":
-            availableCharts(['bar', 'line', 'area', 'geo']);break;
-        case "nrOfVisitors":
-            availableCharts(['bar', 'line', 'pie', 'geo']);break;
-        case "socialMedia":
-            availableCharts(['bar', 'area', 'pie', 'geo']);break;
-        case "compiledInfo":
-            availableCharts(['line', 'area', 'pie', 'geo']);break;
-        case "nationalities":
-            availableCharts(['bar', 'line', 'area']);break;
-        case "todaysEvent":
-            availableCharts(['bar', 'line', 'area']);break;
-        case "bookings":
-            availableCharts(['bar', 'area', 'pie', 'geo']);break;
-        case "mood":
-            availableCharts(['bar', 'line', 'pie', 'geo']);break;
-        default:
-            break;
-    }
-}
-
-/* push current object to array when clicking on chart-button + add type to object 
-so we know what chart-type to draw*/
-[].concat(_toConsumableArray(document.querySelectorAll('.card2'))).map(function (chartBtn) {
-    chartBtn.addEventListener('click', function () {
-        showDashboard(this);
-        globals.container2.classList.add('out-of-sight');
-        removeMenu();
-        var len = globals.slotObjects.length;
-        for (var i = 0; i < globals.numOfSlotsPerRow; i++) {
-            var slot = createSlot(i + len);
-            globals.container.appendChild(slot);
+[].concat(_toConsumableArray(document.querySelectorAll('.chart-btn'))).forEach(function (chartButton) {
+    chartButton.addEventListener('click', function () {
+        var len = g.slotObjects.length;
+        for (var i = 0; i < g.slotsPerRow; i++) {
+            var newSlot = slot().createDiv(i + len);
+            g.allSlots.push(newSlot);
+            addSlotsToDOM(g.allSlots).go();
         }
-        getBounds();
-    }, false);
+        addChartToDOM(this).go();
+    });
 });
 
-/* creates a div with specified css-class and properties */
-/* function createDiv(cssClass) {
-    var div = document.createElement('div');
-    div.setAttribute('class', cssClass);
-    div.classList.add(cssClass, 'draggable');
-    return div;
-} */
-function createDiv(cssClass, width, height) {
-    var div = document.createElement('div');
-    div.setAttribute('style', 'width:' + width + 'px;height:' + height + 'px;');
-    div.classList.add(cssClass);
-    return div;
-}
+function chartMouseDown(e) {
+    if (!g.selected) {
 
-console.log(globals.allCharts);
-
-function showDashboard(button) {
-    /*  updateCssVar(); */
-    var report, selectedChartType;
-    var selectedreportId = document.querySelector('[data-selected]');
-    if (selectedreportId) {
-        report = selectedreportId.id;
-        selectedreportId.removeAttribute('[data-selected]');
-    }
-    if (button) {
-        selectedChartType = button.id;
-    }
-    if (report) {
-        $.get('reports.json').done(function (response) {
-            var div;
-
-            var chart;
-            switch (selectedChartType) {
-                case 'bar':
-                    div = createDiv('bar', globals.slotWidth3, globals.slotHeight3);
-                    chart = new BarChart(response[report], div);
-                    break;
-                case 'area':
-                    div = createDiv('area', globals.slotWidth2, globals.slotHeight2);
-                    chart = new AreaChart(response[report], div);
-                    break;
-                case 'line':
-                    div = createDiv('line', globals.slotWidth2, globals.slotHeight2);
-                    chart = new LineChart(response[report], div);
-                    break;
-                case 'pie':
-                    div = createDiv('pie', globals.slotWidth2, globals.slotHeight3);
-                    chart = new PieChart(response[report], div);
-                    break;
-                case 'geo':
-                    div = createDiv('geo', globals.slotWidth3, globals.slotHeight3);
-                    chart = new GeoChart(response[report], div);
-                    break;
-            }
-
-            var widthPX = div.style.width,
-                heightPX = div.style.height,
-                divWidth = Math.round(widthPX.substring(0, widthPX.length - 2)),
-                divHeight = Number(heightPX.substring(0, heightPX.length - 2));
-
-            var indx;
-            [].concat(_toConsumableArray(document.getElementsByClassName('dd-slot'))).some(function (slot, i, arr) {
-                if (isNotOverlapping(i, divWidth)) {
-                    indx = i;
-                }
-                return indx;
-            });
-
-            var len = globals.dataId.length;
-            div.setAttribute('data-id', len + 1);
-            div.classList.add('dd-item', 'dd-transition');
-            /* fillTheGrid gives back the x and y coordinates of the slot up to the far left*/
-            var divPos = fillTheGrid(indx, div);
-            div.style.transform = 'translate3d(' + divPos.x + 'px,' + divPos.y + 'px,0px)';
-            globals.container.appendChild(div);
-            chart.draw();
-            /*  div.childNodes[0].style.boxShadow = "0 0 3px 1px rgba(0,0,0,0.3)"; */
-            div.addEventListener('mousedown', imageMouseDown);
-            div.addEventListener('mouseup', imageMouseUp);
-            globals.dataId.push(div.dataset.id);
-            globals.allCharts.push(div);
-            globals.imageSlots.push({ width: divWidth, height: divHeight, x: divPos.x, y: divPos.y });
-
-            globals.allCharts.push(chart);
-        });
-    }
-}
-
-/* The chart-constructors ------------------------------------------------------ */
-function BarChart(response, div) {
-    this.data = new google.visualization.DataTable(response.data);
-    this.options = response.options.regular;
-    this.draw = function () {
-        new google.visualization.BarChart(div).draw(this.data, this.options);
-    };
-}
-
-function AreaChart(response, div) {
-    this.data = new google.visualization.DataTable(response.data);
-    this.options = response.options.regular;
-    this.draw = function () {
-        new google.visualization.AreaChart(div).draw(this.data, this.options);
-    };
-}
-
-function LineChart(response, div) {
-    this.data = new google.visualization.DataTable(response.data);
-    this.options = response.options.regular;
-    this.draw = function () {
-        new google.visualization.LineChart(div).draw(this.data, this.options);
-    };
-}
-
-function PieChart(response, div) {
-    var self = this;
-    self.data = new google.visualization.DataTable(response.data);
-    self.options = response.options.pie;
-    self.options.pieStartAngle = 0;
-    self.draw = function () {
-        var chart = new google.visualization.PieChart(div);
-        google.visualization.events.addListener(chart, 'ready', function () {
-            if (self.options.pieStartAngle < 10) {
-                self.options.pieStartAngle++;
-                setTimeout(function () {
-                    chart.draw(self.data, self.options);
-                }, 0);
-            }
-        });
-        chart.draw(self.data, self.options);
-    };
-}
-
-function GeoChart(response, div) {
-    this.data = new google.visualization.DataTable(response.data);
-    this.options = response.options.regular;
-    this.draw = function () {
-        new google.visualization.GeoChart(div).draw(this.data, this.options);
-    };
-}
-
-function fillTheGrid(indx, item) {
-    var slotArray = globals.slotObjects,
-        slot = slotArray[indx];
-
-    var widthPX = item.style.width,
-        heightPX = item.style.height,
-        imageWidth = Math.round(widthPX.substring(0, widthPX.length - 2)),
-        imageHeight = Number(heightPX.substring(0, heightPX.length - 2)),
-        slotWidth = Math.round(slot.width),
-        slotHeight = slot.height;
-
-    function getSlotElem(x, y) {
-        return document.querySelector('[data-slot-x="' + x + '"][data-slot-y="' + y + '"]');
-    }
-
-    var slotX1 = slotArray[indx + 1],
-        slotX2 = slotArray[indx + 2],
-        slotX2Y1 = slotArray[indx + 2 + globals.numOfSlotsPerRow],
-        slotX1Y1 = slotArray[indx + (globals.numOfSlotsPerRow + 1)],
-        slotY1 = slotArray[indx + globals.numOfSlotsPerRow],
-        slotY2 = slotArray[indx + globals.numOfSlotsPerRow * 2],
-        slotX1Y2 = slotArray[indx + globals.numOfSlotsPerRow * 2 + 1],
-        slotX2Y2 = slotArray[indx + globals.numOfSlotsPerRow * 2 + 2],
-        slotElem = getSlotElem(slot.xPos, slot.yPos),
-        slotElemY1 = getSlotElem(slotY1.xPos, slotY1.yPos),
-        slotElemX1 = getSlotElem(slotX1.xPos, slotX1.yPos),
-        slotElemX2 = getSlotElem(slotX2.xPos, slotX2.yPos),
-        slotElemX1Y1 = getSlotElem(slotX1Y1.xPos, slotX1Y1.yPos),
-        slotElemX2Y1 = getSlotElem(slotX2Y1.xPos, slotX2Y1.yPos),
-        slotElemY2 = getSlotElem(slotY2.xPos, slotY2.yPos),
-        slotElemX1Y2 = getSlotElem(slotX1Y2.xPos, slotX1Y2.yPos),
-        slotElemX2Y2 = getSlotElem(slotX2Y2.xPos, slotX2Y2.yPos);
-    /* console.log((imageWidth === slotWidth * 2) && (slot.yPos > 7 || nextSlot.status === 'occupied')) */
-
-    if (imageWidth === slotWidth * 2 && imageHeight === slotHeight * 2) {
-        slot.status = 'occupied';
-        slotY1.status = 'occupied';
-        slotX1.status = 'occupied';
-        slotX1Y1.status = 'occupied';
-        slotElem.dataset.status = slot.status;
-        slotElemY1.dataset.status = slotY1.status;
-        slotElemX1.dataset.status = slotX1.status;
-        slotElemX1Y1.dataset.status = slotX1Y1.status;
-        return { x: slot.x, y: slot.y, width: imageWidth, height: imageHeight };
-    } else if (imageWidth === slotWidth * 2 && imageHeight === slotHeight * 3) {
-        slot.status = 'occupied';
-        slotY1.status = 'occupied';
-        slotX1.status = 'occupied';
-        slotX1Y1.status = 'occupied';
-        slotY2.status = 'occupied';
-        slotX1Y2.status = 'occupied';
-        slotElem.dataset.status = slot.status;
-        slotElemY1.dataset.status = slotY1.status;
-        slotElemX1.dataset.status = slotX1.status;
-        slotElemX1Y1.dataset.status = slotX1Y1.status;
-        slotElemY2.dataset.status = slotY2.status;
-        slotElemX1Y2.dataset.status = slotX1Y2.status;
-        return { x: slot.x, y: slot.y, width: imageWidth, height: imageHeight };
-    } else if (imageWidth === slotWidth * 3 && imageHeight === slotHeight * 3) {
-        slot.status = 'occupied';
-        slotY1.status = 'occupied';
-        slotX1.status = 'occupied';
-        slotX1Y1.status = 'occupied';
-        slotY2.status = 'occupied';
-        slotX1Y2.status = 'occupied';
-        slotX2.status = 'occupied';
-        slotX2Y2.status = 'occupied';
-        slotX2Y1.status = 'occupied';
-        slotElem.dataset.status = slot.status;
-        slotElemY1.dataset.status = slotY1.status;
-        slotElemX1.dataset.status = slotX1.status;
-        slotElemX1Y1.dataset.status = slotX1Y1.status;
-        slotElemY2.dataset.status = slotY2.status;
-        slotElemX1Y2.dataset.status = slotX1Y2.status;
-        slotElemX2.dataset.status = slotX2.status;
-        slotElemX2Y2.dataset.status = slotX2Y2.status;
-        slotElemX2Y1.dataset.status = slotX2Y1.status;
-        return { x: slot.x, y: slot.y, width: imageWidth, height: imageHeight };
-    }
-}
-
-function arrangeItems() {
-    var slot, ele;
-
-    globals.dataId.forEach(function (dataId, i, arr) {
-        slot = globals.imageSlots[i];
-        ele = document.querySelector('[data-id="' + dataId + '"]');
-        ele.style.transform = 'translate3d(' + slot.x + 'px, ' + slot.y + 'px, 0px)';
-    });
-}
-
-function arrangeItemsMouseUp() {
-    var ele,
-        el,
-        widthPX,
-        elWidth,
-        dataId,
-        itemPos,
-        ddSlot = [].concat(_toConsumableArray(document.querySelectorAll('.dd-slot')));
-    globals.slotIncrement = 0;
-
-    ddSlot.map(function (slot, i, arr) {
-        if (globals.slotObjects[i].status === 'occupied') {
-            return;
-        } else {
-            globals.slotIncrement++;
-            if (globals.dataId[globals.slotIncrement - 1] !== undefined) {
-                dataId = globals.dataId[globals.slotIncrement - 1];
-                ele = document.querySelector('[data-id="' + dataId + '"]');
-
-                widthPX = ele.style.width, elWidth = Math.round(widthPX.substring(0, widthPX.length - 2));
-                if (isNotOverlapping(i, elWidth)) {
-                    itemPos = fillTheGrid(i, ele);
-                    ele.style.transform = 'translate3d(' + itemPos.x + 'px,' + itemPos.y + 'px,0px)';
-                    globals.imageSlots[globals.slotIncrement - 1] = { width: itemPos.width, height: itemPos.height, x: itemPos.x, y: itemPos.y };
-                } else {
-                    var indx;
-                    arr.some(function (slot, i) {
-                        if (isNotOverlapping(i, elWidth)) {
-                            indx = i;
-                        }
-                        return indx;
-                    });
-                    /* i = the next index that's available */
-                    itemPos = fillTheGrid(indx, ele);
-                    ele.style.transform = 'translate3d(' + itemPos.x + 'px,' + itemPos.y + 'px,0px)';
-                    globals.imageSlots[globals.slotIncrement - 1] = { width: itemPos.width, height: itemPos.height, x: itemPos.x, y: itemPos.y };
-                }
-            }
-        }
-    });
-}
-
-function imageMouseDown(e) {
-    if (!globals.selectedChartElement) {
-        globals.container.addEventListener('mousemove', imageMouseMove);
+        g.wrap.addEventListener('mousemove', chartMouseMove);
         // save the element
-        globals.selectedChartElement = e.currentTarget;
-        globals.originalClickCoords = { x: e.pageX, y: e.pageY };
+        g.selected = e.currentTarget;
+        g.originalClickCoords = { x: e.pageX, y: e.pageY };
         /* getting index from _dataId array */
-        globals.originalImageSlot = getIndexOfImageId(globals.selectedChartElement.getAttribute('data-id'));
-
-        // remove transition
-        globals.selectedChartElement.classList.add('dd-selected');
-        globals.selectedChartElement.classList.remove('dd-transition');
-        globals.slotObjects.map(function (slot) {
+        g.originalIndex = getIndexOfChartId(g.selected.getAttribute('data-id')).go();
+        g.selected.classList.add('dd-selected');
+        g.selected.classList.remove('dd-transition');
+        g.slotObjects.map(function (slot) {
             return slot.status = 'available';
         });
-        [].concat(_toConsumableArray(document.querySelectorAll('.dd-slot'))).map(function (slot) {
+        g.allSlots.map(function (slot) {
             return slot.dataset.status = 'available';
         });
     }
 }
 
-function imageMouseMove(e) {
-    if (globals.selectedChartElement) {
-        var wrap = document.getElementsByClassName('grid')[0],
-            bounds = wrap.getBoundingClientRect(),
+function chartMouseMove(e) {
+    if (g.selected) {
+        var bounds = g.wrap.getBoundingClientRect(),
             left = bounds.left + document.documentElement.scrollLeft,
             top = bounds.top + document.documentElement.scrollTop;
 
@@ -595,121 +605,36 @@ function imageMouseMove(e) {
 
         var clickX = pageX - left,
             clickY = pageY - top,
-
-        /* getting the index of the chart the mouse is currently over while dragging*/
-        hoverChartIndex = getChartIdByCoords({ x: clickX, y: clickY }),
+            hoverChartIndex = getChartIdByCoords({ x: clickX, y: clickY }).go(),
 
         /* getting the index of the slot the mouse is currently over while dragging*/
-        hoverSlotId = getSlotIdByCoords({ x: clickX, y: clickY });
-        /* console.log('pageX - left: ' + clickX + ' and pageY - top: ' + clickY) */
-        /* console.log('X: ' + clickX + ' Y: ' + clickY) */
-        /* console.log(hoverSlotId); */
-        /* console.log(hoverChartIndex) */
-        /* console.log(_imageSlots) */
+        hoverSlotId = getSlotIdByCoords({ x: clickX, y: clickY }).go();
 
-        var ele = globals.selectedChartElement,
+        var ele = g.selected,
             chartId = ele.getAttribute('data-id'),
-            index = globals.originalImageSlot,
-            newIndex = getIndexOfImageId(chartId),
+            index = g.originalIndex,
+            newIndex = getIndexOfChartId(chartId).go(),
+            x = g.chartPositions[index].x,
+            y = g.chartPositions[index].y;
 
-        /*x and y = draging elements index's x and y coordinates of the slot up to the far left, taken from _imageSlots array*/
-        x = globals.imageSlots[index].x,
-            y = globals.imageSlots[index].y;
+        var resultX = x + (pageX - g.originalClickCoords.x),
+            resultY = y + (pageY - g.originalClickCoords.y);
 
-        var resultX = x + (pageX - globals.originalClickCoords.x),
-            resultY = y + (pageY - globals.originalClickCoords.y);
-
-        /* arrangeItems only gets called the first time if you drag the same element (but it gets called if you drag it over another el) 
-        because it's not called if _lastTouchedSlotId === hoverChartIndex*/
-        if (hoverChartIndex != undefined && globals.lastTouchedSlotId != hoverChartIndex) {
-            // lastTouchedSlotId = the index placement shifts from its original index to the slots I'm hovering over 
-            // so if I'm taking the first element and drags it over index 1 and back, it first gets 0 then 1 then 0
-            globals.lastTouchedSlotId = hoverChartIndex;
-            /* console.log(_lastTouchedSlotId) */
-            globals.dataId.splice(hoverChartIndex, 0, globals.dataId.splice(newIndex, 1)[0]);
-            arrangeItems();
+        if (hoverChartIndex != undefined && g.lastTouched != hoverChartIndex) {
+            g.lastTouched = hoverChartIndex;
+            g.dataId.splice(hoverChartIndex, 0, g.dataId.splice(newIndex, 1)[0]);
+            arrangeItems().go();
         }
-        ele.style.transform = 'translate3d(' + resultX + 'px,' + resultY + 'px, 0)';
+        ele.style.transform = 'translate3d(' + resultX + 'px, ' + resultY + 'px, 0)';
     }
 }
 
-function isNotOverlapping(i, itemWidth) {
-    switch (itemWidth) {
-        case globals.slotWidth2:
-            return globals.slotObjects[i].yPos < 8 && globals.slotObjects[i].status === 'available' && globals.slotObjects[i + 1].status === 'available' && globals.slotObjects[i + globals.numOfSlotsPerRow].status === 'available' && globals.slotObjects[i + globals.numOfSlotsPerRow * 2].status === 'available';
-        case globals.slotWidth3:
-            return globals.slotObjects[i].yPos < 7 && globals.slotObjects[i].status === 'available' && globals.slotObjects[i + 1].status === 'available' && globals.slotObjects[i + 2].status === 'available';
+function chartMouseUp() {
+    if (g.selected) {
+        g.selected.classList.remove('dd-selected');
+        g.selected.classList.add('dd-transition');
+        g.selected = null;
+        g.originalClickCoords = null;
+        arrangeItemsMouseUp().go();
     }
 }
-
-function imageMouseUp() {
-    if (globals.selectedChartElement) {
-        globals.selectedChartElement.classList.remove('dd-selected');
-        globals.selectedChartElement.classList.add('dd-transition');
-
-        globals.selectedChartElement = null;
-        globals.originalClickCoords = null;
-        arrangeItemsMouseUp();
-    }
-}
-
-function getChartIdByCoords(coords) {
-    //get the current chart being hovered over  
-    for (var id in globals.imageSlots) {
-        var chart = globals.imageSlots[id];
-        if (chart.x <= coords.x && coords.x <= chart.x + chart.width && chart.y <= coords.y && coords.y <= chart.y + chart.height) return id;
-    }
-}
-
-function getSlotIdByCoords(coords) {
-    /*  console.log(_slotObjects) */
-    //get the current slot being hovered over  
-    for (var id in globals.slotObjects) {
-        var slot = globals.slotObjects[id];
-
-        if (slot.x <= coords.x && coords.x <= slot.x + slot.width && slot.y <= coords.y && coords.y <= slot.y + slot.height) return id;
-    }
-}
-
-function getIndexOfImageId(id) {
-    var i = 0,
-        len = globals.dataId.length;
-    for (; i < len; i++) {
-        if (globals.dataId[i] === id) return i;
-    }
-}
-
-/* end of chart-constructors---------------------------------------------------------- */
-/* grid function using css-variables, add rows */
-/* function updateCssVar() {
-    let htmlStyles = window.getComputedStyle(document.getElementsByTagName('html')[0]);
-    let numRows = parseInt(htmlStyles.getPropertyValue("--numRows"));
-    let numCols = parseInt(htmlStyles.getPropertyValue("--numCols"));
-    let gridItemsCount = (document.querySelectorAll('.draggable').length + 1);
-    document.documentElement.style.setProperty('--numRows', gridItemsCount * 2);
-} */
-
-/* ----------------------------------------------------------------- */
-/* Tab-bar Material Design funtions--------------------------------- */
-
-var dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar'));
-var panels = document.querySelector('.panels');
-
-dynamicTabBar.preventDefaultOnClick = true;
-function updatePanel(index) {
-    var activePanel = panels.querySelector(".panel.is-active");
-    if (activePanel) {
-        activePanel.classList.remove("is-active");
-    }
-
-    var newActivePanel = panels.querySelector(".panel:nth-child(" + (index + 1) + ")");
-    if (newActivePanel) {
-        newActivePanel.classList.add("is-active");
-    }
-}
-dynamicTabBar.listen("MDCTabBar:change", function (t) {
-    var tabs = t.detail;
-    var nthChildIndex = tabs.activeTabIndex;
-    updatePanel(nthChildIndex);
-});
-/* end of Material Design-functions------------------------------------------------- */
