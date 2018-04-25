@@ -157,8 +157,13 @@ body {
     left: 0;
 }
 
-.shadow {
+.shadow-elevated {
     box-shadow: $google-shadow-elevated;
+    transition: box-shadow 0.3s;
+}
+
+.shadow {
+    box-shadow: $google-shadow;
 }
 
 .graph-btn-grid {

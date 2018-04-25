@@ -365,8 +365,6 @@ var placeCharts = function placeCharts(_ref4) {
             div.setAttribute('data-id', increment);
             g.wrap.appendChild(div);
             chart.draw();
-            console.log(div.childNodes);
-            /* div.childNodes[0].style.boxShadow = "0 0 3px 1px rgba(0,0,0,0.3)"; */
             div.addEventListener('mousedown', chartMouseDown);
             div.addEventListener('mouseup', chartMouseUp);
             g.chartPositions[increment - 1] = { width: width, height: height, x: chartPos.x, y: chartPos.y };
@@ -375,6 +373,7 @@ var placeCharts = function placeCharts(_ref4) {
         }
     };
 };
+/* console.log(g.allCharts.map(el => el.childNodes[0].classList.add('shadow'))); */
 
 var addChartToDOM = function addChartToDOM(button) {
     var state = {
@@ -528,17 +527,17 @@ function addFirstCharts() {
     var firstSlots = slot(64).createArray();
     var addFirstSlots = addSlotsToDOM(firstSlots).go();
     (_g$allSlots = g.allSlots).push.apply(_g$allSlots, _toConsumableArray(firstSlots));
+
+    var divArray = [chartDiv('area').createDiv(), chartDiv('geo').createDiv(), chartDiv('pie').createDiv()];
+
     fetch('reports.json').then(function (res) {
         return res.json();
     }).then(function (report) {
-        console.log(report);
-        var divArray = [chartDiv('area').createDiv(), chartDiv('geo').createDiv(), chartDiv('pie').createDiv()];
         var chartArray = [chart(report.sale, 'regular', 'AreaChart', divArray[0]).getChart(), chart(report.nationalities, 'regular', 'GeoChart', divArray[1]).getChart(), chart(report.bookings, 'pie', 'PieChart', divArray[2]).getChart()];
+
         var increment = 0;
         g.allSlots.forEach(function (slotItem, i) {
-            if (g.slotObjects[i].status === 'occupied') {
-                return;
-            }
+            if (g.slotObjects[i].status === 'occupied') return;
             increment++;
             if (divArray[increment - 1] && chartArray[increment - 1]) {
                 var size = chartSize(divArray[increment - 1]).getSize();
@@ -616,6 +615,8 @@ function chartMouseMove(e) {
             x = g.chartPositions[index].x,
             y = g.chartPositions[index].y;
 
+        ele.childNodes[0].classList.add('shadow-elevated');
+
         var resultX = x + (pageX - g.originalClickCoords.x),
             resultY = y + (pageY - g.originalClickCoords.y);
 
@@ -632,6 +633,7 @@ function chartMouseUp() {
     if (g.selected) {
         g.selected.classList.remove('dd-selected');
         g.selected.classList.add('dd-transition');
+        g.selected.childNodes[0].classList.remove('shadow-elevated');
         g.selected = null;
         g.originalClickCoords = null;
         arrangeItemsMouseUp().go();

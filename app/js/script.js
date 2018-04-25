@@ -292,7 +292,8 @@ const getGridPositions = (indx, div) => {
                 g.slotObjects[i + g.slotsPerRow],
                 g.slotObjects[i + (g.slotsPerRow * 2)],
                 g.slotObjects[i + (g.slotsPerRow * 2) + 1],
-                g.slotObjects[i + (g.slotsPerRow * 2) + 2]];
+                g.slotObjects[i + (g.slotsPerRow * 2) + 2]
+            ];
 
             let [el, elY1, elX1, elX2, elX1Y1, elX2Y1, elY2, elX1Y2, elX2Y2] = [
                 getSlotElem(X.xPos, X.yPos),
@@ -303,7 +304,8 @@ const getGridPositions = (indx, div) => {
                 getSlotElem(X2Y1.xPos, X2Y1.yPos),
                 getSlotElem(Y2.xPos, Y2.yPos),
                 getSlotElem(X1Y2.xPos, X1Y2.yPos),
-                getSlotElem(X2Y2.xPos, X2Y2.yPos)];
+                getSlotElem(X2Y2.xPos, X2Y2.yPos)
+            ];
 
             if (width === (slotWidth * 2) && height === (slotHeight * 2)) {
                 [X, Y1, X1, X1Y1, el.dataset, elY1.dataset, elX1.dataset, elX1Y1.dataset]
@@ -335,8 +337,6 @@ const placeCharts = ({ div, chart, indx, increment, width, height }) => {
             div.setAttribute('data-id', increment);
             g.wrap.appendChild(div);
             chart.draw();
-            console.log(div.childNodes);
-            /* div.childNodes[0].style.boxShadow = "0 0 3px 1px rgba(0,0,0,0.3)"; */
             div.addEventListener('mousedown', chartMouseDown);
             div.addEventListener('mouseup', chartMouseUp);
             g.chartPositions[increment - 1] = { width: width, height: height, x: chartPos.x, y: chartPos.y };
@@ -345,7 +345,7 @@ const placeCharts = ({ div, chart, indx, increment, width, height }) => {
         }
     };
 };
-
+/* console.log(g.allCharts.map(el => el.childNodes[0].classList.add('shadow'))); */
 
 const addChartToDOM = (button) => {
     let state = {
@@ -492,24 +492,24 @@ function addFirstCharts() {
     const firstSlots = slot(64).createArray();
     const addFirstSlots = addSlotsToDOM(firstSlots).go();
     g.allSlots.push(...firstSlots);
+
+    const divArray = [
+        chartDiv('area').createDiv(),
+        chartDiv('geo').createDiv(),
+        chartDiv('pie').createDiv()
+    ];
+
     fetch('reports.json').then(res => res.json())
         .then(report => {
-            console.log(report);
-            const divArray = [
-                chartDiv('area').createDiv(),
-                chartDiv('geo').createDiv(),
-                chartDiv('pie').createDiv()
-            ];
             const chartArray = [
                 chart(report.sale, 'regular', 'AreaChart', divArray[0]).getChart(),
                 chart(report.nationalities, 'regular', 'GeoChart', divArray[1]).getChart(),
                 chart(report.bookings, 'pie', 'PieChart', divArray[2]).getChart()
             ];
+
             let increment = 0;
             g.allSlots.forEach((slotItem, i) => {
-                if (g.slotObjects[i].status === 'occupied') {
-                    return;
-                }
+                if (g.slotObjects[i].status === 'occupied') return;
                 increment++;
                 if (divArray[increment - 1] && chartArray[increment - 1]) {
                     let size = chartSize(divArray[increment - 1]).getSize();
@@ -582,6 +582,8 @@ function chartMouseMove(e) {
             x = g.chartPositions[index].x,
             y = g.chartPositions[index].y;
 
+        ele.childNodes[0].classList.add('shadow-elevated');
+
         let resultX = x + (pageX - g.originalClickCoords.x),
             resultY = y + (pageY - g.originalClickCoords.y);
 
@@ -599,6 +601,7 @@ function chartMouseUp() {
     if (g.selected) {
         g.selected.classList.remove('dd-selected');
         g.selected.classList.add('dd-transition');
+        g.selected.childNodes[0].classList.remove('shadow-elevated');
         g.selected = null;
         g.originalClickCoords = null;
         arrangeItemsMouseUp().go();
