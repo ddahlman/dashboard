@@ -584,7 +584,7 @@ function addFirstCharts() {
                     placeCharts(chartAttributes).go();
                 }
             });
-        })/* .catch(error => console.error('Error:', error)); */
+        });
 }
 
 
@@ -680,7 +680,7 @@ function chartMouseMove(e) {
         let resultX = x + (pageX - g.originalClickCoords.x),
             resultY = y + (pageY - g.originalClickCoords.y);
 
-        if (hoverChartIndex != undefined && g.lastTouched != hoverChartIndex) {
+        if (hoverChartIndex !== undefined && g.lastTouched !== hoverChartIndex) {
             g.lastTouched = hoverChartIndex;
             g.dataId.splice(hoverChartIndex, 0, g.dataId.splice(newIndex, 1)[0]);
             arrangeItems().go();
