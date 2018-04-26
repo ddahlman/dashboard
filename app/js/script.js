@@ -8,7 +8,7 @@ google.charts.setOnLoadCallback(function () {
 });
 
 const g = function () {
-    let container2 = document.getElementById('#container-2'),
+    let container2 = document.getElementById('container-2'),
         toolbar = document.querySelector('.dashboard-toolbar'),
         pseudoCircle = document.querySelector('.pseudo-circle'),
         menu1 = document.querySelector('.menu-1'),
@@ -134,6 +134,31 @@ const addToSlotObjects = (state) => ({
     })
 });
 
+
+const addSlotsToDOM = (array) => {
+    let arr = array;
+    return {
+        go: () => {
+            arr.forEach((slot, i) => {
+                g.wrap.appendChild(slot);
+            });
+            slotBounds().add();
+        }
+    };
+};
+
+
+const filterOut = (array, string) => {
+    let state = {
+        arr: array,
+        str: string
+    };
+    return {
+        getThis: () => state.arr.filter(str => str === state.str)
+    };
+};
+
+
 const pieFunction = (pieChart, div) => {
     let state = {
         pieChart,
@@ -188,9 +213,11 @@ const chartDiv = (cssClass) => {
         createDiv: () => {
             let div = document.createElement('div');
             switch (state.cssClass) {
+                case 'geo': div.setAttribute('style', `width:${state.width3}px; height:${state.height3}px;`); break;
                 case 'pie': div.setAttribute('style', `width:${state.width2}px; height:${state.height3}px;`); break;
                 case 'area': div.setAttribute('style', `width:${state.width2}px; height:${state.height2}px;`); break;
-                case 'geo': div.setAttribute('style', `width:${state.width3}px; height:${state.height3}px;`); break;
+                case 'line': div.setAttribute('style', `width:${state.width2}px; height:${state.height2}px;`); break;
+                case 'bar': div.setAttribute('style', `width:${state.width3}px; height:${state.height3}px;`); break;
             }
             div.classList.add(state.cssClass);
             return div;
@@ -202,13 +229,68 @@ const chartSize = (el) => {
     const ele = el;
     return {
         getSize: () => {
-            const arr = [];
-            let widthPX = ele.style.width,
-                heightPX = ele.style.height,
-                elWidth = Math.round(widthPX.substring(0, widthPX.length - 2)),
-                elHeight = Number(heightPX.substring(0, heightPX.length - 2));
-            arr.push(elWidth, elHeight);
-            return arr;
+            const widthPX = ele.style.width,
+                heightPX = ele.style.height;
+            const sizes = {
+                elWidth: Math.round(widthPX.substring(0, widthPX.length - 2)),
+                elHeight: Number(heightPX.substring(0, heightPX.length - 2))
+            };
+            return sizes;
+        }
+    };
+};
+
+const getGridPositions = (indx, div) => {
+    const i = indx;
+    const ele = div;
+    return {
+        go: () => {
+            let X = g.slotObjects[i];
+            let size = chartSize(ele).getSize();
+            let { elWidth, elHeight } = size;
+            let [slotWidth, slotHeight] = [Math.round(X.width), X.height];
+
+            const getSlotElem = (x, y) => document.querySelector(`[data-slot-x="${x}"][data-slot-y="${y}"]`);
+
+            let [X1, X2, X2Y1, X1Y1, Y1, Y2, X1Y2, X2Y2] = [
+                g.slotObjects[i + 1],
+                g.slotObjects[i + 2],
+                g.slotObjects[(i + 2) + g.slotsPerRow],
+                g.slotObjects[i + (g.slotsPerRow + 1)],
+                g.slotObjects[i + g.slotsPerRow],
+                g.slotObjects[i + (g.slotsPerRow * 2)],
+                g.slotObjects[i + (g.slotsPerRow * 2) + 1],
+                g.slotObjects[i + (g.slotsPerRow * 2) + 2]
+            ];
+
+            let [el, elY1, elX1, elX2, elX1Y1, elX2Y1, elY2, elX1Y2, elX2Y2] = [
+                getSlotElem(X.xPos, X.yPos),
+                getSlotElem(Y1.xPos, Y1.yPos),
+                getSlotElem(X1.xPos, X1.yPos),
+                getSlotElem(X2.xPos, X2.yPos),
+                getSlotElem(X1Y1.xPos, X1Y1.yPos),
+                getSlotElem(X2Y1.xPos, X2Y1.yPos),
+                getSlotElem(Y2.xPos, Y2.yPos),
+                getSlotElem(X1Y2.xPos, X1Y2.yPos),
+                getSlotElem(X2Y2.xPos, X2Y2.yPos)
+            ];
+
+            if (elWidth === (slotWidth * 2) && elHeight === (slotHeight * 2)) {
+                [X, Y1, X1, X1Y1, el.dataset, elY1.dataset, elX1.dataset, elX1Y1.dataset]
+                    .map(obj => obj.status = 'occupied');
+                return { x: X.x, y: X.y, width: elWidth, height: elHeight };
+            }
+            else if (elWidth === (slotWidth * 2) && elHeight === (slotHeight * 3)) {
+                [X, Y1, X1, X1Y1, Y2, X1Y2, el.dataset, elY1.dataset, elX1.dataset, elX1Y1.dataset, elY2.dataset, elX1Y2.dataset]
+                    .map(obj => obj.status = 'occupied');
+                return { x: X.x, y: X.y, width: elWidth, height: elHeight };
+            }
+            else if (elWidth === (slotWidth * 3) && elHeight === (slotHeight * 3)) {
+                [X, Y1, X1, X1Y1, Y2, X1Y2, X2, X2Y2, X2Y1, el.dataset, elY1.dataset, elX1.dataset,
+                    elX1Y1.dataset, elY2.dataset, elX1Y2.dataset, elX2.dataset, elX2Y2.dataset, elX2Y1.dataset]
+                    .map(obj => obj.status = 'occupied');
+                return { x: X.x, y: X.y, width: elWidth, height: elHeight };
+            }
         }
     };
 };
@@ -248,84 +330,6 @@ const isNotOverlapping = (i, chartWidth) => {
 
 
 
-const addSlotsToDOM = (array) => {
-    let arr = array;
-    return {
-        go: () => {
-            arr.forEach((slot, i) => {
-                g.wrap.appendChild(slot);
-            });
-            slotBounds().add();
-        }
-    };
-};
-
-
-const filterOut = (array, string) => {
-    let state = {
-        arr: array,
-        str: string
-    };
-    return {
-        getThis: () => state.arr.filter(str => str === state.str)
-    };
-};
-
-
-const getGridPositions = (indx, div) => {
-    const i = indx;
-    const ele = div;
-    return {
-        go: () => {
-            let X = g.slotObjects[i];
-            let size = chartSize(ele).getSize();
-            let [width, height] = size;
-            let [slotWidth, slotHeight] = [Math.round(X.width), X.height];
-
-            const getSlotElem = (x, y) => document.querySelector(`[data-slot-x="${x}"][data-slot-y="${y}"]`);
-
-            let [X1, X2, X2Y1, X1Y1, Y1, Y2, X1Y2, X2Y2] = [
-                g.slotObjects[i + 1],
-                g.slotObjects[i + 2],
-                g.slotObjects[(i + 2) + g.slotsPerRow],
-                g.slotObjects[i + (g.slotsPerRow + 1)],
-                g.slotObjects[i + g.slotsPerRow],
-                g.slotObjects[i + (g.slotsPerRow * 2)],
-                g.slotObjects[i + (g.slotsPerRow * 2) + 1],
-                g.slotObjects[i + (g.slotsPerRow * 2) + 2]
-            ];
-
-            let [el, elY1, elX1, elX2, elX1Y1, elX2Y1, elY2, elX1Y2, elX2Y2] = [
-                getSlotElem(X.xPos, X.yPos),
-                getSlotElem(Y1.xPos, Y1.yPos),
-                getSlotElem(X1.xPos, X1.yPos),
-                getSlotElem(X2.xPos, X2.yPos),
-                getSlotElem(X1Y1.xPos, X1Y1.yPos),
-                getSlotElem(X2Y1.xPos, X2Y1.yPos),
-                getSlotElem(Y2.xPos, Y2.yPos),
-                getSlotElem(X1Y2.xPos, X1Y2.yPos),
-                getSlotElem(X2Y2.xPos, X2Y2.yPos)
-            ];
-
-            if (width === (slotWidth * 2) && height === (slotHeight * 2)) {
-                [X, Y1, X1, X1Y1, el.dataset, elY1.dataset, elX1.dataset, elX1Y1.dataset]
-                    .map(obj => obj.status = 'occupied');
-                return { x: X.x, y: X.y, width: width, height: height };
-            }
-            else if (width === (slotWidth * 2) && height === (slotHeight * 3)) {
-                [X, Y1, X1, X1Y1, Y2, X1Y2, el.dataset, elY1.dataset, elX1.dataset, elX1Y1.dataset, elY2.dataset, elX1Y2.dataset]
-                    .map(obj => obj.status = 'occupied');
-                return { x: X.x, y: X.y, width: width, height: height };
-            }
-            else if (width === (slotWidth * 3) && height === (slotHeight * 3)) {
-                [X, Y1, X1, X1Y1, Y2, X1Y2, X2, X2Y2, X2Y1, el.dataset, elY1.dataset, elX1.dataset,
-                    elX1Y1.dataset, elY2.dataset, elX1Y2.dataset, elX2.dataset, elX2Y2.dataset, elX2Y1.dataset]
-                    .map(obj => obj.status = 'occupied');
-                return { x: X.x, y: X.y, width: width, height: height };
-            }
-        }
-    };
-};
 
 
 const placeCharts = ({ div, chart, indx, increment, width, height }) => {
@@ -347,34 +351,49 @@ const placeCharts = ({ div, chart, indx, increment, width, height }) => {
 };
 /* console.log(g.allCharts.map(el => el.childNodes[0].classList.add('shadow'))); */
 
+
 const addChartToDOM = (button) => {
     let state = {
-        chartType: button.id,
-        allSlots: g.allSlots,
+        chartType: button,
         wrap: g.wrap,
         div: chartDiv(button.id).createDiv(),
-        len: g.dataId.length
+        len: g.dataId.length,
+        selectedReportId: document.querySelector('[data-selected]')
     };
     return {
         go: () => {
-            let graph;
-            switch (state.chartType) {
-                case 'area': graph = chart('AreaChart', state.div).getChart(); break;
-                case 'geo': graph = chart('GeoChart', state.div).getChart(); break;
-                case 'pie': graph = chart('PieChart', state.div).getChart(); break;
+            let report,
+                selectedChartType;
+            if (state.selectedReportId) {
+                report = state.selectedReportId.id;
+                state.selectedReportId.removeAttribute('[data-selected]');
             }
-            let size = chartSize(state.div).getSize();
-            let [width, height] = size;
-            const indx = availableIndex(width).get();
-            let chartAttributes = {
-                div: state.div,
-                chart: graph,
-                indx: indx,
-                increment: state.len + 1,
-                width: width,
-                height: height
-            };
-            placeCharts(chartAttributes).go();
+            if (state.chartType) selectedChartType = state.chartType.id;
+            if (report) {
+                fetch('reports.json').then(res => res.json())
+                    .then(response => {
+                        let graph;
+                        switch (selectedChartType) {
+                            case 'area': graph = chart(response[report], 'regular', 'AreaChart', state.div).getChart(); break;
+                            case 'geo': graph = chart(response[report], 'regular', 'GeoChart', state.div).getChart(); break;
+                            case 'pie': graph = chart(response[report], 'pie', 'PieChart', state.div).getChart(); break;
+                            case 'line': graph = chart(response[report], 'regular', 'LineChart', state.div).getChart(); break;
+                            case 'bar': graph = chart(response[report], 'regular', 'BarChart', state.div).getChart(); break;
+                        }
+                        let size = chartSize(state.div).getSize();
+                        let { elWidth, elHeight } = size;
+                        const indx = availableIndex(elWidth).get();
+                        let chartAttributes = {
+                            div: state.div,
+                            chart: graph,
+                            indx: indx,
+                            increment: state.len + 1,
+                            width: elWidth,
+                            height: elHeight
+                        };
+                        placeCharts(chartAttributes).go();
+                    });
+            }
         }
     };
 };
@@ -419,14 +438,14 @@ const arrangeItemsMouseUp = () => {
                 let dataId = state.dataId[state.increment - 1];
                 let el = document.querySelector(`[data-id="${dataId}"]`);
                 let size = chartSize(el).getSize();
-                let [width, height] = size;
+                let { elWidth, elHeight } = size;
                 let pos;
-                if (isNotOverlapping(i, width).check()) {
+                if (isNotOverlapping(i, elWidth).check()) {
                     pos = getGridPositions(i, el).go();
                     el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
                     state.chartPos[state.increment - 1] = { width: pos.width, height: pos.height, x: pos.x, y: pos.y };
                 } else {
-                    const indx = availableIndex(width).get();
+                    const indx = availableIndex(elWidth).get();
                     pos = getGridPositions(indx, el).go();
                     el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
                     state.chartPos[state.increment - 1] = { width: pos.width, height: pos.height, x: pos.x, y: pos.y };
@@ -483,8 +502,48 @@ const getIndexOfChartId = (id) => {
     };
 };
 
-const changeSize = () => {
 
+const removeMenu = () => {
+    g.box.classList.remove('open');
+    g.pseudoCircle.classList.remove('open');
+    g.menu1.classList.remove('show');
+    g.toolbar.classList.remove('open');
+};
+
+
+const availableCharts = (typeOfCharts) => {
+    const types = typeOfCharts;
+    return {
+        show: () => {
+            [...document.querySelectorAll('.card2')].filter((chartBtn) => {
+                var id = chartBtn.getAttribute('id');
+                /* send back that id that's equal to arrVal */
+                return types.some(arrVal => id === arrVal);
+            }).map(btn => btn.style.display = 'block');
+        }
+    };
+};
+
+
+const showAvailableCharts = (reportId) => {
+    const id = reportId;
+    return {
+        go: () => {
+            [...document.querySelectorAll('.card2')].map(chartBtn => chartBtn.style.display = 'none');
+            switch (id) {
+                case "sale": availableCharts(['bar', 'line', 'area']).show(); break;
+                case "expenditure": availableCharts(['bar', 'line', 'area', 'geo']).show(); break;
+                case "nrOfVisitors": availableCharts(['bar', 'line', 'pie', 'geo']).show(); break;
+                case "socialMedia": availableCharts(['bar', 'area', 'pie', 'geo']).show(); break;
+                case "compiledInfo": availableCharts(['line', 'area', 'pie', 'geo']).show(); break;
+                case "nationalities": availableCharts(['bar', 'line', 'area']).show(); break;
+                case "todaysEvent": availableCharts(['bar', 'line', 'area']).show(); break;
+                case "bookings": availableCharts(['bar', 'area', 'pie', 'geo']).show(); break;
+                case "mood": availableCharts(['bar', 'line', 'pie', 'geo']).show(); break;
+                default: break;
+            }
+        }
+    };
 };
 
 
@@ -513,14 +572,14 @@ function addFirstCharts() {
                 increment++;
                 if (divArray[increment - 1] && chartArray[increment - 1]) {
                     let size = chartSize(divArray[increment - 1]).getSize();
-                    let [width, height] = size;
+                    let { elWidth, elHeight } = size;
                     let chartAttributes = {
                         div: divArray[increment - 1],
                         chart: chartArray[increment - 1],
                         indx: i,
                         increment: increment,
-                        width: width,
-                        height: height
+                        width: elWidth,
+                        height: elHeight
                     };
                     placeCharts(chartAttributes).go();
                 }
@@ -529,15 +588,49 @@ function addFirstCharts() {
 }
 
 
-[...document.querySelectorAll('.chart-btn')].forEach((chartButton) => {
+/* open plus-button into a tab-menu */
+g.box.addEventListener('click', function () {
+    g.removeBox.style.display = 'block';
+    this.classList.add('open');
+    g.pseudoCircle.classList.add('open');
+    g.menu1.classList.add('show');
+    g.toolbar.classList.add('open');
+    g.toolbar.classList.remove('fade-out');
+});
+
+/* close tab-menu into plus-button */
+g.removeBox.addEventListener('click', function () {
+    this.style.display = 'none';
+    removeMenu();
+});
+
+
+[...document.querySelectorAll('.add-container-2')].map((card) => {
+    card.addEventListener('click', function (e) {
+        let reportId = this.id;
+        console.log(g.container2);
+        g.container2.classList.remove('out-of-sight');
+        g.toolbar.classList.add('fade-out');
+        setTimeout(function () {
+            g.container2.classList.add('shadow');
+        }, 300);
+        e.currentTarget.setAttribute('data-selected', 'selected');
+        showAvailableCharts(reportId).go();
+    });
+});
+
+
+[...document.querySelectorAll('.card2')].forEach((chartButton) => {
     chartButton.addEventListener('click', function () {
         const len = g.slotObjects.length;
-        for (var i = 0; i < g.slotsPerRow; i++) {
+        for (let i = 0; i < g.slotsPerRow; i++) {
             const newSlot = slot().createDiv(i + len);
             g.allSlots.push(newSlot);
             addSlotsToDOM(g.allSlots).go();
         }
         addChartToDOM(this).go();
+        g.container2.classList.add('out-of-sight');
+        removeMenu();
     });
 });
 
@@ -608,3 +701,31 @@ function chartMouseUp() {
     }
 }
 
+
+
+
+
+
+const dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar'));
+const panels = document.querySelector('.panels');
+dynamicTabBar.preventDefaultOnClick = true;
+
+function updatePanel(index) {
+    var activePanel = panels.querySelector(".panel.is-active");
+    if (activePanel) {
+        activePanel.classList.remove("is-active");
+    }
+
+    var newActivePanel = panels.querySelector(
+        ".panel:nth-child(" + (index + 1) + ")"
+    );
+    if (newActivePanel) {
+        newActivePanel.classList.add("is-active");
+    }
+}
+
+dynamicTabBar.listen("MDCTabBar:change", function (t) {
+    var tabs = t.detail;
+    var nthChildIndex = tabs.activeTabIndex;
+    updatePanel(nthChildIndex);
+});
