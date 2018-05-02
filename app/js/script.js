@@ -148,17 +148,6 @@ const addSlotsToDOM = (array) => {
 };
 
 
-const filterOut = (array, string) => {
-    let state = {
-        arr: array,
-        str: string
-    };
-    return {
-        getThis: () => state.arr.filter(str => str === state.str)
-    };
-};
-
-
 const pieFunction = (pieChart, div) => {
     let state = {
         pieChart,
@@ -608,7 +597,6 @@ g.removeBox.addEventListener('click', function () {
 [...document.querySelectorAll('.add-container-2')].map((card) => {
     card.addEventListener('click', function (e) {
         let reportId = this.id;
-        console.log(g.container2);
         g.container2.classList.remove('out-of-sight');
         g.toolbar.classList.add('fade-out');
         setTimeout(function () {
