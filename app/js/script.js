@@ -148,24 +148,21 @@ const addSlotsToDOM = (array) => {
 };
 
 
-const pieFunction = (pieChart, div) => {
-    let state = {
-        pieChart,
-        div
-    };
+const pieFunction = (obj, div) => {
+    let state = { obj, div };
     return {
         go: () => {
-            state.pieChart.options.pieStartAngle = 0;
+            state.obj.options.pieStartAngle = 0;
             let chart = new google.visualization.PieChart(state.div);
             google.visualization.events.addListener(chart, 'ready', function () {
-                if (state.pieChart.options.pieStartAngle < 10) {
-                    state.pieChart.options.pieStartAngle++;
+                if (state.obj.options.pieStartAngle < 10) {
+                    state.obj.options.pieStartAngle++;
                     setTimeout(function () {
-                        chart.draw(state.pieChart.data, state.pieChart.options);
+                        chart.draw(state.obj.data, state.obj.options);
                     }, 0);
                 }
             });
-            chart.draw(state.pieChart.data, state.pieChart.options);
+            chart.draw(state.obj.data, state.obj.options);
         }
     };
 };
