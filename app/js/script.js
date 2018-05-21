@@ -352,7 +352,8 @@ const addChartToDOM = (button) => {
                 selectedChartType;
             if (state.selectedReportId) {
                 report = state.selectedReportId.id;
-                state.selectedReportId.removeAttribute('[data-selected]');
+                console.log(state.selectedReportId);
+                state.selectedReportId.removeAttribute('data-selected');
             }
             if (state.chartType) selectedChartType = state.chartType.id;
             if (report) {
@@ -687,7 +688,9 @@ function chartMouseUp() {
 }
 
 
-
+fetch('reports.json').then(res => res.json()).then(report => {
+    /*  console.log(report.todaysEvent.data.rows[0].c[0].v); */
+});
 
 
 

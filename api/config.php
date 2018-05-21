@@ -7,8 +7,7 @@ $db = "219307-danieldahlman";
 $dbusername = "root";
 $dbhost = "localhost";
 $dbpassword = "";
-$db = "test";
-
+$db = "dashboard";
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
