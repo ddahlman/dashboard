@@ -114,22 +114,6 @@
                     "fontName": "Open Sans",
                     "fontSize": "26"
                 },
-                "hAxis": {
-                    "textStyle": {
-                        "color": "#fff"
-                    },
-                    "gridlines": {
-                        "color": "#fff"
-                    }
-                },
-                "vAxis": {
-                    "textStyle": {
-                        "color": "#fff"
-                    },
-                    "titleTextStyle": {
-                        "color": "#fff"
-                    }
-                },
                 "legend": {
                     "textStyle": {
                         "color": "#fff"
@@ -263,22 +247,6 @@
                     "color": "#fff",
                     "fontName": "Open Sans",
                     "fontSize": "26"
-                },
-                "hAxis": {
-                    "textStyle": {
-                        "color": "#fff"
-                    },
-                    "gridlines": {
-                        "color": "#fff"
-                    }
-                },
-                "vAxis": {
-                    "textStyle": {
-                        "color": "#fff"
-                    },
-                    "titleTextStyle": {
-                        "color": "#fff"
-                    }
                 },
                 "legend": {
                     "textStyle": {
@@ -422,22 +390,6 @@
                     "color": "#fff",
                     "fontName": "Open Sans",
                     "fontSize": "26"
-                },
-                "hAxis": {
-                    "textStyle": {
-                        "color": "#fff"
-                    },
-                    "gridlines": {
-                        "color": "#fff"
-                    }
-                },
-                "vAxis": {
-                    "textStyle": {
-                        "color": "#fff"
-                    },
-                    "titleTextStyle": {
-                        "color": "#fff"
-                    }
                 },
                 "legend": {
                     "textStyle": {
@@ -629,22 +581,6 @@
                     "color": "#fff",
                     "fontName": "Open Sans",
                     "fontSize": "26"
-                },
-                "hAxis": {
-                    "textStyle": {
-                        "color": "#fff"
-                    },
-                    "gridlines": {
-                        "color": "#fff"
-                    }
-                },
-                "vAxis": {
-                    "textStyle": {
-                        "color": "#fff"
-                    },
-                    "titleTextStyle": {
-                        "color": "#fff"
-                    }
                 },
                 "legend": {
                     "textStyle": {

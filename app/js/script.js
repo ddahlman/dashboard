@@ -688,8 +688,8 @@ function chartMouseUp() {
 }
 
 
-fetch('reports.json').then(res => res.json()).then(report => {
-    /*  console.log(report.todaysEvent.data.rows[0].c[0].v); */
+fetch('api/?/reports').then(res => res.json()).then(reports => {
+    console.log(reports);
 });
 
 
