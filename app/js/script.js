@@ -46,8 +46,6 @@ const g = function () {
     };
 }();
 
-
-
 const slot = (num) => {
     let state = {
         num,
@@ -316,8 +314,6 @@ const isNotOverlapping = (i, chartWidth) => {
 
 
 
-
-
 const placeCharts = ({ div, chart, indx, increment, width, height }) => {
     return {
         go: () => {
@@ -357,15 +353,15 @@ const addChartToDOM = (button) => {
             }
             if (state.chartType) selectedChartType = state.chartType.id;
             if (report) {
-                fetch('reports.json').then(res => res.json())
+                fetch('api/?/reports').then(res => res.json())
                     .then(response => {
                         let graph;
                         switch (selectedChartType) {
-                            case 'area': graph = chart(response[report], 'regular', 'AreaChart', state.div).getChart(); break;
-                            case 'geo': graph = chart(response[report], 'regular', 'GeoChart', state.div).getChart(); break;
-                            case 'pie': graph = chart(response[report], 'pie', 'PieChart', state.div).getChart(); break;
-                            case 'line': graph = chart(response[report], 'regular', 'LineChart', state.div).getChart(); break;
-                            case 'bar': graph = chart(response[report], 'regular', 'BarChart', state.div).getChart(); break;
+                            case 'area': graph = chart(response.reports[report], 'regular', 'AreaChart', state.div).getChart(); break;
+                            case 'geo': graph = chart(response.reports[report], 'regular', 'GeoChart', state.div).getChart(); break;
+                            case 'pie': graph = chart(response.reports[report], 'pie', 'PieChart', state.div).getChart(); break;
+                            case 'line': graph = chart(response.reports[report], 'regular', 'LineChart', state.div).getChart(); break;
+                            case 'bar': graph = chart(response.reports[report], 'regular', 'BarChart', state.div).getChart(); break;
                         }
                         let size = chartSize(state.div).getSize();
                         let { elWidth, elHeight } = size;
@@ -545,12 +541,12 @@ function addFirstCharts() {
         chartDiv('pie').createDiv()
     ];
 
-    fetch('reports.json').then(res => res.json())
+    fetch('api/?/reports').then(res => res.json())
         .then(report => {
             const chartArray = [
-                chart(report.sale, 'regular', 'AreaChart', divArray[0]).getChart(),
-                chart(report.nationalities, 'regular', 'GeoChart', divArray[1]).getChart(),
-                chart(report.bookings, 'pie', 'PieChart', divArray[2]).getChart()
+                chart(report.reports.sale, 'regular', 'AreaChart', divArray[0]).getChart(),
+                chart(report.reports.nationalities, 'regular', 'GeoChart', divArray[1]).getChart(),
+                chart(report.reports.bookings, 'pie', 'PieChart', divArray[2]).getChart()
             ];
 
             let increment = 0;

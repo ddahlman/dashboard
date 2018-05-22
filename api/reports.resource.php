@@ -4,7 +4,7 @@
 #
 class _reports extends Resource{ // Klassen ärver egenskaper från den generella klassen Resource som finns i resource.class.php
     # Här deklareras de variabler/members som objektet ska ha
-    public $bajs, $reports, $request;
+    public $reports, $request;
     # Här skapas konstruktorn som körs när objektet skapas
     function __construct($resource_id, $request){
         
@@ -28,81 +28,9 @@ class _reports extends Resource{ // Klassen ärver egenskaper från den generell
         $tod_options = mysqli_fetch_assoc(mysqli_query( $connection, "SELECT * FROM todays_event_options LIMIT 1" ));
         
         $options_bookings = chart_options($bok_options);
-        /* $options_bookings = (object) [
-        "regular" => (object)
-        [
-        "title" => $bok_options["title"],
-        "backgroundColor" => $bok_options["backgroundColor"],
-        "titleTextStyle" =>(object)[
-        "color" => $bok_options["title_color"],
-        "fontName" => $bok_options["title_fontName"],
-        "fontSize" => $bok_options["title_fontSize"]
-        ],
-        "hAxis" =>(object)[
-        "textStyle" => (object)[
-        "color" => $bok_options["hAxis_textStyle_color"]
-        ],
-        "gridlines" => (object)[
-        "color" => $bok_options["hAxis_gridlines_color"]
-        ]
-        ],
-        "vAxis" => (object)[
-        "textStyle" => (object)[
-        "color" => $bok_options["vAxis_textStyle_color"]
-        ],
-        "titleTextStyle" => (object)[
-        "color" => $bok_options["vAxis_titleTextStyle_color"]
-        ],
-        "baseLineColor" => $bok_options["vAxis_baseLineColor"]
-        ],
-        "legend" => (object)[
-        "textStyle" => (object)[
-        "color" => $bok_options["legend_textStyle_color"]
-        ]
-        ],
-        "colors" => array($bok_options["colors1"], $bok_options["colors2"], $bok_options["colors3"]),
-        "chartArea" => (object)[
-        "left"=> $bok_options["chartArea_left"],
-        "top"=> $bok_options["chartArea_top"],
-        "height"=> $bok_options["chartArea_height"],
-        "width"=> $bok_options["chartArea_width"]
-        ],
-        "aniamtion" => (object)[
-        "startup" => $bok_options["animation_startup"],
-        "duration" => $bok_options["animation_duration"],
-        "easing" => $bok_options["animation_easing"]
-        ]
-        ],
-        "pie" => (object)[
-        "title" => $bok_options["pie_title"],
-        "backgroundColor" => $bok_options["pie_backgroundColor"],
-        "titleTextStyle" =>(object)[
-        "color" => $bok_options["pie_title_color"],
-        "fontName" => $bok_options["pie_title_fontName"],
-        "fontSize" => $bok_options["pie_title_fontSize"]
-        ],
-        "legend" => (object)[
-        "textStyle" => (object)[
-        "color" => $bok_options["pie_legend_textStyle_color"]
-        ]
-        ],
-        "colors" => array($bok_options["pie_color1"], $bok_options["pie_color2"], $bok_options["pie_color3"]),
-        "chartArea" => (object)[
-        "left"=> $bok_options["pie_chartArea_left"],
-        "top"=> $bok_options["pie_chartArea_top"],
-        "height"=> $bok_options["pie_chartArea_height"],
-        "width"=> $bok_options["pie_chartArea_width"]
-        ],
-        "aniamtion" => (object)[
-        "startup" => $bok_options["pie_animation_startup"],
-        "duration" => $bok_options["pie_animation_duration"],
-        "easing" => $bok_options["pie_animation_easing"]
-        ],
-        "pieHole" => $bok_options["pie_pieHole"]
-        ]
-        ]; */
-        
-        $this->bajs = $options_bookings;
+        $options_nationalities = chart_options($bok_options);
+        $options_sale = chart_options($bok_options);
+        $options_todays_event = chart_options($bok_options);
         
         $bok_data = array();
         $bok_data["cols"] = array(
@@ -179,10 +107,10 @@ class _reports extends Resource{ // Klassen ärver egenskaper från den generell
         $tod_data["rows"] = $tod_rows;
         
         $obj = (object) [
-        "bookings" => (object)["data" => $bok_data],
-        "nationalities" => (object)["data" => $nat_data],
-        "sale" => (object)["data" => $sale_data],
-        "todaysEvent" => (object)["data" => $tod_data]
+        "bookings" => (object)["data" => $bok_data, "options" => $options_bookings],
+        "nationalities" => (object)["data" => $nat_data, "options" => $options_nationalities],
+        "sale" => (object)["data" => $sale_data, "options" => $options_sale],
+        "todaysEvent" => (object)["data" => $tod_data, "options" => $options_todays_event]
         ];
         
         $this->reports = $obj;
