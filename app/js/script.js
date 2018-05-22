@@ -74,7 +74,7 @@ const createSlotDiv = (state) => ({
         div.setAttribute('data-slot-x', g.slotObjects[indx].xPos);
         div.setAttribute('data-slot-y', g.slotObjects[indx].yPos);
         div.setAttribute('data-status', g.slotObjects[indx].status);
-        /* div.innerHTML = `<p class="dd-slot-num dd-vc">${indx + 1}</p>`; */
+        div.innerHTML = `<p class="dd-slot-num dd-vc">${indx + 1}</p>`;
         return div;
     }
 });
@@ -323,6 +323,7 @@ const placeCharts = ({ div, chart, indx, increment, width, height }) => {
             div.setAttribute('data-id', increment);
             g.wrap.appendChild(div);
             chart.draw();
+            console.log(div.childNodes)
             div.addEventListener('mousedown', chartMouseDown);
             div.addEventListener('mouseup', chartMouseUp);
             g.chartPositions[increment - 1] = { width: width, height: height, x: chartPos.x, y: chartPos.y };
@@ -348,7 +349,6 @@ const addChartToDOM = (button) => {
                 selectedChartType;
             if (state.selectedReportId) {
                 report = state.selectedReportId.id;
-                console.log(state.selectedReportId);
                 state.selectedReportId.removeAttribute('data-selected');
             }
             if (state.chartType) selectedChartType = state.chartType.id;
@@ -514,14 +514,14 @@ const showAvailableCharts = (reportId) => {
         go: () => {
             [...document.querySelectorAll('.card2')].map(chartBtn => chartBtn.style.display = 'none');
             switch (id) {
-                case "sale": availableCharts(['bar', 'line', 'area']).show(); break;
+                case "sale": availableCharts(['bar', 'line', 'area', 'pie']).show(); break;
                 case "expenditure": availableCharts(['bar', 'line', 'area', 'geo']).show(); break;
                 case "nrOfVisitors": availableCharts(['bar', 'line', 'pie', 'geo']).show(); break;
                 case "socialMedia": availableCharts(['bar', 'area', 'pie', 'geo']).show(); break;
                 case "compiledInfo": availableCharts(['line', 'area', 'pie', 'geo']).show(); break;
-                case "nationalities": availableCharts(['bar', 'line', 'area']).show(); break;
-                case "todaysEvent": availableCharts(['bar', 'line', 'area']).show(); break;
-                case "bookings": availableCharts(['bar', 'area', 'pie', 'geo']).show(); break;
+                case "nationalities": availableCharts(['bar', 'line', 'area', 'geo']).show(); break;
+                case "todaysEvent": availableCharts(['bar', 'line', 'area', 'geo']).show(); break;
+                case "bookings": availableCharts(['bar', 'area', 'pie', 'line']).show(); break;
                 case "mood": availableCharts(['bar', 'line', 'pie', 'geo']).show(); break;
                 default: break;
             }
@@ -682,12 +682,6 @@ function chartMouseUp() {
         arrangeItemsMouseUp().go();
     }
 }
-
-
-fetch('api/?/reports').then(res => res.json()).then(reports => {
-    console.log(reports);
-});
-
 
 
 const dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar'));

@@ -284,7 +284,7 @@ svg[aria-label="A chart."]>g>g:last-child {
 
 .dd-vc {
     position: relative;
-    top: 50%;
+    /* top: 50%; */
     transform: translateY(-50%);
 }
 
@@ -299,7 +299,7 @@ svg[aria-label="A chart."]>g>g:last-child {
 .dd-slot {
     float: left;
     user-select: none;
-    /*  outline: 2px dashed #ccc; */
+    outline: 2px dashed #ccc;
     outline-offset: -15px;
     position: relative;
 }
