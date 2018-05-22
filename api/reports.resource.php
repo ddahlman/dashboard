@@ -4,7 +4,7 @@
 #
 class _reports extends Resource{ // Klassen ärver egenskaper från den generella klassen Resource som finns i resource.class.php
     # Här deklareras de variabler/members som objektet ska ha
-    public $reports, $request;
+    public $bajs, $reports, $request;
     # Här skapas konstruktorn som körs när objektet skapas
     function __construct($resource_id, $request){
         
@@ -17,15 +17,92 @@ class _reports extends Resource{ // Klassen ärver egenskaper från den generell
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden GET
     function GET($input, $connection){
         // om vår URL inte innehåller ett ID hämtas alla users
-        $bok_query = "SELECT * FROM bookings";
-        $nat_query = "SELECT * FROM nationalities";
-        $sale_query = "SELECT * FROM sale";
-        $tod_query = "SELECT * FROM todays_event";
+        $result_bok = mysqli_query($connection, "SELECT * FROM bookings");
+        $result_nat = mysqli_query($connection, "SELECT * FROM nationalities");
+        $result_sale = mysqli_query($connection, "SELECT * FROM sale");
+        $result_tod = mysqli_query($connection, "SELECT * FROM todays_event");
         
-        $result_bok = mysqli_query($connection, $bok_query);
-        $result_nat = mysqli_query($connection, $nat_query);
-        $result_sale = mysqli_query($connection, $sale_query);
-        $result_tod = mysqli_query($connection, $tod_query);
+        $bok_options = mysqli_fetch_assoc(mysqli_query( $connection, "SELECT * FROM booking_options LIMIT 1" ));
+        $nat_options = mysqli_fetch_assoc(mysqli_query( $connection, "SELECT * FROM nationalities_options LIMIT 1" ));
+        $sale_options = mysqli_fetch_assoc(mysqli_query( $connection, "SELECT * FROM sale_options LIMIT 1" ));
+        $tod_options = mysqli_fetch_assoc(mysqli_query( $connection, "SELECT * FROM todays_event_options LIMIT 1" ));
+        
+        $options_bookings = chart_options($bok_options);
+        /* $options_bookings = (object) [
+        "regular" => (object)
+        [
+        "title" => $bok_options["title"],
+        "backgroundColor" => $bok_options["backgroundColor"],
+        "titleTextStyle" =>(object)[
+        "color" => $bok_options["title_color"],
+        "fontName" => $bok_options["title_fontName"],
+        "fontSize" => $bok_options["title_fontSize"]
+        ],
+        "hAxis" =>(object)[
+        "textStyle" => (object)[
+        "color" => $bok_options["hAxis_textStyle_color"]
+        ],
+        "gridlines" => (object)[
+        "color" => $bok_options["hAxis_gridlines_color"]
+        ]
+        ],
+        "vAxis" => (object)[
+        "textStyle" => (object)[
+        "color" => $bok_options["vAxis_textStyle_color"]
+        ],
+        "titleTextStyle" => (object)[
+        "color" => $bok_options["vAxis_titleTextStyle_color"]
+        ],
+        "baseLineColor" => $bok_options["vAxis_baseLineColor"]
+        ],
+        "legend" => (object)[
+        "textStyle" => (object)[
+        "color" => $bok_options["legend_textStyle_color"]
+        ]
+        ],
+        "colors" => array($bok_options["colors1"], $bok_options["colors2"], $bok_options["colors3"]),
+        "chartArea" => (object)[
+        "left"=> $bok_options["chartArea_left"],
+        "top"=> $bok_options["chartArea_top"],
+        "height"=> $bok_options["chartArea_height"],
+        "width"=> $bok_options["chartArea_width"]
+        ],
+        "aniamtion" => (object)[
+        "startup" => $bok_options["animation_startup"],
+        "duration" => $bok_options["animation_duration"],
+        "easing" => $bok_options["animation_easing"]
+        ]
+        ],
+        "pie" => (object)[
+        "title" => $bok_options["pie_title"],
+        "backgroundColor" => $bok_options["pie_backgroundColor"],
+        "titleTextStyle" =>(object)[
+        "color" => $bok_options["pie_title_color"],
+        "fontName" => $bok_options["pie_title_fontName"],
+        "fontSize" => $bok_options["pie_title_fontSize"]
+        ],
+        "legend" => (object)[
+        "textStyle" => (object)[
+        "color" => $bok_options["pie_legend_textStyle_color"]
+        ]
+        ],
+        "colors" => array($bok_options["pie_color1"], $bok_options["pie_color2"], $bok_options["pie_color3"]),
+        "chartArea" => (object)[
+        "left"=> $bok_options["pie_chartArea_left"],
+        "top"=> $bok_options["pie_chartArea_top"],
+        "height"=> $bok_options["pie_chartArea_height"],
+        "width"=> $bok_options["pie_chartArea_width"]
+        ],
+        "aniamtion" => (object)[
+        "startup" => $bok_options["pie_animation_startup"],
+        "duration" => $bok_options["pie_animation_duration"],
+        "easing" => $bok_options["pie_animation_easing"]
+        ],
+        "pieHole" => $bok_options["pie_pieHole"]
+        ]
+        ]; */
+        
+        $this->bajs = $options_bookings;
         
         $bok_data = array();
         $bok_data["cols"] = array(
