@@ -20,7 +20,7 @@ const g = function () {
         allCharts = [],
         chartPositions = [],
         allSlots = [],
-        slotsPerRow = 8,
+        slotsPerRow = 10,
         selected = null,
         originalIndex = null,
         originalClickCoords = null,
@@ -45,6 +45,18 @@ const g = function () {
         lastTouched: lastTouched
     };
 }();
+
+const setNewAttributes = (newEl, attributes) => {
+    const el = newEl;
+    const attr = attributes;
+    return {
+        go: () => {
+            for (var key in attr) {
+                el.setAttribute(key, attr[key]);
+            }
+        }
+    }
+};
 
 const slot = (num) => {
     let state = {
@@ -101,8 +113,8 @@ const slotBounds = (num) => {
 const slotWidth = (state) => ({
     width: () => {
         switch (state.num) {
-            case 2: return state.slotSize.width * 2;
             case 3: return state.slotSize.width * 3;
+            case 4: return state.slotSize.width * 4;
             default: return state.slotSize.width;
         }
     }
@@ -111,8 +123,8 @@ const slotWidth = (state) => ({
 const slotHeight = (state) => ({
     height: () => {
         switch (state.num) {
-            case 2: return state.slotSize.height * 2;
             case 3: return state.slotSize.height * 3;
+            case 4: return state.slotSize.height * 4;
             default: return state.slotSize.height;
         }
     }
@@ -188,20 +200,20 @@ const chart = (response, optionType, type, div) => {
 const chartDiv = (cssClass) => {
     let state = {
         cssClass,
-        width2: slotBounds(2).width(),
         width3: slotBounds(3).width(),
-        height2: slotBounds(2).height(),
-        height3: slotBounds(3).height()
+        width4: slotBounds(4).width(),
+        height3: slotBounds(3).height(),
+        height4: slotBounds(4).height()
     };
     return {
         createDiv: () => {
             let div = document.createElement('div');
             switch (state.cssClass) {
-                case 'geo': div.setAttribute('style', `width:${state.width3}px; height:${state.height3}px;`); break;
-                case 'pie': div.setAttribute('style', `width:${state.width2}px; height:${state.height3}px;`); break;
-                case 'area': div.setAttribute('style', `width:${state.width2}px; height:${state.height2}px;`); break;
-                case 'line': div.setAttribute('style', `width:${state.width2}px; height:${state.height2}px;`); break;
-                case 'bar': div.setAttribute('style', `width:${state.width3}px; height:${state.height3}px;`); break;
+                case 'geo': div.setAttribute('style', `width:${state.width4}px; height:${state.height4}px;`); break;
+                case 'pie': div.setAttribute('style', `width:${state.width3}px; height:${state.height4}px;`); break;
+                case 'area': div.setAttribute('style', `width:${state.width3}px; height:${state.height3}px;`); break;
+                case 'line': div.setAttribute('style', `width:${state.width3}px; height:${state.height3}px;`); break;
+                case 'bar': div.setAttribute('style', `width:${state.width4}px; height:${state.height4}px;`); break;
             }
             div.classList.add(state.cssClass);
             return div;
@@ -236,42 +248,60 @@ const getGridPositions = (indx, div) => {
 
             const getSlotElem = (x, y) => document.querySelector(`[data-slot-x="${x}"][data-slot-y="${y}"]`);
 
-            let [X1, X2, X2Y1, X1Y1, Y1, Y2, X1Y2, X2Y2] = [
+            let [X1, X2, X3, X2Y1, X3Y1, X1Y1, Y1, Y2, Y3, X1Y2, X1Y3, X2Y2, X2Y3, X3Y2, X3Y3] = [
                 g.slotObjects[i + 1],
                 g.slotObjects[i + 2],
+                g.slotObjects[i + 3],
                 g.slotObjects[(i + 2) + g.slotsPerRow],
+                g.slotObjects[(i + 3) + g.slotsPerRow],
                 g.slotObjects[i + (g.slotsPerRow + 1)],
                 g.slotObjects[i + g.slotsPerRow],
                 g.slotObjects[i + (g.slotsPerRow * 2)],
+                g.slotObjects[i + (g.slotsPerRow * 3)],
                 g.slotObjects[i + (g.slotsPerRow * 2) + 1],
-                g.slotObjects[i + (g.slotsPerRow * 2) + 2]
+                g.slotObjects[i + (g.slotsPerRow * 3) + 1],
+                g.slotObjects[i + (g.slotsPerRow * 2) + 2],
+                g.slotObjects[i + (g.slotsPerRow * 3) + 2],
+                g.slotObjects[i + (g.slotsPerRow * 2) + 3],
+                g.slotObjects[i + (g.slotsPerRow * 3) + 3]
             ];
 
-            let [el, elY1, elX1, elX2, elX1Y1, elX2Y1, elY2, elX1Y2, elX2Y2] = [
+            let [el, elY1, elX1, elX2, elX3, elX1Y1, elX2Y1, elX3Y1, elY2, elY3, elX1Y2, elX1Y3, elX2Y2, elX2Y3, elX3Y2, elX3Y3] = [
                 getSlotElem(X.xPos, X.yPos),
                 getSlotElem(Y1.xPos, Y1.yPos),
                 getSlotElem(X1.xPos, X1.yPos),
                 getSlotElem(X2.xPos, X2.yPos),
+                getSlotElem(X3.xPos, X3.yPos),
                 getSlotElem(X1Y1.xPos, X1Y1.yPos),
                 getSlotElem(X2Y1.xPos, X2Y1.yPos),
+                getSlotElem(X3Y1.xPos, X3Y1.yPos),
                 getSlotElem(Y2.xPos, Y2.yPos),
+                getSlotElem(Y3.xPos, Y3.yPos),
                 getSlotElem(X1Y2.xPos, X1Y2.yPos),
-                getSlotElem(X2Y2.xPos, X2Y2.yPos)
+                getSlotElem(X1Y3.xPos, X1Y3.yPos),
+                getSlotElem(X2Y2.xPos, X2Y2.yPos),
+                getSlotElem(X2Y3.xPos, X2Y3.yPos),
+                getSlotElem(X3Y2.xPos, X3Y2.yPos),
+                getSlotElem(X3Y3.xPos, X3Y3.yPos),
             ];
 
-            if (elWidth === (slotWidth * 2) && elHeight === (slotHeight * 2)) {
-                [X, Y1, X1, X1Y1, el.dataset, elY1.dataset, elX1.dataset, elX1Y1.dataset]
-                    .map(obj => obj.status = 'occupied');
-                return { x: X.x, y: X.y, width: elWidth, height: elHeight };
-            }
-            else if (elWidth === (slotWidth * 2) && elHeight === (slotHeight * 3)) {
-                [X, Y1, X1, X1Y1, Y2, X1Y2, el.dataset, elY1.dataset, elX1.dataset, elX1Y1.dataset, elY2.dataset, elX1Y2.dataset]
-                    .map(obj => obj.status = 'occupied');
-                return { x: X.x, y: X.y, width: elWidth, height: elHeight };
-            }
-            else if (elWidth === (slotWidth * 3) && elHeight === (slotHeight * 3)) {
+            if (elWidth === (slotWidth * 3) && elHeight === (slotHeight * 3)) {
                 [X, Y1, X1, X1Y1, Y2, X1Y2, X2, X2Y2, X2Y1, el.dataset, elY1.dataset, elX1.dataset,
                     elX1Y1.dataset, elY2.dataset, elX1Y2.dataset, elX2.dataset, elX2Y2.dataset, elX2Y1.dataset]
+                    .map(obj => obj.status = 'occupied');
+                return { x: X.x, y: X.y, width: elWidth, height: elHeight };
+            }
+            else if (elWidth === (slotWidth * 3) && elHeight === (slotHeight * 4)) {
+                [X, Y1, X1, X1Y1, Y2, X1Y2, X2, X2Y2, X2Y1, Y3, X1Y3, X2Y3, el.dataset, elY1.dataset, elX1.dataset,
+                    elX1Y1.dataset, elY2.dataset, elY3.dataset, elX1Y2.dataset, elX1Y3.dataset, elX2Y3.dataset,
+                    elX2.dataset, elX2Y2.dataset, elX2Y1.dataset]
+                    .map(obj => obj.status = 'occupied');
+                return { x: X.x, y: X.y, width: elWidth, height: elHeight };
+            }
+            else if (elWidth === (slotWidth * 4) && elHeight === (slotHeight * 4)) {
+                [X, Y1, X1, X1Y1, Y2, X1Y2, X2, X2Y2, X3, X2Y1, Y3, X1Y3, X2Y3, X3Y1, X3Y2, X3Y3, el.dataset, elY1.dataset, elX1.dataset,
+                    elX1Y1.dataset, elY2.dataset, elY3.dataset, elX1Y2.dataset, elX1Y3.dataset, elX2Y3.dataset,
+                    elX2.dataset, elX2Y2.dataset, elX3.dataset, elX2Y1.dataset, elX3Y1.dataset, elX3Y2.dataset, elX3Y3.dataset]
                     .map(obj => obj.status = 'occupied');
                 return { x: X.x, y: X.y, width: elWidth, height: elHeight };
             }
@@ -280,33 +310,52 @@ const getGridPositions = (indx, div) => {
 };
 
 
-const isNotOverlapping = (i, chartWidth) => {
+const isNotOverlapping = (i, chartWidth, chartHeight) => {
     let state = {
         indx: i,
         width: chartWidth,
-        width2: slotBounds(2).width(),
+        height: chartHeight,
         width3: slotBounds(3).width(),
+        width4: slotBounds(4).width(),
+        height3: slotBounds(3).height(),
+        height4: slotBounds(4).height(),
         yPos: g.slotObjects[i].yPos,
-        status: g.slotObjects[i].status,
-        nextStatus: g.slotObjects[i + 1].status,
-        afterNextStatus: g.slotObjects[i + 2].status,
-        status1Down: g.slotObjects[i + g.slotsPerRow].status,
-        status2Down: g.slotObjects[i + (g.slotsPerRow * 2)].status
+        X: g.slotObjects[i].status,
+        X1: g.slotObjects[i + 1].status,
+        X2: g.slotObjects[i + 2].status,
+        X3: g.slotObjects[i + 3].status,
+        Y1: g.slotObjects[i + g.slotsPerRow].status,
+        Y2: g.slotObjects[i + (g.slotsPerRow * 2)].status,
+        Y3: g.slotObjects[i + (g.slotsPerRow * 3)].status
     };
     return {
         check: () => {
-            switch (state.width) {
-                case state.width2:
-                    return state.yPos < 8 &&
-                        state.status === 'available' &&
-                        state.nextStatus === 'available' &&
-                        state.status1Down === 'available' &&
-                        state.status2Down === 'available';
-                case state.width3:
-                    return state.yPos < 7 &&
-                        state.status === 'available' &&
-                        state.nextStatus === 'available' &&
-                        state.afterNextStatus === 'available';
+            if (state.width === state.width3 && state.height === state.height3) {
+                return state.yPos < 9 &&
+                    state.X === 'available' &&
+                    state.X1 === 'available' &&
+                    state.X2 === 'available' &&
+                    state.Y1 === 'available' &&
+                    state.Y2 === 'available';
+            }
+            if (state.width === state.width3 && state.height === state.height4) {
+                return state.yPos < 9 &&
+                    state.X === 'available' &&
+                    state.X1 === 'available' &&
+                    state.X2 === 'available' &&
+                    state.Y1 === 'available' &&
+                    state.Y2 === 'available' &&
+                    state.Y3 === 'available';
+            }
+            if (state.width === state.width4 && state.height === state.height4) {
+                return state.yPos < 8 &&
+                    state.X === 'available' &&
+                    state.X1 === 'available' &&
+                    state.X2 === 'available' &&
+                    state.X3 === 'available' &&
+                    state.Y1 === 'available' &&
+                    state.Y2 === 'available' &&
+                    state.Y3 === 'available';
             }
         }
     };
@@ -323,7 +372,6 @@ const placeCharts = ({ div, chart, indx, increment, width, height }) => {
             div.setAttribute('data-id', increment);
             g.wrap.appendChild(div);
             chart.draw();
-            console.log(div.childNodes)
             div.addEventListener('mousedown', chartMouseDown);
             div.addEventListener('mouseup', chartMouseUp);
             g.chartPositions[increment - 1] = { width: width, height: height, x: chartPos.x, y: chartPos.y };
@@ -365,7 +413,7 @@ const addChartToDOM = (button) => {
                         }
                         let size = chartSize(state.div).getSize();
                         let { elWidth, elHeight } = size;
-                        const indx = availableIndex(elWidth).get();
+                        const indx = availableIndex(elWidth, elHeight).get();
                         let chartAttributes = {
                             div: state.div,
                             chart: graph,
@@ -381,10 +429,11 @@ const addChartToDOM = (button) => {
     };
 };
 
-const availableIndex = (width) => {
+const availableIndex = (width, height) => {
     const w = width;
+    const h = height;
     return {
-        get: () => g.allSlots.findIndex((slot, i) => !isNotOverlapping(i, w).check() ? '' : i)
+        get: () => g.allSlots.findIndex((slot, i) => !isNotOverlapping(i, w, h).check() ? '' : i)
     };
 };
 
@@ -423,12 +472,12 @@ const arrangeItemsMouseUp = () => {
                 let size = chartSize(el).getSize();
                 let { elWidth, elHeight } = size;
                 let pos;
-                if (isNotOverlapping(i, elWidth).check()) {
+                if (isNotOverlapping(i, elWidth, elHeight).check()) {
                     pos = getGridPositions(i, el).go();
                     el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
                     state.chartPos[state.increment - 1] = { width: pos.width, height: pos.height, x: pos.x, y: pos.y };
                 } else {
-                    const indx = availableIndex(elWidth).get();
+                    const indx = availableIndex(elWidth, elHeight).get();
                     pos = getGridPositions(indx, el).go();
                     el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
                     state.chartPos[state.increment - 1] = { width: pos.width, height: pos.height, x: pos.x, y: pos.y };
@@ -531,7 +580,7 @@ const showAvailableCharts = (reportId) => {
 
 
 function addFirstCharts() {
-    const firstSlots = slot(64).createArray();
+    const firstSlots = slot(70).createArray();
     const addFirstSlots = addSlotsToDOM(firstSlots).go();
     g.allSlots.push(...firstSlots);
 
@@ -605,7 +654,8 @@ g.removeBox.addEventListener('click', function () {
 [...document.querySelectorAll('.card2')].forEach((chartButton) => {
     chartButton.addEventListener('click', function () {
         const len = g.slotObjects.length;
-        for (let i = 0; i < g.slotsPerRow; i++) {
+        const doubleRow = g.slotsPerRow * 2;
+        for (let i = 0; i < doubleRow; i++) {
             const newSlot = slot().createDiv(i + len);
             g.allSlots.push(newSlot);
             addSlotsToDOM(g.allSlots).go();
