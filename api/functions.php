@@ -57,7 +57,7 @@ function chart_options($result) {
     "height"=> $result["chartArea_height"],
     "width"=> $result["chartArea_width"]
     ],
-    "aniamtion" => (object)[
+    "animation" => (object)[
     "startup" => (bool) $result["animation_startup"],
     "duration" => (int) $result["animation_duration"],
     "easing" => $result["animation_easing"]
@@ -83,7 +83,7 @@ function chart_options($result) {
     "height"=> $result["pie_chartArea_height"],
     "width"=> $result["pie_chartArea_width"]
     ],
-    "aniamtion" => (object)[
+    "animation" => (object)[
     "startup" => (bool) $result["pie_animation_startup"],
     "duration" => (int) $result["pie_animation_duration"],
     "easing" => $result["pie_animation_easing"]
