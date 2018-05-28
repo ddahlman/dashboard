@@ -46,17 +46,6 @@ const g = function () {
     };
 }();
 
-const setNewAttributes = (newEl, attributes) => {
-    const el = newEl;
-    const attr = attributes;
-    return {
-        go: () => {
-            for (var key in attr) {
-                el.setAttribute(key, attr[key]);
-            }
-        }
-    }
-};
 
 const slot = (num) => {
     let state = {
@@ -669,7 +658,6 @@ g.removeBox.addEventListener('click', function () {
 
 function chartMouseDown(e) {
     if (!g.selected) {
-
         g.wrap.addEventListener('mousemove', chartMouseMove);
         // save the element
         g.selected = e.currentTarget;
