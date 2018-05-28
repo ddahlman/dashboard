@@ -28,9 +28,9 @@ class _reports extends Resource{ // Klassen ärver egenskaper från den generell
         $tod_options = mysqli_fetch_assoc(mysqli_query( $connection, "SELECT * FROM todays_event_options LIMIT 1" ));
         
         $options_bookings = chart_options($bok_options);
-        $options_nationalities = chart_options($bok_options);
-        $options_sale = chart_options($bok_options);
-        $options_todays_event = chart_options($bok_options);
+        $options_nationalities = chart_options($nat_options);
+        $options_sale = chart_options($sale_options);
+        $options_todays_event = chart_options($tod_options);
         
         $bok_data = array();
         $bok_data["cols"] = array(

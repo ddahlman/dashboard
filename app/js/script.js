@@ -581,6 +581,7 @@ function addFirstCharts() {
 
     fetch('api/?/reports').then(res => res.json())
         .then(report => {
+            console.log(report);
             const chartArray = [
                 chart(report.reports.sale, 'regular', 'AreaChart', divArray[0]).getChart(),
                 chart(report.reports.nationalities, 'regular', 'GeoChart', divArray[1]).getChart(),
