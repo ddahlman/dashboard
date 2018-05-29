@@ -14,8 +14,21 @@ const g = function () {
         menu1 = document.querySelector('.menu-1'),
         box = document.querySelector('.box'),
         removeBox = document.querySelector('.close'),
-        wrap = document.getElementById('grid'),
+        wrap = () => {
+            const wrapper = document.getElementById('grid');
+            if (window.matchMedia("(min-width: 1200px)").matches) {
+                wrapper.style.width = '1400px';
+            }
+            if (window.matchMedia("(min-width: 400px) and (max-width: 1200px)").matches) {
+                wrapper.style.width = '700px';
+            }
+            if (window.matchMedia("(max-width: 400px)").matches) {
+                wrapper.style.width = '300px';
+            }
+            return wrapper;
+        },
         slotObjects = [],
+        reports = {},
         dataId = [],
         allCharts = [],
         chartPositions = [],
@@ -23,11 +36,23 @@ const g = function () {
         windowMini = window.matchMedia("(max-width: 400px)"),
         windowMedium = window.matchMedia("(min-width: 400px) and (max-width: 1200px)"),
         windowLarge = window.matchMedia("(min-width: 1200px)"),
-        slotsPerRow = 10,
+        slotsPerRow = () => {
+            if (window.matchMedia("(min-width: 1200px)").matches) {
+                return 10;
+            }
+            if (window.matchMedia("(min-width: 400px) and (max-width: 1200px)").matches) {
+                return 5;
+            }
+            if (window.matchMedia("(max-width: 400px)").matches) {
+                return 1;
+            }
+        },
         selected = null,
         originalIndex = null,
         originalClickCoords = null,
-        lastTouched = null;
+        lastTouched = null,
+        aspectWidth = 1920,
+        aspectHeight = 1080;
     return {
         container2: container2,
         toolbar: toolbar,
@@ -37,6 +62,7 @@ const g = function () {
         removeBox: removeBox,
         wrap: wrap,
         slotObjects: slotObjects,
+        reports: reports,
         dataId: dataId,
         allCharts: allCharts,
         chartPositions: chartPositions,
@@ -48,11 +74,13 @@ const g = function () {
         selected: selected,
         originalIndex: originalIndex,
         originalClickCoords: originalClickCoords,
-        lastTouched: lastTouched
+        lastTouched: lastTouched,
+        aspectWidth: aspectWidth,
+        aspectHeight: aspectHeight
     };
 }();
 
-
+window.onload = function () { alert("It's loaded!") }
 const slot = (num) => {
     let state = {
         num,
@@ -69,12 +97,12 @@ const slot = (num) => {
 const createSlotDiv = (state) => ({
     createDiv: (indx) => {
         let div = document.createElement('div');
-        div.setAttribute('style', `width: ${100 / g.slotsPerRow}%; padding-bottom: ${(100 / g.slotsPerRow) * (state.aspectHeight / state.aspectWidth)}%;`);
+        div.setAttribute('style', `width: ${100 / g.slotsPerRow()}%; padding-bottom: ${(100 / g.slotsPerRow()) * (state.aspectHeight / state.aspectWidth)}%;`);
         div.setAttribute('class', 'dd-slot');
 
         let slotProp = {
-            xPos: Math.floor(indx / g.slotsPerRow) + 1,
-            yPos: (indx % g.slotsPerRow) + 1,
+            xPos: Math.floor(indx / g.slotsPerRow()) + 1,
+            yPos: (indx % g.slotsPerRow()) + 1,
             status: 'available'
         };
         g.slotObjects.push(slotProp);
@@ -93,7 +121,7 @@ const createDivArray = (state) => ({
 
 const slotBounds = (num) => {
     let state = {
-        wrapBounds: g.wrap.getBoundingClientRect(),
+        wrapBounds: g.wrap().getBoundingClientRect(),
         slotSize: document.getElementsByClassName('dd-slot')[0].getBoundingClientRect(),
         num
     };
@@ -108,9 +136,11 @@ const slotBounds = (num) => {
 const slotWidth = (state) => ({
     width: () => {
         switch (state.num) {
+            case 1: return state.slotSize.width;
+            case 2: return state.slotSize.width * 2;
             case 3: return state.slotSize.width * 3;
             case 4: return state.slotSize.width * 4;
-            default: return state.slotSize.width;
+            default: break;
         }
     }
 });
@@ -118,9 +148,11 @@ const slotWidth = (state) => ({
 const slotHeight = (state) => ({
     height: () => {
         switch (state.num) {
+            case 1: return state.slotSize.height;
+            case 2: return state.slotSize.height * 2;
             case 3: return state.slotSize.height * 3;
             case 4: return state.slotSize.height * 4;
-            default: return state.slotSize.height;
+            default: break;
         }
     }
 });
@@ -145,7 +177,7 @@ const addSlotsToDOM = (array) => {
     return {
         go: () => {
             arr.forEach((slot, i) => {
-                g.wrap.appendChild(slot);
+                g.wrap().appendChild(slot);
             });
             slotBounds().add();
         }
@@ -195,20 +227,40 @@ const chart = (response, optionType, type, div) => {
 const chartDiv = (cssClass) => {
     let state = {
         cssClass,
+        width1: slotBounds(1).width(),
+        width2: slotBounds(2).width(),
         width3: slotBounds(3).width(),
         width4: slotBounds(4).width(),
+        height1: slotBounds(1).height(),
+        height2: slotBounds(2).height(),
         height3: slotBounds(3).height(),
         height4: slotBounds(4).height()
     };
     return {
         createDiv: () => {
             let div = document.createElement('div');
-            switch (state.cssClass) {
-                case 'geo': div.setAttribute('style', `width:${state.width4}px; height:${state.height4}px;`); break;
-                case 'pie': div.setAttribute('style', `width:${state.width3}px; height:${state.height4}px;`); break;
-                case 'area': div.setAttribute('style', `width:${state.width3}px; height:${state.height3}px;`); break;
-                case 'line': div.setAttribute('style', `width:${state.width3}px; height:${state.height3}px;`); break;
-                case 'bar': div.setAttribute('style', `width:${state.width4}px; height:${state.height4}px;`); break;
+            if (g.large.matches) {
+                switch (cssClass) {
+                    case 'area': div.setAttribute('style', `width:${state.width3}px; height:${state.height3}px;`); break;
+                    case 'geo': div.setAttribute('style', `width:${state.width4}px; height:${state.height4}px;`); break;
+                    case 'pie': div.setAttribute('style', `width:${state.width3}px; height:${state.height4}px;`); break;
+                    case 'line': div.setAttribute('style', `width:${state.width3}px; height:${state.height3}px;`); break;
+                    case 'bar': div.setAttribute('style', `width:${state.width4}px; height:${state.height4}px;`); break;
+                    default: break;
+                }
+            }
+            if (g.medium.matches) {
+                switch (cssClass) {
+                    case 'area': div.setAttribute('style', `width:${state.width2}px; height:${state.height2}px;`); break;
+                    case 'geo': div.setAttribute('style', `width:${state.width3}px; height:${state.height3}px;`); break;
+                    case 'pie': div.setAttribute('style', `width:${state.width2}px; height:${state.height3}px;`); break;
+                    case 'line': div.setAttribute('style', `width:${state.width2}px; height:${state.height2}px;`); break;
+                    case 'bar': div.setAttribute('style', `width:${state.width3}px; height:${state.height3}px;`); break;
+                    default: break;
+                }
+            }
+            if (g.mini.matches) {
+                div.setAttribute('style', `width:${state.width1}px; height:${state.height1}px;`);
             }
             div.classList.add(state.cssClass);
             return div;
@@ -243,114 +295,91 @@ const getGridPositions = (indx, div) => {
 
             const getSlotElem = (x, y) => document.querySelector(`[data-slot-x="${x}"][data-slot-y="${y}"]`);
 
-            let [X1, X2, X3, X2Y1, X3Y1, X1Y1, Y1, Y2, Y3, X1Y2, X1Y3, X2Y2, X2Y3, X3Y2, X3Y3] = [
-                g.slotObjects[i + 1],
-                g.slotObjects[i + 2],
-                g.slotObjects[i + 3],
-                g.slotObjects[(i + 2) + g.slotsPerRow],
-                g.slotObjects[(i + 3) + g.slotsPerRow],
-                g.slotObjects[i + (g.slotsPerRow + 1)],
-                g.slotObjects[i + g.slotsPerRow],
-                g.slotObjects[i + (g.slotsPerRow * 2)],
-                g.slotObjects[i + (g.slotsPerRow * 3)],
-                g.slotObjects[i + (g.slotsPerRow * 2) + 1],
-                g.slotObjects[i + (g.slotsPerRow * 3) + 1],
-                g.slotObjects[i + (g.slotsPerRow * 2) + 2],
-                g.slotObjects[i + (g.slotsPerRow * 3) + 2],
-                g.slotObjects[i + (g.slotsPerRow * 2) + 3],
-                g.slotObjects[i + (g.slotsPerRow * 3) + 3]
-            ];
+            if (g.mini.matches && elWidth === slotWidth && elHeight === slotHeight) {
+                X.status = 'occupied';
+                let slotElem = getSlotElem(X.xPos, X.yPos);
+                slotElem.dataset.status = 'occupied';
+            }
+            else {
+                const mediumArea = [X, g.slotObjects[i + 1], g.slotObjects[i + g.slotsPerRow()], g.slotObjects[(i + 1) + g.slotsPerRow()]];
 
-            let [el, elY1, elX1, elX2, elX3, elX1Y1, elX2Y1, elX3Y1, elY2, elY3, elX1Y2, elX1Y3, elX2Y2, elX2Y3, elX3Y2, elX3Y3] = [
-                getSlotElem(X.xPos, X.yPos),
-                getSlotElem(Y1.xPos, Y1.yPos),
-                getSlotElem(X1.xPos, X1.yPos),
-                getSlotElem(X2.xPos, X2.yPos),
-                getSlotElem(X3.xPos, X3.yPos),
-                getSlotElem(X1Y1.xPos, X1Y1.yPos),
-                getSlotElem(X2Y1.xPos, X2Y1.yPos),
-                getSlotElem(X3Y1.xPos, X3Y1.yPos),
-                getSlotElem(Y2.xPos, Y2.yPos),
-                getSlotElem(Y3.xPos, Y3.yPos),
-                getSlotElem(X1Y2.xPos, X1Y2.yPos),
-                getSlotElem(X1Y3.xPos, X1Y3.yPos),
-                getSlotElem(X2Y2.xPos, X2Y2.yPos),
-                getSlotElem(X2Y3.xPos, X2Y3.yPos),
-                getSlotElem(X3Y2.xPos, X3Y2.yPos),
-                getSlotElem(X3Y3.xPos, X3Y3.yPos),
-            ];
+                const largeArea = [g.slotObjects[i + 2], g.slotObjects[(i + 2) + g.slotsPerRow()],
+                g.slotObjects[i + (g.slotsPerRow() * 2)], g.slotObjects[i + (g.slotsPerRow() * 2) + 1],
+                g.slotObjects[i + (g.slotsPerRow() * 2) + 2]].concat(mediumArea);
 
-            if (elWidth === (slotWidth * 3) && elHeight === (slotHeight * 3)) {
-                [X, Y1, X1, X1Y1, Y2, X1Y2, X2, X2Y2, X2Y1, el.dataset, elY1.dataset, elX1.dataset,
-                    elX1Y1.dataset, elY2.dataset, elX1Y2.dataset, elX2.dataset, elX2Y2.dataset, elX2Y1.dataset]
-                    .map(obj => obj.status = 'occupied');
-                return { x: X.x, y: X.y, width: elWidth, height: elHeight };
+                const mediumGeo = [].concat(largeArea);
+
+                const largeGeo = [g.slotObjects[i + 3], g.slotObjects[(i + 3) + g.slotsPerRow()],
+                g.slotObjects[i + (g.slotsPerRow() * 3)], g.slotObjects[i + (g.slotsPerRow() * 3) + 1],
+                g.slotObjects[i + (g.slotsPerRow() * 3) + 2], g.slotObjects[i + (g.slotsPerRow() * 2) + 3],
+                g.slotObjects[i + (g.slotsPerRow() * 3) + 3]].concat(largeArea);
+
+                const mediumPie = [g.slotObjects[i + (g.slotsPerRow() * 2)], g.slotObjects[i + (g.slotsPerRow() * 2) + 1]].concat(mediumArea);
+
+                const largePie = [g.slotObjects[i + (g.slotsPerRow() * 3)], g.slotObjects[i + (g.slotsPerRow() * 3) + 1],
+                g.slotObjects[i + (g.slotsPerRow() * 3) + 2],].concat(largeArea);
+
+                const sizeOfDiv = (match, nr1, nr2) => match && elWidth === (slotWidth * nr1) && elHeight === (slotHeight * nr2);
+                const occupy = (obj) => {
+                    let elem = getSlotElem(obj.xPos, obj.yPos);
+                    obj.status = 'occupied';
+                    elem.dataset.status = 'occupied';
+                };
+                switch (true) {
+                    case sizeOfDiv(g.medium.matches, 2, 2): mediumArea.map(occupy); break;
+                    case sizeOfDiv(g.medium.matches, 3, 3): mediumGeo.map(occupy); break;
+                    case sizeOfDiv(g.medium.matches, 2, 3): mediumPie.map(occupy); break;
+                    case sizeOfDiv(g.large.matches, 3, 3): largeArea.map(occupy); break;
+                    case sizeOfDiv(g.large.matches, 4, 4): largeGeo.map(occupy); break;
+                    case sizeOfDiv(g.large.matches, 3, 4): largePie.map(occupy); break;
+                    default: break;
+                }
             }
-            else if (elWidth === (slotWidth * 3) && elHeight === (slotHeight * 4)) {
-                [X, Y1, X1, X1Y1, Y2, X1Y2, X2, X2Y2, X2Y1, Y3, X1Y3, X2Y3, el.dataset, elY1.dataset, elX1.dataset,
-                    elX1Y1.dataset, elY2.dataset, elY3.dataset, elX1Y2.dataset, elX1Y3.dataset, elX2Y3.dataset,
-                    elX2.dataset, elX2Y2.dataset, elX2Y1.dataset]
-                    .map(obj => obj.status = 'occupied');
-                return { x: X.x, y: X.y, width: elWidth, height: elHeight };
-            }
-            else if (elWidth === (slotWidth * 4) && elHeight === (slotHeight * 4)) {
-                [X, Y1, X1, X1Y1, Y2, X1Y2, X2, X2Y2, X3, X2Y1, Y3, X1Y3, X2Y3, X3Y1, X3Y2, X3Y3, el.dataset, elY1.dataset, elX1.dataset,
-                    elX1Y1.dataset, elY2.dataset, elY3.dataset, elX1Y2.dataset, elX1Y3.dataset, elX2Y3.dataset,
-                    elX2.dataset, elX2Y2.dataset, elX3.dataset, elX2Y1.dataset, elX3Y1.dataset, elX3Y2.dataset, elX3Y3.dataset]
-                    .map(obj => obj.status = 'occupied');
-                return { x: X.x, y: X.y, width: elWidth, height: elHeight };
-            }
+            return { x: X.x, y: X.y, width: elWidth, height: elHeight };
         }
     };
 };
-
 
 const isNotOverlapping = (i, chartWidth, chartHeight) => {
     let state = {
         indx: i,
         width: chartWidth,
         height: chartHeight,
+        width1: slotBounds(1).width(),
+        width2: slotBounds(2).width(),
         width3: slotBounds(3).width(),
         width4: slotBounds(4).width(),
+        height1: slotBounds(1).height(),
+        height2: slotBounds(2).height(),
         height3: slotBounds(3).height(),
         height4: slotBounds(4).height(),
         yPos: g.slotObjects[i].yPos,
         X: g.slotObjects[i].status,
-        X1: g.slotObjects[i + 1].status,
-        X2: g.slotObjects[i + 2].status,
-        X3: g.slotObjects[i + 3].status,
-        Y1: g.slotObjects[i + g.slotsPerRow].status,
-        Y2: g.slotObjects[i + (g.slotsPerRow * 2)].status,
-        Y3: g.slotObjects[i + (g.slotsPerRow * 3)].status
+        X1: () => g.medium.matches || g.large.matches ? g.slotObjects[i + 1].status : '',
+        X2: () => g.medium.matches || g.large.matches ? g.slotObjects[i + 2].status : '',
+        X3: () => g.medium.matches || g.large.matches ? g.slotObjects[i + 3].status : '',
+        Y1: () => g.medium.matches || g.large.matches ? g.slotObjects[i + g.slotsPerRow()].status : '',
+        Y2: () => g.medium.matches || g.large.matches ? g.slotObjects[i + (g.slotsPerRow() * 2)].status : '',
+        Y3: () => g.medium.matches || g.large.matches ? g.slotObjects[i + (g.slotsPerRow() * 3)].status : ''
     };
     return {
         check: () => {
-            if (state.width === state.width3 && state.height === state.height3) {
-                return state.yPos < 9 &&
-                    state.X === 'available' &&
-                    state.X1 === 'available' &&
-                    state.X2 === 'available' &&
-                    state.Y1 === 'available' &&
-                    state.Y2 === 'available';
-            }
-            if (state.width === state.width3 && state.height === state.height4) {
-                return state.yPos < 9 &&
-                    state.X === 'available' &&
-                    state.X1 === 'available' &&
-                    state.X2 === 'available' &&
-                    state.Y1 === 'available' &&
-                    state.Y2 === 'available' &&
-                    state.Y3 === 'available';
-            }
-            if (state.width === state.width4 && state.height === state.height4) {
-                return state.yPos < 8 &&
-                    state.X === 'available' &&
-                    state.X1 === 'available' &&
-                    state.X2 === 'available' &&
-                    state.X3 === 'available' &&
-                    state.Y1 === 'available' &&
-                    state.Y2 === 'available' &&
-                    state.Y3 === 'available';
+            const checkSize = (stateWidth, stateHeight, match) => state.width === stateWidth && state.height === stateHeight && match;
+
+            switch (true) {
+                case checkSize(state.width1, state.height1, g.mini.matches): return state.X === 'available';
+                case checkSize(state.width2, state.height2, g.medium.matches):
+                    return state.yPos < 5 && [state.X, state.X1(), state.Y1(), state.Y2()].every(el => el === 'available');
+                case checkSize(state.width3, state.height3, g.medium.matches):
+                    return state.yPos < 4 && [state.X, state.X1(), state.X2(), state.Y1(), state.Y2()].every(el => el === 'available');
+                case checkSize(state.width2, state.height3, g.medium.matches):
+                    return state.yPos < 5 && [state.X, state.X1(), state.Y1(), state.Y2()].every(el => el === 'available');
+                case checkSize(state.width3, state.height3, g.large.matches):
+                    return state.yPos < 9 && [state.X, state.X1(), state.X2(), state.Y1(), state.Y2()].every(el => el === 'available');
+                case checkSize(state.width3, state.height4, g.large.matches):
+                    return state.yPos < 9 && [state.X, state.X1(), state.X2(), state.Y1(), state.Y2(), state.Y3()].every(el => el === 'available');
+                case checkSize(state.width4, state.height4, g.large.matches):
+                    return state.yPos < 8 && [state.X, state.X1(), state.X2(), state.X3(), state.Y1(), state.Y2(), state.Y3()].every(el => el === 'available');
             }
         }
     };
@@ -365,13 +394,19 @@ const placeCharts = ({ div, chart, indx, increment, width, height }) => {
             div.classList.add('dd-item', 'dd-transition');
             div.style.transform = `translate3d(${chartPos.x}px, ${chartPos.y}px,0px)`;
             div.setAttribute('data-id', increment);
-            g.wrap.appendChild(div);
+            g.wrap().appendChild(div);
             chart.draw();
             div.addEventListener('mousedown', chartMouseDown);
             div.addEventListener('mouseup', chartMouseUp);
-            g.chartPositions[increment - 1] = { width: width, height: height, x: chartPos.x, y: chartPos.y };
+            g.chartPositions[increment - 1] = {
+                dataId: div.getAttribute('data-id'),
+                width: width,
+                height: height,
+                x: chartPos.x,
+                y: chartPos.y
+            };
             g.dataId.push(div.dataset.id);
-            g.allCharts.push(div);
+            g.allCharts.push(chart);
         }
     };
 };
@@ -381,7 +416,7 @@ const placeCharts = ({ div, chart, indx, increment, width, height }) => {
 const addChartToDOM = (button) => {
     let state = {
         chartType: button,
-        wrap: g.wrap,
+        wrap: g.wrap(),
         div: chartDiv(button.id).createDiv(),
         len: g.dataId.length,
         selectedReportId: document.querySelector('[data-selected]')
@@ -394,31 +429,30 @@ const addChartToDOM = (button) => {
                 report = state.selectedReportId.id;
                 state.selectedReportId.removeAttribute('data-selected');
             }
+
             if (state.chartType) selectedChartType = state.chartType.id;
             if (report) {
-                fetch('api/?/reports').then(res => res.json())
-                    .then(response => {
-                        let graph;
-                        switch (selectedChartType) {
-                            case 'area': graph = chart(response.reports[report], 'regular', 'AreaChart', state.div).getChart(); break;
-                            case 'geo': graph = chart(response.reports[report], 'regular', 'GeoChart', state.div).getChart(); break;
-                            case 'pie': graph = chart(response.reports[report], 'pie', 'PieChart', state.div).getChart(); break;
-                            case 'line': graph = chart(response.reports[report], 'regular', 'LineChart', state.div).getChart(); break;
-                            case 'bar': graph = chart(response.reports[report], 'regular', 'BarChart', state.div).getChart(); break;
-                        }
-                        let size = chartSize(state.div).getSize();
-                        let { elWidth, elHeight } = size;
-                        const indx = availableIndex(elWidth, elHeight).get();
-                        let chartAttributes = {
-                            div: state.div,
-                            chart: graph,
-                            indx: indx,
-                            increment: state.len + 1,
-                            width: elWidth,
-                            height: elHeight
-                        };
-                        placeCharts(chartAttributes).go();
-                    });
+                let graph;
+                switch (selectedChartType) {
+                    case 'area': graph = chart(g.reports[report], 'regular', 'AreaChart', state.div).getChart(); break;
+                    case 'geo': graph = chart(g.reports[report], 'regular', 'GeoChart', state.div).getChart(); break;
+                    case 'pie': graph = chart(g.reports[report], 'pie', 'PieChart', state.div).getChart(); break;
+                    case 'line': graph = chart(g.reports[report], 'regular', 'LineChart', state.div).getChart(); break;
+                    case 'bar': graph = chart(g.reports[report], 'regular', 'BarChart', state.div).getChart(); break;
+                    default: graph = 'There is no charts here';
+                }
+                let size = chartSize(state.div).getSize();
+                let { elWidth, elHeight } = size;
+                const indx = availableIndex(elWidth, elHeight).get();
+                let chartAttributes = {
+                    div: state.div,
+                    chart: graph,
+                    indx: indx,
+                    increment: state.len + 1,
+                    width: elWidth,
+                    height: elHeight
+                };
+                placeCharts(chartAttributes).go();
             }
         }
     };
@@ -470,12 +504,12 @@ const arrangeItemsMouseUp = () => {
                 if (isNotOverlapping(i, elWidth, elHeight).check()) {
                     pos = getGridPositions(i, el).go();
                     el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
-                    state.chartPos[state.increment - 1] = { width: pos.width, height: pos.height, x: pos.x, y: pos.y };
+                    state.chartPos[state.increment - 1] = { dataId: dataId, width: pos.width, height: pos.height, x: pos.x, y: pos.y };
                 } else {
                     const indx = availableIndex(elWidth, elHeight).get();
                     pos = getGridPositions(indx, el).go();
                     el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
-                    state.chartPos[state.increment - 1] = { width: pos.width, height: pos.height, x: pos.x, y: pos.y };
+                    state.chartPos[state.increment - 1] = { dataId: dataId, width: pos.width, height: pos.height, x: pos.x, y: pos.y };
                 }
             }
         })
@@ -587,7 +621,7 @@ function addFirstCharts() {
 
     fetch('api/?/reports').then(res => res.json())
         .then(report => {
-            console.log(report);
+            Object.assign(g.reports, report.reports);
             const chartArray = [
                 chart(report.reports.sale, 'regular', 'AreaChart', divArray[0]).getChart(),
                 chart(report.reports.nationalities, 'regular', 'GeoChart', divArray[1]).getChart(),
@@ -650,7 +684,7 @@ g.removeBox.addEventListener('click', function () {
 [...document.querySelectorAll('.card2')].forEach((chartButton) => {
     chartButton.addEventListener('click', function () {
         const len = g.slotObjects.length;
-        const doubleRow = g.slotsPerRow * 2;
+        const doubleRow = 20;
         for (let i = 0; i < doubleRow; i++) {
             const newSlot = slot().createDiv(i + len);
             g.allSlots.push(newSlot);
@@ -663,9 +697,147 @@ g.removeBox.addEventListener('click', function () {
 });
 
 
+const changeOnResize = (slotsPerRow, slotWidth, slotHeight) => {
+    let state = {
+        perRow: slotsPerRow,
+        slotWidth: slotWidth,
+        slotHeight: slotHeight
+    };
+    return Object.assign(
+        {},
+        drawSlots(state),
+        drawDivs(state),
+        drawCharts(state)
+    );
+};
+
+const drawSlots = (state) => ({
+    slots: () => {
+        g.allSlots.map((slot, i, arr) => {
+            slot.setAttribute('style',
+                `width: ${100 / state.perRow}%; padding-bottom: ${(100 / state.perRow) * (g.aspectHeight / g.aspectWidth)}%;`);
+            slot.dataset.status = 'available';
+            g.slotObjects[i].status = 'available';
+            g.slotObjects[i].xPos = Math.floor(i / state.perRow) + 1;
+            g.slotObjects[i].yPos = (i % state.perRow) + 1;
+            g.slotObjects[i].width = state.slotWidth;
+            g.slotObjects[i].height = state.slotHeight;
+            arr[i].dataset.slotX = g.slotObjects[i].xPos;
+            arr[i].dataset.slotY = g.slotObjects[i].yPos;
+        });
+        setTimeout(() => {
+            const wrapBounds = g.wrap().getBoundingClientRect();
+            [...document.getElementsByClassName('dd-slot')].forEach((slot, i) => {
+                const bounds = slot.getBoundingClientRect();
+                g.slotObjects[i].y = bounds.top - wrapBounds.top;
+                g.slotObjects[i].x = bounds.left - wrapBounds.left;
+            });
+        }, 200);
+    }
+});
+
+const drawDivs = (state) => ({
+    divs: () => {
+        let increment = 0;
+        g.allSlots.map((slot, i) => {
+            if (g.slotObjects[i].status === 'occupied') return;
+            increment++;
+            if (g.dataId[increment - 1] !== undefined) {
+                let dataId = g.dataId[increment - 1];
+                let el = document.querySelector(`[data-id="${dataId}"]`);
+                if (g.wrap().style.width === '1400px') {
+                    switch (true) {
+                        case el.classList.contains('area') || el.classList.contains('line'):
+                            el.setAttribute('style',
+                                `width:${state.slotWidth * 3}px; height:${state.slotHeight * 3}px;`);
+                            break;
+                        case el.classList.contains('geo') || el.classList.contains('bar'):
+                            el.setAttribute('style',
+                                `width:${state.slotWidth * 4}px; height:${state.slotHeight * 4}px;`);
+                            break;
+                        case el.classList.contains('pie'):
+                            el.setAttribute('style',
+                                `width:${state.slotWidth * 3}px; height:${state.slotHeight * 4}px;`);
+                            break;
+                    }
+                }
+                if (g.wrap().style.width === '700px') {
+                    switch (true) {
+                        case el.classList.contains('area') || el.classList.contains('line'):
+                            el.setAttribute('style',
+                                `width:${state.slotWidth * 2}px; height:${state.slotHeight * 2}px;`);
+                            break;
+                        case el.classList.contains('geo') || el.classList.contains('bar'):
+                            el.setAttribute('style',
+                                `width:${state.slotWidth * 3}px; height:${state.slotHeight * 3}px;`);
+                            break;
+                        case el.classList.contains('pie'):
+                            el.setAttribute('style',
+                                `width:${state.slotWidth * 2}px; height:${state.slotHeight * 3}px;`);
+                            break;
+                    }
+                }
+                if (g.wrap().style.width === '300px') {
+                    el.setAttribute('style', `width:${state.slotWidth}px; height:${state.slotHeight}px;`);
+                }
+                let size = chartSize(el).getSize();
+                let { elWidth, elHeight } = size;
+                let pos;
+                if (isNotOverlapping(i, elWidth, elHeight).check()) {
+                    pos = getGridPositions(i, el).go();
+                    el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
+                    g.chartPositions[increment - 1] = { dataId: dataId, width: pos.width, height: pos.height, x: pos.x, y: pos.y };
+                } else {
+                    const indx = availableIndex(elWidth, elHeight).get();
+                    pos = getGridPositions(indx, el).go();
+                    el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
+                    g.chartPositions[increment - 1] = { dataId: dataId, width: pos.width, height: pos.height, x: pos.x, y: pos.y };
+                }
+            }
+        });
+    }
+});
+
+const drawCharts = (state) => ({
+    charts: () => {
+        g.allCharts.forEach(chart => chart.draw());
+    }
+});
+
+
+const resize = (rows, slotWidth, slotHeight) => {
+    g.wrap();
+    changeOnResize(rows, slotWidth, slotHeight).slots();
+    setTimeout(() => {
+        changeOnResize(rows, slotWidth, slotHeight).divs();
+    }, 200);
+    setTimeout(() => {
+        changeOnResize().charts();
+    }, 500);
+};
+
+
+[g.mini, g.medium, g.large].map((mq, i, arr) => {
+    mq.addEventListener('change', (e) => {
+        if (e.matches) {
+            if (e.media === "(max-width: 400px)") {
+                resize(1, 300, 168.75);
+            }
+            if (e.media === "(max-width: 1200px) and (min-width: 400px)") {
+                resize(5, 140, 78.75);
+            }
+            if (e.media === "(min-width: 1200px)") {
+                resize(10, 140, 78.75);
+            }
+        }
+    });
+});
+
+
+
 function chartMouseDown(e) {
     if (!g.selected) {
-        g.wrap.addEventListener('mousemove', chartMouseMove);
+        g.wrap().addEventListener('mousemove', chartMouseMove);
         // save the element
         g.selected = e.currentTarget;
         g.originalClickCoords = { x: e.pageX, y: e.pageY };
@@ -681,7 +853,7 @@ function chartMouseDown(e) {
 
 function chartMouseMove(e) {
     if (g.selected) {
-        let bounds = g.wrap.getBoundingClientRect(),
+        let bounds = g.wrap().getBoundingClientRect(),
             left = bounds.left + document.documentElement.scrollLeft,
             top = bounds.top + document.documentElement.scrollTop;
 
