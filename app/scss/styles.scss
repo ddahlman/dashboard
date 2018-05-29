@@ -15,13 +15,49 @@ $google-shadow: 1px 3px 4px rgba(0, 0, 0, 0.3);
 $google-shadow-elevated: 0 19px 38px rgba(0, 0, 0, 0.30),
 0 15px 12px rgba(0, 0, 0, 0.22);
 $trippus-font: 'Open Sans';
-html,
+$cubic: cubic-bezier(0.5, 0.5, 0.2, 1);
 body {
-    background-color: #eee;
+    margin: 0;
 }
 
-.white {
-    color: $white;
+.remove {
+    display: none;
+}
+
+.loading-absolute {
+    margin: 0;
+    background-color: var(--mdc-theme-primary);
+    position: absolute;
+    z-index: 10000;
+    &.loaded {
+        opacity: 0;
+        transition: opacity 0.5s $cubic;
+    }
+    .loading-container {
+        height: 100vh;
+        width: 100vw;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+        .loading {
+            height: 200px;
+            width: 200px;
+            grid-area: 2 / 2 / 3 / 3;
+            align-self: center;
+            justify-self: center;
+            p {
+                font: 100 20px $trippus-font;
+                color: #ee7365;
+            }
+            h1 {
+                color: $white;
+            }
+            hr {
+                background-color: #f9b035;
+                width: 0;
+            }
+        }
+    }
 }
 
 /* ------ css main grid ---------------------------------------- */
@@ -31,16 +67,6 @@ body {
     margin: 20px auto 0;
     position: relative;
 }
-
-/* .grid {
-    display: grid;
-    grid-template-rows: repeat(var(--numRows), var(--gridHeight));
-    grid-template-columns: repeat(var(--numCols), 19%);
-    grid-gap: 10px;
-    grid-auto-flow: row dense;
-    min-height: 100vh;
-    margin-top: 7%;
-} */
 
 /* ------------------------------------------------------------- */
 
@@ -61,7 +87,7 @@ body {
     border-radius: 50%;
     opacity: 0;
     overflow: hidden;
-    transition: transform 0.3s cubic-bezier(0.5, 0.5, 0.2, 1), opacity 0.1s 0.1s;
+    transition: transform 0.3s $cubic, opacity 0.1s 0.1s;
 }
 
 .pseudo-circle.open {
@@ -78,6 +104,9 @@ body {
     position: fixed;
     z-index: 9999;
     background-color: var(--mdc-theme-primary);
+    &.hidden {
+        display: none;
+    }
 }
 
 .box.open {
@@ -106,6 +135,9 @@ body {
     overflow: hidden;
     pointer-events: none;
     transition: opacity 0.3s;
+    &.hidden {
+        display: none;
+    }
 }
 
 .dashboard-toolbar.open {
@@ -155,6 +187,9 @@ body {
     width: 100%;
     top: 0;
     left: 0;
+    &.hidden {
+        display: none;
+    }
 }
 
 .shadow-elevated {
@@ -177,6 +212,19 @@ body {
 
 .mdc-tab-bar {
     transition: opacity 0.4s;
+}
+
+.mdc-tab-bar__indicator {
+    background-color: #fff;
+}
+
+.mdc-tab {
+    color: #fff;
+    &:hover {
+        color: #fff;
+        background-color: rgba($color: #fff, $alpha: 0.1);
+        transition: background-color 0.5s;
+    }
 }
 
 .panels {
@@ -246,41 +294,10 @@ svg[aria-label="A chart."]>g>g:last-child {
     pointer-events: none;
 }
 
-/* .area {
-    grid-area: span 1/ span 2;
-}
-
-.pie {
-    grid-area: span 1/ span 1;
-}
-
-.geo {
-    grid-area: span 2/ span 2;
-}
-
-.bar {
-    grid-area: span 2/ span 2;
-}
-
-.line {
-    grid-area: span 1/ span 2;
-}
-
-.area,
-.pie,
-.geo,
-.bar,
-.line {
-    box-shadow: $google-shadow;
-} */
-
-/* ful css för display */
-
-.dd-vc {
+/* .dd-vc {
     position: relative;
-    /* top: 50%; */
     transform: translateY(-50%);
-}
+} */
 
 .dd-transition {
     transition: all .3s ease;
@@ -293,8 +310,6 @@ svg[aria-label="A chart."]>g>g:last-child {
 .dd-slot {
     float: left;
     user-select: none;
-    outline: 2px dashed #ccc;
-    outline-offset: -15px;
     position: relative;
 }
 
@@ -302,8 +317,6 @@ svg[aria-label="A chart."]>g>g:last-child {
     text-align: center;
     width: 100%;
     position: absolute;
-    font-size: 40px;
-    color: rgba(0, 0, 0, 0.1);
 }
 
 .dd-item {
@@ -319,4 +332,24 @@ svg[aria-label="A chart."]>g>g:last-child {
 
 .dd-selected {
     z-index: 20;
+}
+
+@media screen and (max-width: 400px) {
+    .box {
+        left: 75%;
+        top: 20%;
+    }
+    .box.open {
+        transform: translate3d(-50px, -30px, 0);
+    }
+    .box,
+    .pseudo-circle {
+        right: 50px;
+    }
+    .md-48 {
+        font-size: 30px;
+    }
+    .report-btn {
+        font-size: 0;
+    }
 }

@@ -4,7 +4,9 @@ google.charts.load('current', {
 });
 
 google.charts.setOnLoadCallback(function () {
+
     addFirstCharts();
+
 });
 
 const g = function () {
@@ -80,7 +82,32 @@ const g = function () {
     };
 }();
 
-window.onload = function () { alert("It's loaded!") }
+(() => {
+    let counter = 0;
+    let c = 0;
+    const h1 = document.querySelector('.loading h1');
+    const hr = document.querySelector('.loading hr');
+    let i = setInterval(() => {
+        h1.innerHTML = `${c}%`;
+        hr.style.width = `${c}%`;
+        counter++;
+        c++;
+        if (counter === 101) {
+            clearInterval(i);
+        }
+    }, 10);
+})();
+window.addEventListener('load', () => {
+    let loader = document.querySelector('.loading-absolute');
+    setTimeout(() => {
+        loader.classList.add('loaded');
+        [g.box, g.container2, g.toolbar].map(el => el.classList.remove('hidden'));
+    }, 2000);
+    setTimeout(() => {
+        loader.style.display = 'none';
+    }, 2500);
+});
+
 const slot = (num) => {
     let state = {
         num,
@@ -109,7 +136,6 @@ const createSlotDiv = (state) => ({
         div.setAttribute('data-slot-x', g.slotObjects[indx].xPos);
         div.setAttribute('data-slot-y', g.slotObjects[indx].yPos);
         div.setAttribute('data-status', g.slotObjects[indx].status);
-        div.innerHTML = `<p class="dd-slot-num dd-vc">${indx + 1}</p>`;
         return div;
     }
 });
@@ -652,6 +678,8 @@ function addFirstCharts() {
 
 /* open plus-button into a tab-menu */
 g.box.addEventListener('click', function () {
+    dynamicTabBar.layout();
+    fixed_ripple.map(btn => btn.layout());
     g.removeBox.style.display = 'block';
     this.classList.add('open');
     g.pseudoCircle.classList.add('open');
@@ -902,6 +930,10 @@ function chartMouseUp() {
 
 
 const dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar'));
+let fixed_ripple = [...document.getElementsByClassName('mdc-tab')].map((btn) => {
+    return mdc.ripple.MDCRipple.attachTo(btn);
+})
+
 const panels = document.querySelector('.panels');
 dynamicTabBar.preventDefaultOnClick = true;
 

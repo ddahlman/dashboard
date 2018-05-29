@@ -2,6 +2,13 @@
 <html lang="en">
 
 <head>
+    <!--  <noscript>
+        <style>
+            body {
+                opacity: 1;
+            }
+        </style>
+    </noscript> -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -12,11 +19,18 @@
 </head>
 
 <body class='mdc-typography'>
-
+    <div class="loading-absolute">
+        <div class="loading-container">
+            <div class="loading">
+                <p>dashboard</p>
+                <h1>0%</h1>
+                <hr>
+            </div>
+        </div>
+    </div>
     <main>
         <section id='grid' class="grid"></section>
-
-        <div class='container-2 out-of-sight' id='container-2'>
+        <div class='container-2 hidden out-of-sight' id='container-2'>
             <section class="graph-btn-grid">
                 <button id='bar' class='card card2 mdc-button material-icons mdc-button--raised' data-mdc-auto-init="MDCRipple">
                     <i class="material-icons mdc-button__icon md-48">insert_chart</i>
@@ -58,40 +72,40 @@
         </div>
 
 
-        <div class='box mdc-fab material-icons'>
+        <div class='box hidden mdc-fab material-icons'>
             <span class='mdc-fab__icon'>add</span>
         </div>
-        <div class='dashboard-toolbar'>
+        <div class='dashboard-toolbar hidden'>
             <div>
                 <button class='mdc-button close'>close</button>
             </div>
             <section class='menu-1'>
                 <nav id="icon-text-tab-bar" class="mdc-tab-bar">
-                    <a role='tab' aria-controls="panel-1" class="mdc-tab white mdc-tab--active">1</a>
-                    <a role='tab' aria-controls="panel-2" class="mdc-tab white">2</a>
-                    <a role='tab' aria-controls="panel-3" class="mdc-tab white">3</a>
-                    <span class="mdc-tab-bar__indicator white"></span>
+                    <a role='tab' aria-controls="panel-1" class="mdc-tab mdc-tab--active">1</a>
+                    <a role='tab' aria-controls="panel-2" class="mdc-tab">2</a>
+                    <a role='tab' aria-controls="panel-3" class="mdc-tab">3</a>
+                    <span class="mdc-tab-bar__indicator"></span>
                 </nav>
                 <div class="panels" for='#icon-text-tab-bar'>
                     <div class="panel is-active" role="tabpanel" aria-hidden="false">
                         <section class='panel-grid'>
                             <button id='sale' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">attach_money</i>
-                                <div>
+                                <div class="icon-div">
                                     Omsättning
                                 </div>
                             </button>
                             <button id='nationalities' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">public</i>
-                                <div>nationaliteter</div>
+                                <div class="icon-div">nationaliteter</div>
                             </button>
                             <button id='todaysEvent' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">event</i>
-                                <div>dagens event</div>
+                                <div class="icon-div">dagens event</div>
                             </button>
                             <button id='bookings' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">playlist_add_check</i>
-                                <div>bokade</div>
+                                <div class="icon-div">bokade</div>
                             </button>
                         </section>
                     </div>
@@ -99,19 +113,19 @@
                         <section class='panel-grid'>
                             <button id='report10' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">attach_money</i>
-                                <div>intäkter</div>
+                                <div class="icon-div">intäkter</div>
                             </button>
                             <button id='report11' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">monetization_on</i>
-                                <div>utgifter</div>
+                                <div class="icon-div">utgifter</div>
                             </button>
                             <button id='report12' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">transfer_within_a_station</i>
-                                <div>antal besökare</div>
+                                <div class="icon-div">antal besökare</div>
                             </button>
                             <button id='report13' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">favorite_border</i>
-                                <div>social media</div>
+                                <div class="icon-div">social media</div>
                             </button>
 
                         </section>
@@ -120,19 +134,19 @@
                         <section class='panel-grid'>
                             <button id='report19' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">attach_money</i>
-                                <div>intäkter</div>
+                                <div class="icon-div">intäkter</div>
                             </button>
                             <button id='report20' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">monetization_on</i>
-                                <div>utgifter</div>
+                                <div class="icon-div">utgifter</div>
                             </button>
                             <button id='report21' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">transfer_within_a_station</i>
-                                <div>antal besökare</div>
+                                <div class="icon-div">antal besökare</div>
                             </button>
                             <button class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">favorite_border</i>
-                                <div>social media</div>
+                                <div class="icon-div">social media</div>
                             </button>
                         </section>
                     </div>
