@@ -851,6 +851,9 @@ g.box.addEventListener('click', function () {
         g.removeBox.style.display = 'none';
         g.container2.classList.add('out-of-sight');
         g.overlay.classList.remove('add');
+        if (document.querySelector('[data-selected="selected"]')) {
+            document.querySelector('[data-selected="selected"]').removeAttribute('data-selected');
+        }
         removeMenu();
     });
 });
