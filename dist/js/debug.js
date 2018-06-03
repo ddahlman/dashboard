@@ -142,6 +142,9 @@ dynamicTabBar.listen("MDCTabBar:change", function (t) {
 setTimeout(function () {
     g.firstLoader.style.display = 'none';
 }, 3000);
+'use strict';
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var slot = function slot(num) {
     var state = {
@@ -189,6 +192,9 @@ var createDivArray = function createDivArray(state) {
         }
     };
 };
+'use strict';
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var slotBounds = function slotBounds(num) {
     var state = {
@@ -266,6 +272,7 @@ var addSlotsToDOM = function addSlotsToDOM(array) {
         }
     };
 };
+'use strict';
 
 var pieFunction = function pieFunction(obj, div) {
     var state = { obj: obj, div: div };
@@ -365,6 +372,7 @@ var chartDiv = function chartDiv(cssClass) {
         }
     };
 };
+'use strict';
 
 var chartSize = function chartSize(el) {
     var ele = el;
@@ -446,6 +454,7 @@ var getGridPositions = function getGridPositions(indx, div) {
         }
     };
 };
+'use strict';
 
 var isNotOverlapping = function isNotOverlapping(i, chartWidth, chartHeight) {
     var state = {
@@ -518,14 +527,15 @@ var isNotOverlapping = function isNotOverlapping(i, chartWidth, chartHeight) {
         }
     };
 };
+'use strict';
 
-var placeCharts = function placeCharts(_ref2) {
-    var div = _ref2.div,
-        chart = _ref2.chart,
-        indx = _ref2.indx,
-        increment = _ref2.increment,
-        width = _ref2.width,
-        height = _ref2.height;
+var placeCharts = function placeCharts(_ref) {
+    var div = _ref.div,
+        chart = _ref.chart,
+        indx = _ref.indx,
+        increment = _ref.increment,
+        width = _ref.width,
+        height = _ref.height;
 
     return {
         go: function go() {
@@ -549,6 +559,7 @@ var placeCharts = function placeCharts(_ref2) {
         }
     };
 };
+'use strict';
 
 var addChartToDOM = function addChartToDOM(button) {
     var state = {
@@ -601,6 +612,7 @@ var addChartToDOM = function addChartToDOM(button) {
         }
     };
 };
+'use strict';
 
 var availableIndex = function availableIndex(width, height) {
     var w = width;
@@ -668,6 +680,7 @@ var arrangeItemsMouseUp = function arrangeItemsMouseUp() {
         }
     };
 };
+"use strict";
 
 var getChartIdByCoords = function getChartIdByCoords(coords) {
     var chartPos = g.chartPositions;
@@ -705,6 +718,7 @@ var getIndexOfChartId = function getIndexOfChartId(id) {
         }
     };
 };
+'use strict';
 
 var removeMenu = function removeMenu() {
     g.box.classList.remove('open');
@@ -712,6 +726,9 @@ var removeMenu = function removeMenu() {
     g.menu1.classList.remove('show');
     g.toolbar.classList.remove('open');
 };
+'use strict';
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var availableCharts = function availableCharts(typeOfCharts) {
     var types = typeOfCharts;
@@ -763,6 +780,9 @@ var showAvailableCharts = function showAvailableCharts(reportId) {
         }
     };
 };
+'use strict';
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 function addFirstCharts() {
     var _g$allSlots;
@@ -808,6 +828,9 @@ function addFirstCharts() {
     };
     xml.send();
 }
+'use strict';
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 g.box.addEventListener('click', function () {
     dynamicTabBar.layout();
@@ -854,6 +877,9 @@ g.removeBox.addEventListener('click', function () {
         g.container2.classList.add('out-of-sight');
     });
 });
+'use strict';
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var changeOnResize = function changeOnResize(slotsPerRow, slotWidth, slotHeight) {
     var state = {
@@ -989,6 +1015,7 @@ sizerArray.forEach(function (mq, i, arr) {
         }
     });
 });
+'use strict';
 
 function chartMouseDown(e) {
     if (!g.selected) {

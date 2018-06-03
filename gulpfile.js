@@ -23,7 +23,22 @@ gulp.task('sass', ['clean-css'], function () {
 });
 
 gulp.task('pack-js', ['clean-js'], function () {
-    return gulp.src(['app/js/script.js'])
+    return gulp.src(['app/js/index.js',
+        'app/js/slot.js',
+        'app/js/slotBounds.js',
+        'app/js/chart.js',
+        'app/js/gridPositions.js',
+        'app/js/isNotOverlapping.js',
+        'app/js/placeCharts.js',
+        'app/js/addChartToDOM.js',
+        'app/js/arrangeItems.js',
+        'app/js/getIdByCoords.js',
+        'app/js/removeMenu.js',
+        'app/js/availableCharts.js',
+        'app/js/addFirstCharts.js',
+        'app/js/addChartEventListeners.js',
+        'app/js/resize.js',
+        'app/js/mouseFunctions.js'])
         .pipe(babel({ presets: ["es2015"] }))
         .pipe(concat('bundle.js'))
         .pipe(minify({ ext: { min: '.js' }, noSource: true }))
@@ -31,7 +46,22 @@ gulp.task('pack-js', ['clean-js'], function () {
 });
 
 gulp.task('debug', ['clean-js'], function () {
-    return gulp.src(['app/js/script.js'])
+    return gulp.src(['app/js/index.js',
+        'app/js/slot.js',
+        'app/js/slotBounds.js',
+        'app/js/chart.js',
+        'app/js/gridPositions.js',
+        'app/js/isNotOverlapping.js',
+        'app/js/placeCharts.js',
+        'app/js/addChartToDOM.js',
+        'app/js/arrangeItems.js',
+        'app/js/getIdByCoords.js',
+        'app/js/removeMenu.js',
+        'app/js/availableCharts.js',
+        'app/js/addFirstCharts.js',
+        'app/js/addChartEventListeners.js',
+        'app/js/resize.js',
+        'app/js/mouseFunctions.js'])
         .pipe(babel({ presets: ["es2015"] }))
         .pipe(concat('debug.js'))
         .pipe(gulp.dest('dist/js/'));
