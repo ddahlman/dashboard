@@ -467,4 +467,20 @@ svg[aria-label="A chart."]>g>g:last-child {
     .report-btn {
         font-size: 0;
     }
+    .card.card2.mdc-button {
+        height: 90px;
+        color: #fff;
+        border: 3px solid $theme-third-color;
+        margin: 5%;
+        @for $i from 1 through 4 {
+            &.c#{$i} {
+                -ms-grid-column: 1;
+                -ms-grid-row: #{$i};
+            }
+        }
+    }
+    .graph-btn-grid {
+        -ms-grid-columns: 1fr;
+        -ms-grid-rows: 1fr 1fr 1fr 1fr;
+    }
 }
