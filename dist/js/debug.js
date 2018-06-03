@@ -18,7 +18,6 @@ var g = function () {
         menu1 = document.querySelector('.menu-1'),
         box = document.querySelector('.box'),
         removeBox = document.querySelector('.close'),
-        loadingChart = document.getElementById('loading-chart'),
         firstLoader = document.querySelector('.loading-absolute'),
         wrap = function wrap() {
         var wrapper = document.getElementById('grid');
@@ -70,7 +69,6 @@ var g = function () {
         box: box,
         removeBox: removeBox,
         wrap: wrap,
-        loadingChart: loadingChart,
         firstLoader: firstLoader,
         slotObjects: slotObjects,
         reports: reports,
