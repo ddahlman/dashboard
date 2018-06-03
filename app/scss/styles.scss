@@ -77,7 +77,6 @@ body {
                 color: $white;
             }
             hr {
-                background-color: #f9b035;
                 width: 0;
             }
         }
@@ -128,6 +127,7 @@ body {
     position: fixed;
     z-index: 9999;
     background-color: $theme-primary-color;
+    border: 1px solid #fff;
     &.hidden {
         display: none;
     }
@@ -390,6 +390,7 @@ svg[aria-label="A chart."]>g>g:last-child {
     -moz-user-select: none;
     user-select: none;
     position: relative;
+    background-color: rgba(68, 79, 99, 0.03);
 }
 
 .dd-slot-num {

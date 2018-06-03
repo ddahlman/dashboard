@@ -21,6 +21,7 @@ const arrangeItems = () => {
     };
 };
 
+
 const arrangeItemsMouseUp = () => {
     let state = {
         increment: 0,
