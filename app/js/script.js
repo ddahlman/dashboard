@@ -4,9 +4,7 @@ google.charts.load('current', {
 });
 
 google.charts.setOnLoadCallback(function () {
-
     addFirstCharts();
-
 });
 
 const g = function () {
@@ -16,15 +14,17 @@ const g = function () {
         menu1 = document.querySelector('.menu-1'),
         box = document.querySelector('.box'),
         removeBox = document.querySelector('.close'),
+        loadingChart = document.getElementById('loading-chart'),
+        firstLoader = document.querySelector('.loading-absolute'),
         wrap = () => {
             const wrapper = document.getElementById('grid');
-            if (window.matchMedia("(min-width: 1200px)").matches) {
+            if (window.matchMedia("screen and (min-width: 1200px)").matches) {
                 wrapper.style.width = '1400px';
             }
-            if (window.matchMedia("(min-width: 400px) and (max-width: 1200px)").matches) {
+            if (window.matchMedia("screen and (min-width: 400px) and (max-width: 1200px)").matches) {
                 wrapper.style.width = '700px';
             }
-            if (window.matchMedia("(max-width: 400px)").matches) {
+            if (window.matchMedia("screen and (max-width: 400px)").matches) {
                 wrapper.style.width = '300px';
             }
             return wrapper;
@@ -35,17 +35,20 @@ const g = function () {
         allCharts = [],
         chartPositions = [],
         allSlots = [],
-        windowMini = window.matchMedia("(max-width: 400px)"),
-        windowMedium = window.matchMedia("(min-width: 400px) and (max-width: 1200px)"),
-        windowLarge = window.matchMedia("(min-width: 1200px)"),
+        windowMini = window.matchMedia("screen and (max-width: 400px)"),
+        windowMedium = window.matchMedia("screen and (min-width: 400px) and (max-width: 1200px)"),
+        windowLarge = window.matchMedia("screen and (min-width: 1200px)"),
+        msMediaMedium = "screen and (max-width:1200px) and (min-width:400px)",
+        mozMediaMedium = "screen and (min-width: 400px) and (max-width: 1200px)",
+        chromeMediaMedium = "screen and (max-width: 1200px) and (min-width: 400px)",
         slotsPerRow = () => {
-            if (window.matchMedia("(min-width: 1200px)").matches) {
+            if (window.matchMedia("screen and (min-width: 1200px)").matches) {
                 return 10;
             }
-            if (window.matchMedia("(min-width: 400px) and (max-width: 1200px)").matches) {
+            if (window.matchMedia("screen and (min-width: 400px) and (max-width: 1200px)").matches) {
                 return 5;
             }
-            if (window.matchMedia("(max-width: 400px)").matches) {
+            if (window.matchMedia("screen and (max-width: 400px)").matches) {
                 return 1;
             }
         },
@@ -63,6 +66,8 @@ const g = function () {
         box: box,
         removeBox: removeBox,
         wrap: wrap,
+        loadingChart: loadingChart,
+        firstLoader: firstLoader,
         slotObjects: slotObjects,
         reports: reports,
         dataId: dataId,
@@ -73,6 +78,9 @@ const g = function () {
         mini: windowMini,
         medium: windowMedium,
         large: windowLarge,
+        msMediaMedium: msMediaMedium,
+        mozMediaMedium: mozMediaMedium,
+        chromeMediaMedium: chromeMediaMedium,
         selected: selected,
         originalIndex: originalIndex,
         originalClickCoords: originalClickCoords,
@@ -81,6 +89,38 @@ const g = function () {
         aspectHeight: aspectHeight
     };
 }();
+
+
+
+const dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar'));
+let fixed_ripple = [...document.getElementsByClassName('mdc-tab')].map((btn) => {
+    return mdc.ripple.MDCRipple.attachTo(btn);
+});
+
+const panels = document.querySelector('.panels');
+dynamicTabBar.preventDefaultOnClick = true;
+
+function updatePanel(index) {
+    var activePanel = panels.querySelector(".panel.is-active");
+    if (activePanel) {
+        activePanel.classList.remove("is-active");
+    }
+
+    var newActivePanel = panels.querySelector(
+        ".panel:nth-child(" + (index + 1) + ")"
+    );
+    if (newActivePanel) {
+        newActivePanel.classList.add("is-active");
+    }
+}
+
+dynamicTabBar.listen("MDCTabBar:change", function (t) {
+    var tabs = t.detail;
+    var nthChildIndex = tabs.activeTabIndex;
+    updatePanel(nthChildIndex);
+});
+
+
 
 (() => {
     let counter = 0;
@@ -94,19 +134,16 @@ const g = function () {
         c++;
         if (counter === 101) {
             clearInterval(i);
+            g.firstLoader.classList.add('loaded');
+            [g.box, g.container2, g.toolbar].map(el => el.classList.remove('hidden'));
         }
     }, 10);
 })();
-window.addEventListener('load', () => {
-    let loader = document.querySelector('.loading-absolute');
-    setTimeout(() => {
-        loader.classList.add('loaded');
-        [g.box, g.container2, g.toolbar].map(el => el.classList.remove('hidden'));
-    }, 2000);
-    setTimeout(() => {
-        loader.style.display = 'none';
-    }, 2500);
-});
+setTimeout(() => {
+    g.firstLoader.style.display = 'none';
+}, 3000);
+
+
 
 const slot = (num) => {
     let state = {
@@ -121,10 +158,16 @@ const slot = (num) => {
     );
 };
 
+const round = (value, precision) => {
+    var multiplier = Math.pow(10, precision || 0);
+    return Math.round(value * multiplier) / multiplier;
+};
+
 const createSlotDiv = (state) => ({
     createDiv: (indx) => {
         let div = document.createElement('div');
-        div.setAttribute('style', `width: ${100 / g.slotsPerRow()}%; padding-bottom: ${(100 / g.slotsPerRow()) * (state.aspectHeight / state.aspectWidth)}%;`);
+        const aspectRatio = (state.aspectHeight / state.aspectWidth);
+        div.setAttribute('style', `width: ${100 / g.slotsPerRow()}%; padding-bottom: ${(100 / g.slotsPerRow()) * (round(aspectRatio, 1))}%;`);
         div.setAttribute('class', 'dd-slot');
 
         let slotProp = {
@@ -132,6 +175,7 @@ const createSlotDiv = (state) => ({
             yPos: (indx % g.slotsPerRow()) + 1,
             status: 'available'
         };
+
         g.slotObjects.push(slotProp);
         div.setAttribute('data-slot-x', g.slotObjects[indx].xPos);
         div.setAttribute('data-slot-y', g.slotObjects[indx].yPos);
@@ -193,7 +237,7 @@ const addToSlotObjects = (state) => ({
             right: slotBound.right - state.wrapBounds.right,
             width: slotBound.width,
             height: slotBound.height
-        });
+        }); /* ändrat här det var inte Math förut */
     })
 });
 
@@ -303,7 +347,7 @@ const chartSize = (el) => {
             const sizes = {
                 elWidth: Math.round(widthPX.substring(0, widthPX.length - 2)),
                 elHeight: Number(heightPX.substring(0, heightPX.length - 2))
-            };
+            };/* här fanns inte Math.ceil innan */
             return sizes;
         }
     };
@@ -318,7 +362,6 @@ const getGridPositions = (indx, div) => {
             let size = chartSize(ele).getSize();
             let { elWidth, elHeight } = size;
             let [slotWidth, slotHeight] = [Math.round(X.width), X.height];
-
             const getSlotElem = (x, y) => document.querySelector(`[data-slot-x="${x}"][data-slot-y="${y}"]`);
 
             if (g.mini.matches && elWidth === slotWidth && elHeight === slotHeight) {
@@ -345,12 +388,13 @@ const getGridPositions = (indx, div) => {
                 const largePie = [g.slotObjects[i + (g.slotsPerRow() * 3)], g.slotObjects[i + (g.slotsPerRow() * 3) + 1],
                 g.slotObjects[i + (g.slotsPerRow() * 3) + 2],].concat(largeArea);
 
-                const sizeOfDiv = (match, nr1, nr2) => match && elWidth === (slotWidth * nr1) && elHeight === (slotHeight * nr2);
+                const sizeOfDiv = (match, nr1, nr2) => match && (elWidth === (slotWidth * nr1)) && (elHeight === (slotHeight * nr2));
                 const occupy = (obj) => {
                     let elem = getSlotElem(obj.xPos, obj.yPos);
                     obj.status = 'occupied';
                     elem.dataset.status = 'occupied';
                 };
+
                 switch (true) {
                     case sizeOfDiv(g.medium.matches, 2, 2): mediumArea.map(occupy); break;
                     case sizeOfDiv(g.medium.matches, 3, 3): mediumGeo.map(occupy); break;
@@ -361,6 +405,7 @@ const getGridPositions = (indx, div) => {
                     default: break;
                 }
             }
+            /*  console.log({ x: X.x, y: X.y, width: elWidth, height: elHeight }); */
             return { x: X.x, y: X.y, width: elWidth, height: elHeight };
         }
     };
@@ -371,10 +416,10 @@ const isNotOverlapping = (i, chartWidth, chartHeight) => {
         indx: i,
         width: chartWidth,
         height: chartHeight,
-        width1: slotBounds(1).width(),
-        width2: slotBounds(2).width(),
-        width3: slotBounds(3).width(),
-        width4: slotBounds(4).width(),
+        width1: round(slotBounds(1).width(), 1),
+        width2: round(slotBounds(2).width(), 1),
+        width3: round(slotBounds(3).width(), 1),
+        width4: round(slotBounds(4).width(), 1),
         height1: slotBounds(1).height(),
         height2: slotBounds(2).height(),
         height3: slotBounds(3).height(),
@@ -436,7 +481,7 @@ const placeCharts = ({ div, chart, indx, increment, width, height }) => {
         }
     };
 };
-/* console.log(g.allCharts.map(el => el.childNodes[0].classList.add('shadow'))); */
+
 
 
 const addChartToDOM = (button) => {
@@ -455,10 +500,9 @@ const addChartToDOM = (button) => {
                 report = state.selectedReportId.id;
                 state.selectedReportId.removeAttribute('data-selected');
             }
-
             if (state.chartType) selectedChartType = state.chartType.id;
             if (report) {
-                let graph;
+                let graph = {};
                 switch (selectedChartType) {
                     case 'area': graph = chart(g.reports[report], 'regular', 'AreaChart', state.div).getChart(); break;
                     case 'geo': graph = chart(g.reports[report], 'regular', 'GeoChart', state.div).getChart(); break;
@@ -604,9 +648,12 @@ const availableCharts = (typeOfCharts) => {
         show: () => {
             [...document.querySelectorAll('.card2')].filter((chartBtn) => {
                 var id = chartBtn.getAttribute('id');
-                /* send back that id that's equal to arrVal */
                 return types.some(arrVal => id === arrVal);
-            }).map(btn => btn.style.display = 'block');
+            }).map((btn, i) => {
+                btn.style.display = 'block';
+                btn.classList.add(`c${(i + 1)}`);
+                return btn;
+            });
         }
     };
 };
@@ -644,14 +691,16 @@ function addFirstCharts() {
         chartDiv('geo').createDiv(),
         chartDiv('pie').createDiv()
     ];
-
-    fetch('api/?/reports').then(res => res.json())
-        .then(report => {
-            Object.assign(g.reports, report.reports);
+    const xml = new XMLHttpRequest();
+    xml.open("GET", "api/?/reports");
+    xml.onload = () => {
+        if (xml.status >= 200 && xml.status < 400) {
+            const data = JSON.parse(xml.responseText);
+            Object.assign(g.reports, data.reports);
             const chartArray = [
-                chart(report.reports.sale, 'regular', 'AreaChart', divArray[0]).getChart(),
-                chart(report.reports.nationalities, 'regular', 'GeoChart', divArray[1]).getChart(),
-                chart(report.reports.bookings, 'pie', 'PieChart', divArray[2]).getChart()
+                chart(data.reports.sale, 'regular', 'AreaChart', divArray[0]).getChart(),
+                chart(data.reports.nationalities, 'regular', 'GeoChart', divArray[1]).getChart(),
+                chart(data.reports.bookings, 'pie', 'PieChart', divArray[2]).getChart()
             ];
 
             let increment = 0;
@@ -672,11 +721,17 @@ function addFirstCharts() {
                     placeCharts(chartAttributes).go();
                 }
             });
-        });
+        } else {
+            let div = document.body.appendChild(document.createElement('h1'));
+            div.setAttribute('style', 'color: #00ff00; font: 70px bold arial;');
+            div.innerHTML = 'Det gick tyvärr inte att hämta data...';
+        }
+    };
+    xml.send();
 }
 
 
-/* open plus-button into a tab-menu */
+
 g.box.addEventListener('click', function () {
     dynamicTabBar.layout();
     fixed_ripple.map(btn => btn.layout());
@@ -688,7 +743,7 @@ g.box.addEventListener('click', function () {
     g.toolbar.classList.remove('fade-out');
 });
 
-/* close tab-menu into plus-button */
+
 g.removeBox.addEventListener('click', function () {
     this.style.display = 'none';
     removeMenu();
@@ -709,6 +764,8 @@ g.removeBox.addEventListener('click', function () {
 });
 
 
+
+
 [...document.querySelectorAll('.card2')].forEach((chartButton) => {
     chartButton.addEventListener('click', function () {
         const len = g.slotObjects.length;
@@ -718,9 +775,9 @@ g.removeBox.addEventListener('click', function () {
             g.allSlots.push(newSlot);
             addSlotsToDOM(g.allSlots).go();
         }
+        removeMenu();
         addChartToDOM(this).go();
         g.container2.classList.add('out-of-sight');
-        removeMenu();
     });
 });
 
@@ -742,8 +799,9 @@ const changeOnResize = (slotsPerRow, slotWidth, slotHeight) => {
 const drawSlots = (state) => ({
     slots: () => {
         g.allSlots.map((slot, i, arr) => {
+            const aspectRatio = (g.aspectHeight / g.aspectWidth);
             slot.setAttribute('style',
-                `width: ${100 / state.perRow}%; padding-bottom: ${(100 / state.perRow) * (g.aspectHeight / g.aspectWidth)}%;`);
+                `width: ${100 / state.perRow}%; padding-bottom: ${(100 / state.perRow) * (round(aspectRatio, 1))}%;`);
             slot.dataset.status = 'available';
             g.slotObjects[i].status = 'available';
             g.slotObjects[i].xPos = Math.floor(i / state.perRow) + 1;
@@ -845,17 +903,20 @@ const resize = (rows, slotWidth, slotHeight) => {
 };
 
 
-[g.mini, g.medium, g.large].map((mq, i, arr) => {
-    mq.addEventListener('change', (e) => {
+
+const sizerArray = [g.mini, g.medium, g.large];
+sizerArray.forEach((mq, i, arr) => {
+    mq.addListener((e) => {
         if (e.matches) {
-            if (e.media === "(max-width: 400px)") {
-                resize(1, 300, 168.75);
+            console.log(e.media);
+            if (e.media === "screen and (max-width:400px)" || e.media === "screen and (max-width: 400px)") {
+                resize(1, 300, 180);
             }
-            if (e.media === "(max-width: 1200px) and (min-width: 400px)") {
-                resize(5, 140, 78.75);
+            if (e.media === g.chromeMediaMedium || e.media === g.mozMediaMedium || e.media === g.msMediaMedium) {
+                resize(5, 140, 84);
             }
-            if (e.media === "(min-width: 1200px)") {
-                resize(10, 140, 78.75);
+            if (e.media === "screen and (min-width:1200px)" || e.media === "screen and (min-width: 1200px)") {
+                resize(10, 140, 84);
             }
         }
     });
@@ -866,10 +927,8 @@ const resize = (rows, slotWidth, slotHeight) => {
 function chartMouseDown(e) {
     if (!g.selected) {
         g.wrap().addEventListener('mousemove', chartMouseMove);
-        // save the element
         g.selected = e.currentTarget;
         g.originalClickCoords = { x: e.pageX, y: e.pageY };
-        /* getting index from _dataId array */
         g.originalIndex = getIndexOfChartId(g.selected.getAttribute('data-id')).go();
         g.selected.classList.add('dd-selected');
         g.selected.classList.remove('dd-transition');
@@ -891,7 +950,6 @@ function chartMouseMove(e) {
         let clickX = pageX - left,
             clickY = pageY - top,
             hoverChartIndex = getChartIdByCoords({ x: clickX, y: clickY }).go(),
-            /* getting the index of the slot the mouse is currently over while dragging*/
             hoverSlotId = getSlotIdByCoords({ x: clickX, y: clickY }).go();
 
         let ele = g.selected,
@@ -929,30 +987,13 @@ function chartMouseUp() {
 }
 
 
-const dynamicTabBar = new mdc.tabs.MDCTabBar(document.querySelector('#icon-text-tab-bar'));
-let fixed_ripple = [...document.getElementsByClassName('mdc-tab')].map((btn) => {
-    return mdc.ripple.MDCRipple.attachTo(btn);
-})
 
-const panels = document.querySelector('.panels');
-dynamicTabBar.preventDefaultOnClick = true;
 
-function updatePanel(index) {
-    var activePanel = panels.querySelector(".panel.is-active");
-    if (activePanel) {
-        activePanel.classList.remove("is-active");
-    }
 
-    var newActivePanel = panels.querySelector(
-        ".panel:nth-child(" + (index + 1) + ")"
-    );
-    if (newActivePanel) {
-        newActivePanel.classList.add("is-active");
-    }
-}
 
-dynamicTabBar.listen("MDCTabBar:change", function (t) {
-    var tabs = t.detail;
-    var nthChildIndex = tabs.activeTabIndex;
-    updatePanel(nthChildIndex);
-});
+
+
+
+
+
+

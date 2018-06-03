@@ -2,13 +2,6 @@
 <html lang="en">
 
 <head>
-    <!--  <noscript>
-        <style>
-            body {
-                opacity: 1;
-            }
-        </style>
-    </noscript> -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -19,6 +12,15 @@
 </head>
 
 <body class='mdc-typography'>
+    <div id="loading-chart" class="chart-loader loading-chart-absolute">
+        <div class="loading-chart-container">
+            <div class="chart-loading">
+                <div class='load load1'></div>
+                <div class='load load2'></div>
+                <div class='load load3'></div>
+            </div>
+        </div>
+    </div>
     <div class="loading-absolute">
         <div class="loading-container">
             <div class="loading">
@@ -89,21 +91,22 @@
                 <div class="panels" for='#icon-text-tab-bar'>
                     <div class="panel is-active" role="tabpanel" aria-hidden="false">
                         <section class='panel-grid'>
-                            <button id='sale' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                            <button id='sale' class='report-btn report-1 card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">attach_money</i>
                                 <div class="icon-div">
                                     Omsättning
                                 </div>
                             </button>
-                            <button id='nationalities' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                            <button id='nationalities' class='report-btn report-2 card mdc-button mdc-button--raised material-icons add-container-2'
+                                data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">public</i>
                                 <div class="icon-div">nationaliteter</div>
                             </button>
-                            <button id='todaysEvent' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                            <button id='todaysEvent' class='report-btn report-3 card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">event</i>
                                 <div class="icon-div">dagens event</div>
                             </button>
-                            <button id='bookings' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                            <button id='bookings' class='report-btn report-4 card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">playlist_add_check</i>
                                 <div class="icon-div">bokade</div>
                             </button>
@@ -111,19 +114,19 @@
                     </div>
                     <div class="panel" role="tabpanel" aria-hidden="true">
                         <section class='panel-grid'>
-                            <button id='report10' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                            <button id='report10' class='report-btn report-5 card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">attach_money</i>
                                 <div class="icon-div">intäkter</div>
                             </button>
-                            <button id='report11' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                            <button id='report11' class='report-btn report-6 card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">monetization_on</i>
                                 <div class="icon-div">utgifter</div>
                             </button>
-                            <button id='report12' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                            <button id='report12' class='report-btn report-7 card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">transfer_within_a_station</i>
                                 <div class="icon-div">antal besökare</div>
                             </button>
-                            <button id='report13' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                            <button id='report13' class='report-btn report-8 card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">favorite_border</i>
                                 <div class="icon-div">social media</div>
                             </button>
@@ -132,19 +135,19 @@
                     </div>
                     <div class="panel" role="tabpanel" aria-hidden="true">
                         <section class='panel-grid'>
-                            <button id='report19' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                            <button id='report19' class='report-btn report-9 card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">attach_money</i>
                                 <div class="icon-div">intäkter</div>
                             </button>
-                            <button id='report20' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                            <button id='report20' class='report-btn report-10 card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">monetization_on</i>
                                 <div class="icon-div">utgifter</div>
                             </button>
-                            <button id='report21' class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                            <button id='report21' class='report-btn report-11 card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">transfer_within_a_station</i>
                                 <div class="icon-div">antal besökare</div>
                             </button>
-                            <button class='report-btn card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
+                            <button class='report-btn report-12 card mdc-button mdc-button--raised material-icons add-container-2' data-mdc-auto-init="MDCRipple">
                                 <i class="material-icons md-48 mdc-button__icon">favorite_border</i>
                                 <div class="icon-div">social media</div>
                             </button>
@@ -164,7 +167,7 @@
     <script src='https://www.google.com/jsapi'></script>
     <script src='https://www.gstatic.com/charts/loader.js'></script>
     <script src='node_modules/material-components-web/dist/material-components-web.min.js'></script>
-    <script src='dist/js/bundle.js'></script>
+    <script src='dist/js/debug.js'></script>
     <script>
         mdc.autoInit()
     </script>

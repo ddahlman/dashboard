@@ -30,7 +30,14 @@ gulp.task('pack-js', ['clean-js'], function () {
         .pipe(gulp.dest('dist/js'));
 });
 
-gulp.task('default', ['pack-js', 'sass'], function () {
+gulp.task('debug', ['clean-js'], function () {
+    return gulp.src(['app/js/script.js'])
+        .pipe(babel({ presets: ["es2015"] }))
+        .pipe(concat('debug.js'))
+        .pipe(gulp.dest('dist/js/'));
+});
+
+gulp.task('default', ['pack-js', 'debug', 'sass'], function () {
     gulp.watch('./app/scss/**/*.scss', ['sass']);
-    gulp.watch('./app/js/**/*.js', ['pack-js']);
+    gulp.watch('./app/js/**/*.js', ['pack-js', 'debug']);
 });

@@ -9,6 +9,11 @@
     --gridHeight: 200px;
 }
 
+$theme-primary-color: #444f63;
+$theme-primary-color-light: #525f77;
+$theme-secondary-color: #ee7365;
+$theme-secondary-color-light: rgba(238, 115, 101, 0.8);
+$theme-third-color: #f9b035;
 $white: #fff;
 $show: block;
 $google-shadow: 1px 3px 4px rgba(0, 0, 0, 0.3);
@@ -24,9 +29,84 @@ body {
     display: none;
 }
 
+%loading-first-child {
+    height: 100vh;
+    width: 100vw;
+    display: -ms-grid;
+    -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    -ms-grid-rows: 1fr 1fr 1fr;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+}
+
+%loading-content {
+    height: 200px;
+    width: 200px;
+    -ms-grid-column: 4;
+    -ms-grid-column-span: 4;
+    text-align: center;
+    -ms-flex-align: center;
+    -ms-grid-row: 2;
+    -ms-grid-row-span: 3;
+    grid-area: 2 / 2 / 3 / 3;
+    align-self: center;
+    justify-self: center;
+}
+
+/* ------------------------------------------------ loading elements --------------------------------------------------------- */
+
+.load1 {
+    background-color: $theme-primary-color;
+}
+
+.load2 {
+    background-color: $theme-secondary-color;
+}
+
+.load3 {
+    background-color: $theme-third-color;
+}
+
+.chart-loader {
+    &.loading-chart-absolute {
+        opacity: 0;
+        position: absolute;
+        margin: 0;
+        background-color: rgba($color: #fff, $alpha: 0.7);
+        z-index: 0;
+        .loading-chart-container {
+            @extend %loading-first-child;
+            .chart-loading {
+                @extend %loading-content;
+                @for $i from 1 through 3 {
+                    @keyframes load-#{$i} {
+                        70% {
+                            transform: translate3d(0px, 0px, 0px)
+                        }
+                        85% {
+                            transform: translate3d(0px, -15px, 0px)
+                        }
+                        100% {
+                            transform: translate3d(0px, 0px, 0px)
+                        }
+                    }
+                    .load:nth-child(#{$i}) {
+                        display: inline-block;
+                        height: 20px;
+                        width: 20px;
+                        border-radius: 50%;
+                        animation: load-#{$i} 1.5s #{$i/5}s cubic-bezier(0.5, 0.5, 0.2, 1) infinite;
+                    }
+                }
+            }
+        }
+    }
+}
+
 .loading-absolute {
     margin: 0;
-    background-color: var(--mdc-theme-primary);
+    background-color: $theme-primary-color;
     position: absolute;
     z-index: 10000;
     &.loaded {
@@ -34,17 +114,9 @@ body {
         transition: opacity 0.5s $cubic;
     }
     .loading-container {
-        height: 100vh;
-        width: 100vw;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(3, 1fr);
+        @extend %loading-first-child;
         .loading {
-            height: 200px;
-            width: 200px;
-            grid-area: 2 / 2 / 3 / 3;
-            align-self: center;
-            justify-self: center;
+            @extend %loading-content;
             p {
                 font: 100 20px $trippus-font;
                 color: #ee7365;
@@ -103,7 +175,7 @@ body {
     top: 20px;
     position: fixed;
     z-index: 9999;
-    background-color: var(--mdc-theme-primary);
+    background-color: $theme-primary-color;
     &.hidden {
         display: none;
     }
@@ -122,7 +194,7 @@ body {
 .orange-background {
     width: 100vw;
     height: 100vh;
-    background-color: var(--mdc-theme-primary);
+    background-color: $theme-primary-color;
 }
 
 .dashboard-toolbar {
@@ -183,7 +255,7 @@ body {
     position: fixed;
     z-index: 10;
     transition: transform 300ms cubic-bezier(0.0, 0.0, 0.2, 1);
-    background-color: var(--mdc-theme-primary);
+    background-color: $theme-primary-color;
     width: 100%;
     top: 0;
     left: 0;
@@ -202,6 +274,8 @@ body {
 }
 
 .graph-btn-grid {
+    display: -ms-grid;
+    -ms-grid-columns: 1fr 1fr 1fr 1fr;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     padding: 20px;
@@ -236,13 +310,19 @@ body {
 }
 
 .panel.is-active {
-    display: $show;
+    display: -ms-grid;
+    -ms-grid-columns: 1fr 1fr 1fr;
+    display: grid;
     animation-name: tab-animation;
     animation-duration: .5s;
 }
 
 .panel-grid {
+    -ms-grid-column-span: 3;
+    -ms-grid-column: 1;
+    display: -ms-grid;
     display: grid;
+    -ms-grid-columns: 1fr 1fr 1fr 1fr;
     grid-template-columns: repeat(4, 15%);
     grid-gap: 15px;
     justify-content: center;
@@ -253,7 +333,28 @@ body {
     font-size: 0.8rem;
     font-weight: 300;
     font-family: $trippus-font;
-    border: 3px solid var(--mdc-theme-secondary);
+    border: 3px solid $theme-secondary-color-light;
+    background-color: $theme-primary-color;
+    margin: 5%;
+    @for $i from 1 through 4 {
+        &.report-#{$i} {
+            -ms-grid-column: #{$i};
+        }
+    }
+    $counter: 0;
+    @for $i from 5 through 8 {
+        $counter: $counter + 1;
+        &.report-#{$i} {
+            -ms-grid-column: #{$counter};
+        }
+    }
+    $counter2: 0;
+    @for $i from 9 through 12 {
+        $counter2: $counter2 + 1;
+        &.report-#{$i} {
+            -ms-grid-column: #{$counter2};
+        }
+    }
 }
 
 .mdc-button__icon {
@@ -280,10 +381,21 @@ body {
     }
 }
 
+:not(:disabled).mdc-button--raised,
+:not(:disabled).mdc-button--unelevated {
+    background-color: $theme-primary-color;
+}
+
 .card.card2.mdc-button {
     height: 105px;
     color: #fff;
-    border: 3px solid var(--mdc-theme-secondary);
+    border: 3px solid $theme-third-color;
+    @for $i from 1 through 4 {
+        &.c#{$i} {
+            -ms-grid-column: #{$i};
+            margin: 5%;
+        }
+    }
 }
 
 /* ---------------------------------------------------------------------------------- */
@@ -309,6 +421,7 @@ svg[aria-label="A chart."]>g>g:last-child {
 
 .dd-slot {
     float: left;
+    -moz-user-select: none;
     user-select: none;
     position: relative;
 }
@@ -327,6 +440,8 @@ svg[aria-label="A chart."]>g>g:last-child {
     z-index: 5;
     padding: 10px;
     cursor: pointer;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 
@@ -337,7 +452,7 @@ svg[aria-label="A chart."]>g>g:last-child {
 @media screen and (max-width: 400px) {
     .box {
         left: 75%;
-        top: 20%;
+        top: 10%;
     }
     .box.open {
         transform: translate3d(-50px, -30px, 0);
