@@ -15,6 +15,7 @@ const g = function () {
         box = document.querySelector('.box'),
         removeBox = document.querySelector('.close'),
         firstLoader = document.querySelector('.loading-absolute'),
+        overlay = document.querySelector('.overlay'),
         wrap = () => {
             const wrapper = document.getElementById('grid');
             if (window.matchMedia("screen and (min-width: 1200px)").matches) {
@@ -66,6 +67,7 @@ const g = function () {
         removeBox: removeBox,
         wrap: wrap,
         firstLoader: firstLoader,
+        overlay: overlay,
         slotObjects: slotObjects,
         reports: reports,
         dataId: dataId,

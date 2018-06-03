@@ -196,6 +196,20 @@ body {
     transition: opacity 0.1s 0.3s;
 }
 
+.overlay {
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    opacity: 0;
+    z-index: 0;
+    transition: opacity 1.3s $cubic;
+    &.add {
+        background-color: rgba($color: #000, $alpha: 0.5);
+        z-index: 9;
+        opacity: 1;
+    }
+}
+
 /* container-2----------------------------------------------------------------------------------- */
 
 .out-of-sight {

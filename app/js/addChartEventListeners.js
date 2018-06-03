@@ -5,14 +5,19 @@ g.box.addEventListener('click', function () {
     this.classList.add('open');
     g.pseudoCircle.classList.add('open');
     g.menu1.classList.add('show');
+    g.overlay.classList.add('add');
     g.toolbar.classList.add('open');
     g.toolbar.classList.remove('fade-out');
 });
 
 
-g.removeBox.addEventListener('click', function () {
-    this.style.display = 'none';
-    removeMenu();
+[g.overlay, g.removeBox].map((el) => {
+    el.addEventListener('click', () => {
+        g.removeBox.style.display = 'none';
+        g.container2.classList.add('out-of-sight');
+        g.overlay.classList.remove('add');
+        removeMenu();
+    });
 });
 
 
@@ -25,15 +30,16 @@ g.removeBox.addEventListener('click', function () {
             g.container2.classList.add('shadow');
         }, 300);
         e.currentTarget.setAttribute('data-selected', 'selected');
+        console.log(reportId);
         showAvailableCharts(reportId).go();
     });
 });
 
 
 
-
 [...document.querySelectorAll('.card2')].forEach((chartButton) => {
     chartButton.addEventListener('click', function () {
+        g.overlay.classList.remove('add');
         const len = g.slotObjects.length;
         const doubleRow = 20;
         for (let i = 0; i < doubleRow; i++) {

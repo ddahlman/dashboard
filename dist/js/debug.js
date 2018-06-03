@@ -19,6 +19,7 @@ var g = function () {
         box = document.querySelector('.box'),
         removeBox = document.querySelector('.close'),
         firstLoader = document.querySelector('.loading-absolute'),
+        overlay = document.querySelector('.overlay'),
         wrap = function wrap() {
         var wrapper = document.getElementById('grid');
         if (window.matchMedia("screen and (min-width: 1200px)").matches) {
@@ -70,6 +71,7 @@ var g = function () {
         removeBox: removeBox,
         wrap: wrap,
         firstLoader: firstLoader,
+        overlay: overlay,
         slotObjects: slotObjects,
         reports: reports,
         dataId: dataId,
@@ -839,13 +841,18 @@ g.box.addEventListener('click', function () {
     this.classList.add('open');
     g.pseudoCircle.classList.add('open');
     g.menu1.classList.add('show');
+    g.overlay.classList.add('add');
     g.toolbar.classList.add('open');
     g.toolbar.classList.remove('fade-out');
 });
 
-g.removeBox.addEventListener('click', function () {
-    this.style.display = 'none';
-    removeMenu();
+[g.overlay, g.removeBox].map(function (el) {
+    el.addEventListener('click', function () {
+        g.removeBox.style.display = 'none';
+        g.container2.classList.add('out-of-sight');
+        g.overlay.classList.remove('add');
+        removeMenu();
+    });
 });
 
 [].concat(_toConsumableArray(document.querySelectorAll('.add-container-2'))).map(function (card) {
@@ -857,12 +864,14 @@ g.removeBox.addEventListener('click', function () {
             g.container2.classList.add('shadow');
         }, 300);
         e.currentTarget.setAttribute('data-selected', 'selected');
+        console.log(reportId);
         showAvailableCharts(reportId).go();
     });
 });
 
 [].concat(_toConsumableArray(document.querySelectorAll('.card2'))).forEach(function (chartButton) {
     chartButton.addEventListener('click', function () {
+        g.overlay.classList.remove('add');
         var len = g.slotObjects.length;
         var doubleRow = 20;
         for (var i = 0; i < doubleRow; i++) {
