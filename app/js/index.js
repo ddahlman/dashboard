@@ -1,3 +1,6 @@
+(function () {
+    mdc.autoInit();
+})();
 google.charts.load('current', {
     'packages': ['corechart', 'geochart'],
     'mapsApiKey': 'AIzaSyDMPDZMkd7YLnBpiKeBAq2HZYfjdWS8FA4'
