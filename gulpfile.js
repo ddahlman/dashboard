@@ -23,8 +23,6 @@ gulp.task('sass', ['clean-css'], function () {
 
 gulp.task('pack-js', ['clean-js'], function () {
     return gulp.src([
-        'node_modules/material-components-web/dist/material-components-web.min.js',
-        'node_modules/babel-polyfill/dist/polyfill.min.js',
         'app/js/index.js',
         'app/js/slot.js',
         'app/js/slotBounds.js',
