@@ -29,31 +29,6 @@ body {
     display: none;
 }
 
-%loading-first-child {
-    height: 100vh;
-    width: 100vw;
-    display: -ms-grid;
-    -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    -ms-grid-rows: 1fr 1fr 1fr;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-}
-
-%loading-content {
-    height: 200px;
-    width: 200px;
-    -ms-grid-column: 4;
-    -ms-grid-column-span: 4;
-    text-align: center;
-    -ms-flex-align: center;
-    -ms-grid-row: 2;
-    -ms-grid-row-span: 3;
-    grid-area: 2 / 2 / 3 / 3;
-    align-self: center;
-    justify-self: center;
-}
-
 /* ------------------------------------------------ loading elements --------------------------------------------------------- */
 
 .loading-absolute {
@@ -66,9 +41,25 @@ body {
         transition: opacity 0.5s $cubic;
     }
     .loading-container {
-        @extend %loading-first-child;
+        height: 100vh;
+        width: 100vw;
+        display: -ms-grid;
+        -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        -ms-grid-rows: 1fr 1fr 1fr;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(3, 1fr);
         .loading {
-            @extend %loading-content;
+            height: 200px;
+            width: 200px;
+            -ms-grid-column: 4;
+            -ms-grid-column-span: 4;
+            text-align: center;
+            -ms-grid-row: 2;
+            -ms-grid-row-span: 3;
+            grid-area: 2 / 2 / 3 / 3;
+            align-self: center;
+            justify-self: center;
             p {
                 font: 100 20px $trippus-font;
                 color: #ee7365;
@@ -449,5 +440,13 @@ svg[aria-label="A chart."]>g>g:last-child {
     .graph-btn-grid {
         -ms-grid-columns: 1fr;
         -ms-grid-rows: 1fr 1fr 1fr 1fr;
+    }
+    .loading-absolute {
+        .loading-container {
+            -ms-grid-columns: 1fr 1fr 1fr 1fr 1fr;
+            .loading {
+                -ms-grid-column: 2;
+            }
+        }
     }
 }
