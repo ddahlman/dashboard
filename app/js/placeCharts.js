@@ -10,7 +10,7 @@ const placeCharts = ({ div, chart, indx, increment, width, height }) => {
             div.addEventListener('mousedown', chartMouseDown);
             div.addEventListener('mouseup', chartMouseUp);
             setTimeout(() => {
-                div.childNodes[0].classList.add('dd-shadow');
+                div.childNodes[0].classList.add('shadow');
             }, 200);
             g.chartPositions[increment - 1] = {
                 dataId: div.getAttribute('data-id'),

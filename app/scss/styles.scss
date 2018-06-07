@@ -221,15 +221,6 @@ body {
     }
 }
 
-.shadow-elevated {
-    box-shadow: $google-shadow-elevated;
-    transition: box-shadow 0.3s;
-}
-
-.shadow {
-    box-shadow: $google-shadow;
-}
-
 .graph-btn-grid {
     display: -ms-grid;
     -ms-grid-columns: 1fr 1fr 1fr 1fr;
@@ -372,8 +363,13 @@ svg[aria-label="A chart."]>g>g:last-child {
     transition: all .3s ease;
 }
 
-.dd-shadow {
-    box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.3);
+.shadow {
+    box-shadow: $google-shadow;
+}
+
+.shadow-elevated {
+    box-shadow: $google-shadow-elevated;
+    transition: box-shadow 0.3s;
 }
 
 .dd-slot {
