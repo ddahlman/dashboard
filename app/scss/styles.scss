@@ -195,7 +195,7 @@ body {
     z-index: 0;
     transition: opacity 1.3s $cubic;
     &.add {
-        background-color: rgba($color: #000, $alpha: 0.5);
+        background-color: rgba($color: #fff, $alpha: 0.5);
         z-index: 9;
         opacity: 1;
     }
