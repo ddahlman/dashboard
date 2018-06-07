@@ -1,21 +1,21 @@
-const pieFunction = (obj, div) => {
-    let state = { obj, div };
+const pieFunction = (obj, chart, div) => {
+    let state = { obj, chart, div };
     return {
         go: () => {
             state.obj.options.pieStartAngle = 0;
-            let chart = new google.visualization.PieChart(state.div);
-            google.visualization.events.addListener(chart, 'ready', function () {
+            google.visualization.events.addListener(state.chart, 'ready', function () {
                 if (state.obj.options.pieStartAngle < 10) {
                     state.obj.options.pieStartAngle++;
                     setTimeout(function () {
-                        chart.draw(state.obj.data, state.obj.options);
+                        state.chart.draw(state.obj.data, state.obj.options);
                     }, 0);
                 }
             });
-            chart.draw(state.obj.data, state.obj.options);
+            state.chart.draw(state.obj.data, state.obj.options);
         }
     };
 };
+
 
 const chart = (response, optionType, type, div) => {
     let state = { response, optionType, type, div };
@@ -24,12 +24,13 @@ const chart = (response, optionType, type, div) => {
             const obj = {};
             obj.data = new google.visualization.DataTable(state.response.data);
             obj.options = state.response.options[state.optionType];
+            let chart = new google.visualization[state.type](state.div);
             switch (state.type) {
                 case 'PieChart':
-                    obj.draw = () => pieFunction(obj, state.div).go();
+                    obj.draw = () => pieFunction(obj, chart, state.div).go();
                     break;
                 default:
-                    obj.draw = () => new google.visualization[state.type](state.div).draw(obj.data, obj.options);
+                    obj.draw = () => chart.draw(obj.data, obj.options);
                     break;
             }
             return obj;

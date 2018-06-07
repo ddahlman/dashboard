@@ -315,6 +315,10 @@ body {
     font-size: 48px;
 }
 
+.md-36 {
+    font-size: 36px;
+}
+
 @keyframes tab-animation {
     0% {
         display: none;
@@ -403,6 +407,17 @@ svg[aria-label="A chart."]>g>g:last-child {
     z-index: 20;
 }
 
+.close-container {
+    position: absolute;
+    top: 5%;
+    right: 5%;
+    color: #fff;
+    &:hover {
+        box-shadow: $google-shadow;
+        transition: box-shadow 0.3s $cubic;
+    }
+}
+
 @media screen and (max-width: 400px) {
     .box {
         left: 75%;
@@ -417,6 +432,13 @@ svg[aria-label="A chart."]>g>g:last-child {
     }
     .md-48 {
         font-size: 30px;
+    }
+    .md-36 {
+        font-size: 22px;
+    }
+    .close-container {
+        top: 7%;
+        right: 6%;
     }
     .report-btn {
         font-size: 0;
