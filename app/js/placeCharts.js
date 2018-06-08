@@ -12,7 +12,7 @@ const placeCharts = ({ div, chart, indx, increment, width, height }) => {
             setTimeout(() => {
                 const newEl = div.appendChild(document.createElement('i'));
                 newEl.innerHTML = 'close';
-                newEl.classList.add('close-container', 'md-36', 'material-icons');
+                newEl.className += 'close-container md-36 material-icons';
                 newEl.addEventListener('click', removeChart);
             }, 50);
             g.chartPositions[increment - 1] = {

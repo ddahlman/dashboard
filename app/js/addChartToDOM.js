@@ -23,7 +23,7 @@ const addChartToDOM = (button) => {
                     case 'pie': graph = chart(g.reports[report], 'pie', 'PieChart', state.div).getChart(); break;
                     case 'line': graph = chart(g.reports[report], 'regular', 'LineChart', state.div).getChart(); break;
                     case 'bar': graph = chart(g.reports[report], 'regular', 'BarChart', state.div).getChart(); break;
-                    default: graph = 'There is no charts here';
+                    default: graph = 'There are no charts here';
                 }
                 let size = chartSize(state.div).getSize();
                 let { elWidth, elHeight } = size;
