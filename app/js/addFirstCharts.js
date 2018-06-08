@@ -1,3 +1,9 @@
+
+const getChartsFromDB = () => {
+
+};
+
+
 function addFirstCharts() {
     const firstSlots = slot(70).createArray();
     const addFirstSlots = addSlotsToDOM(firstSlots).go();
@@ -19,17 +25,19 @@ function addFirstCharts() {
                 chart(data.reports.nationalities, 'regular', 'GeoChart', divArray[1]).getChart(),
                 chart(data.reports.bookings, 'pie', 'PieChart', divArray[2]).getChart()
             ];
+            const reportsArray = ['sale', 'nationalities', 'bookings'];
 
             let increment = 0;
             g.allSlots.forEach((slotItem, i) => {
                 if (g.slotObjects[i].status === 'occupied') return;
                 increment++;
-                if (divArray[increment - 1] && chartArray[increment - 1]) {
+                if (divArray[increment - 1] && chartArray[increment - 1] && reportsArray[increment - 1]) {
                     let size = chartSize(divArray[increment - 1]).getSize();
                     let { elWidth, elHeight } = size;
                     let chartAttributes = {
                         div: divArray[increment - 1],
                         chart: chartArray[increment - 1],
+                        report: reportsArray[increment - 1],
                         indx: i,
                         increment: increment,
                         width: elWidth,

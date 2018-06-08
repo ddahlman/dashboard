@@ -1,4 +1,4 @@
-const placeCharts = ({ div, chart, indx, increment, width, height }) => {
+const placeCharts = ({ div, chart, report, indx, increment, width, height }) => {
     return {
         go: () => {
             const chartPos = getGridPositions(indx, div).go();
