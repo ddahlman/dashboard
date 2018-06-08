@@ -40,7 +40,7 @@ function addFirstCharts() {
             });
         } else {
             let div = document.body.appendChild(document.createElement('h1'));
-            div.setAttribute('style', 'color: #00ff00; font: 70px bold arial;');
+            div.setAttribute('style', 'color: #ff0000; font: 70px bold arial;');
             div.innerHTML = 'Det gick tyvärr inte att hämta data...';
         }
     };

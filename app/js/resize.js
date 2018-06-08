@@ -124,7 +124,6 @@ const sizerArray = [g.mini, g.medium, g.large];
 sizerArray.forEach((mq, i, arr) => {
     mq.addListener((e) => {
         if (e.matches) {
-            console.log(e.media);
             if (e.media === "screen and (max-width:400px)" || e.media === "screen and (max-width: 400px)") {
                 resize(1, 300, 180);
             }

@@ -1,5 +1,5 @@
-const pieFunction = (obj, chart, div) => {
-    let state = { obj, chart, div };
+const pieFunction = (obj, chart) => {
+    let state = { obj, chart };
     return {
         go: () => {
             state.obj.options.pieStartAngle = 0;
@@ -17,6 +17,7 @@ const pieFunction = (obj, chart, div) => {
 };
 
 
+
 const chart = (response, optionType, type, div) => {
     let state = { response, optionType, type, div };
     return {
@@ -27,7 +28,7 @@ const chart = (response, optionType, type, div) => {
             let chart = new google.visualization[state.type](state.div);
             switch (state.type) {
                 case 'PieChart':
-                    obj.draw = () => pieFunction(obj, chart, state.div).go();
+                    obj.draw = () => pieFunction(obj, chart).go();
                     break;
                 default:
                     obj.draw = () => chart.draw(obj.data, obj.options);

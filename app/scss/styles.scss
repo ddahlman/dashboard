@@ -188,7 +188,7 @@ body {
 }
 
 .overlay {
-    position: absolute;
+    position: fixed;
     height: 100vh;
     width: 100vw;
     opacity: 0;
@@ -247,6 +247,11 @@ body {
         background-color: rgba($color: #fff, $alpha: 0.1);
         transition: background-color 0.5s;
     }
+}
+
+.mdc-tab.mdc-ripple-upgraded::after,
+.mdc-tab.mdc-ripple-upgraded::before {
+    background-color: #fff;
 }
 
 .panels {
@@ -413,8 +418,8 @@ svg[aria-label="A chart."]>g>g:last-child {
     right: 5%;
     color: #fff;
     &:hover {
-        box-shadow: $google-shadow;
-        transition: box-shadow 0.3s $cubic;
+        opacity: 0.6;
+        transition: opacity 0.3s $cubic;
     }
 }
 

@@ -33,7 +33,6 @@ g.box.addEventListener('click', function () {
             g.container2.classList.add('shadow');
         }, 300);
         e.currentTarget.setAttribute('data-selected', 'selected');
-        console.log(reportId);
         showAvailableCharts(reportId).go();
     });
 });

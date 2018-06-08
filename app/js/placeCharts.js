@@ -10,8 +10,11 @@ const placeCharts = ({ div, chart, indx, increment, width, height }) => {
             div.addEventListener('mousedown', chartMouseDown);
             div.addEventListener('mouseup', chartMouseUp);
             setTimeout(() => {
-                div.childNodes[0].classList.add('shadow');
-            }, 200);
+                const newEl = div.appendChild(document.createElement('i'));
+                newEl.innerHTML = 'close';
+                newEl.classList.add('close-container', 'md-36', 'material-icons');
+                newEl.addEventListener('click', removeChart);
+            }, 50);
             g.chartPositions[increment - 1] = {
                 dataId: div.getAttribute('data-id'),
                 width: width,

@@ -37,6 +37,7 @@ gulp.task('pack-js', ['clean-js'], function () {
         'app/js/availableCharts.js',
         'app/js/addFirstCharts.js',
         'app/js/addChartEventListeners.js',
+        'app/js/removeChart.js',
         'app/js/resize.js',
         'app/js/mouseFunctions.js'])
         .pipe(babel({ presets: ["es2015"] }))
