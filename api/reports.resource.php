@@ -114,6 +114,7 @@ class _reports extends Resource{ // Klassen ärver egenskaper från den generell
         ];
         
         $this->reports = $obj;
+        
     }
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden POST
     function POST($input, $connection){

@@ -1,10 +1,9 @@
-const placeCharts = ({ div, chart, report, indx, increment, width, height }) => {
+const placeCharts = ({ div, chart, type, report, indx, increment, width, height }) => {
     return {
         go: () => {
             const chartPos = getGridPositions(indx, div).go();
             div.classList.add('dd-item', 'dd-transition');
             div.style.transform = `translate3d(${chartPos.x}px, ${chartPos.y}px,0px)`;
-            div.setAttribute('data-id', increment);
             g.wrap().appendChild(div);
             chart.draw();
             div.addEventListener('mousedown', chartMouseDown);
@@ -15,6 +14,7 @@ const placeCharts = ({ div, chart, report, indx, increment, width, height }) => 
                 newEl.className += 'close-container md-36 material-icons';
                 newEl.addEventListener('click', removeChart);
             }, 50);
+            div.setAttribute('data-id', increment);
             g.chartPositions[increment - 1] = {
                 dataId: div.getAttribute('data-id'),
                 width: width,
@@ -24,6 +24,7 @@ const placeCharts = ({ div, chart, report, indx, increment, width, height }) => 
             };
             g.dataId.push(div.dataset.id);
             g.allCharts.push(chart);
+
         }
     };
 };

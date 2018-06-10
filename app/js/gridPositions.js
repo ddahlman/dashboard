@@ -7,7 +7,7 @@ const chartSize = (el) => {
             const sizes = {
                 elWidth: Math.round(widthPX.substring(0, widthPX.length - 2)),
                 elHeight: Number(heightPX.substring(0, heightPX.length - 2))
-            };/* här fanns inte Math.ceil innan */
+            };
             return sizes;
         }
     };
@@ -49,23 +49,25 @@ const getGridPositions = (indx, div) => {
                 g.slotObjects[i + (g.slotsPerRow() * 3) + 2],].concat(largeArea);
 
                 const sizeOfDiv = (match, nr1, nr2) => match && (elWidth === (slotWidth * nr1)) && (elHeight === (slotHeight * nr2));
+
                 const occupy = (obj) => {
                     let elem = getSlotElem(obj.xPos, obj.yPos);
                     obj.status = 'occupied';
                     elem.dataset.status = 'occupied';
+                    return { obj: obj, el: elem };
                 };
-
+                let occupied = [];
                 switch (true) {
-                    case sizeOfDiv(g.medium.matches, 2, 2): mediumArea.map(occupy); break;
-                    case sizeOfDiv(g.medium.matches, 3, 3): mediumGeo.map(occupy); break;
-                    case sizeOfDiv(g.medium.matches, 2, 3): mediumPie.map(occupy); break;
-                    case sizeOfDiv(g.large.matches, 3, 3): largeArea.map(occupy); break;
-                    case sizeOfDiv(g.large.matches, 4, 4): largeGeo.map(occupy); break;
-                    case sizeOfDiv(g.large.matches, 3, 4): largePie.map(occupy); break;
+                    case sizeOfDiv(g.medium.matches, 2, 2): occupied = mediumArea.map(occupy); break;
+                    case sizeOfDiv(g.medium.matches, 3, 3): occupied = mediumGeo.map(occupy); break;
+                    case sizeOfDiv(g.medium.matches, 2, 3): occupied = mediumPie.map(occupy); break;
+                    case sizeOfDiv(g.large.matches, 3, 3): occupied = largeArea.map(occupy); break;
+                    case sizeOfDiv(g.large.matches, 4, 4): occupied = largeGeo.map(occupy); break;
+                    case sizeOfDiv(g.large.matches, 3, 4): occupied = largePie.map(occupy); break;
                     default: break;
                 }
+                console.log(occupied);
             }
-            /*  console.log({ x: X.x, y: X.y, width: elWidth, height: elHeight }); */
             return { x: X.x, y: X.y, width: elWidth, height: elHeight };
         }
     };
