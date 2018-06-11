@@ -36,6 +36,7 @@ const getMySavedCharts = (data) => {
             const firstSlots = slotArray();
             const addFirstSlots = addSlotsToDOM(firstSlots).go();
             g.allSlots.push(...firstSlots);
+
             const divArray = chartObjects.map(obj => {
                 return chartDiv(obj.cssclass).createDiv();
             });

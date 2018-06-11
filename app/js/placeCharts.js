@@ -14,17 +14,32 @@ const placeCharts = ({ div, chart, type, report, indx, increment, width, height 
                 newEl.className += 'close-container md-36 material-icons';
                 newEl.addEventListener('click', removeChart);
             }, 50);
-            div.setAttribute('data-id', increment);
-            g.chartPositions[increment - 1] = {
-                dataId: div.getAttribute('data-id'),
-                width: width,
-                height: height,
+            const chartData = {
+                report: report,
+                charttype: type,
+                cssclass: type.substring(0, type.length - 5).toLowerCase(),
                 x: chartPos.x,
-                y: chartPos.y
+                y: chartPos.y,
+                slotPositions: chartPos.slot
             };
-            g.dataId.push(div.dataset.id);
-            g.allCharts.push(chart);
-
+            const xml = new XMLHttpRequest();
+            xml.open("POST", "api/?/charts");
+            xml.onreadystatechange = () => {
+                if (xml.readyState == XMLHttpRequest.DONE && xml.status == 200) {
+                    const data = JSON.parse(xml.responseText);
+                    div.setAttribute('data-id', data.id);
+                    g.chartPositions[increment - 1] = {
+                        dataId: data.id,
+                        width: width,
+                        height: height,
+                        x: chartPos.x,
+                        y: chartPos.y
+                    };
+                    g.dataId.push(data.id);
+                    g.allCharts.push(chart);
+                }
+            };
+            xml.send(chartData);
         }
     };
 };

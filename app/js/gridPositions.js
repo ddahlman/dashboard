@@ -13,16 +13,20 @@ const chartSize = (el) => {
     };
 };
 
+
+const getSlotElem = (x, y) => document.querySelector(`[data-slot-x="${x}"][data-slot-y="${y}"]`);
+
+
 const getGridPositions = (indx, div) => {
     const i = indx;
     const ele = div;
+    let occupied = [];
     return {
         go: () => {
             let X = g.slotObjects[i];
             let size = chartSize(ele).getSize();
             let { elWidth, elHeight } = size;
             let [slotWidth, slotHeight] = [Math.round(X.width), X.height];
-            const getSlotElem = (x, y) => document.querySelector(`[data-slot-x="${x}"][data-slot-y="${y}"]`);
 
             if (g.mini.matches && elWidth === slotWidth && elHeight === slotHeight) {
                 X.status = 'occupied';
@@ -31,7 +35,6 @@ const getGridPositions = (indx, div) => {
             }
             else {
                 const mediumArea = [X, g.slotObjects[i + 1], g.slotObjects[i + g.slotsPerRow()], g.slotObjects[(i + 1) + g.slotsPerRow()]];
-
                 const largeArea = [g.slotObjects[i + 2], g.slotObjects[(i + 2) + g.slotsPerRow()],
                 g.slotObjects[i + (g.slotsPerRow() * 2)], g.slotObjects[i + (g.slotsPerRow() * 2) + 1],
                 g.slotObjects[i + (g.slotsPerRow() * 2) + 2]].concat(mediumArea);
@@ -54,9 +57,9 @@ const getGridPositions = (indx, div) => {
                     let elem = getSlotElem(obj.xPos, obj.yPos);
                     obj.status = 'occupied';
                     elem.dataset.status = 'occupied';
-                    return { obj: obj, el: elem };
+                    return { xPos: obj.xPos, yPos: obj.yPos };
                 };
-                let occupied = [];
+
                 switch (true) {
                     case sizeOfDiv(g.medium.matches, 2, 2): occupied = mediumArea.map(occupy); break;
                     case sizeOfDiv(g.medium.matches, 3, 3): occupied = mediumGeo.map(occupy); break;
@@ -66,9 +69,8 @@ const getGridPositions = (indx, div) => {
                     case sizeOfDiv(g.large.matches, 3, 4): occupied = largePie.map(occupy); break;
                     default: break;
                 }
-                console.log(occupied);
             }
-            return { x: X.x, y: X.y, width: elWidth, height: elHeight };
+            return { x: X.x, y: X.y, width: elWidth, height: elHeight, slot: occupied };
         }
     };
 };
