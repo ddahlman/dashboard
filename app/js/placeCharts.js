@@ -43,10 +43,10 @@ const placeCharts = ({ div, chart, type, report, indx, increment, width, height 
                         y: chartPos.y
                     };
                     g.dataId.push(data.id);
-                    g.allCharts.push(chart);
                 }
             };
             xml.send(JSON.stringify(chartData));
+            g.allCharts.push(chart);
         }
     };
 };

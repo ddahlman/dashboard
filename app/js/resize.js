@@ -102,6 +102,7 @@ const drawDivs = (state) => ({
 
 const drawCharts = (state) => ({
     charts: () => {
+        console.log('hej');
         g.allCharts.forEach(chart => chart.draw());
     }
 });
