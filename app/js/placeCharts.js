@@ -46,6 +46,7 @@ const placeCharts = ({ div, chart, type, report, indx, increment, width, height 
                 }
             };
             xml.send(JSON.stringify(chartData));
+            console.log(chart);
             g.allCharts.push(chart);
         }
     };

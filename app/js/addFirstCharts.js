@@ -38,6 +38,7 @@ const getMySavedCharts = (chartResponse) => {
                     let diagram = chart(reports.reports[obj.report], (obj.cssclass === 'pie' ? 'pie' : 'regular'), obj.charttype, div).getChart();
                     addAttributesToChart(div, obj, diagram);
                     g.dataId.push(obj.id);
+                    g.allCharts.push(diagram);
                 });
                 const occupied = chartObjects.map(obj => {
                     return obj.slotpositions;
