@@ -1,3 +1,16 @@
+const putRequest = (url, callback) => {
+    const xml = new XMLHttpRequest();
+    xml.open("PUT", url);
+    xml.onreadystatechange = () => {
+        if (xml.readyState == 4 && xml.status == 200) {
+            const data = JSON.parse(xml.responseText);
+            console.log(data);
+        }
+    };
+    xml.send(JSON.stringify(chartData));
+};
+
+
 const changeOnResize = (slotsPerRow, slotWidth, slotHeight) => {
     let state = {
         perRow: slotsPerRow,
@@ -88,12 +101,12 @@ const drawDivs = (state) => ({
                 if (isNotOverlapping(i, elWidth, elHeight).check()) {
                     pos = getGridPositions(i, el).go();
                     el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
-                    g.chartPositions[increment - 1] = { dataId: dataId, width: pos.width, height: pos.height, x: pos.x, y: pos.y };
+                    g.chartPositions[increment - 1] = { dataId: Number(dataId), width: pos.width, height: pos.height, x: pos.x, y: pos.y };
                 } else {
                     const indx = availableIndex(elWidth, elHeight).get();
                     pos = getGridPositions(indx, el).go();
                     el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
-                    g.chartPositions[increment - 1] = { dataId: dataId, width: pos.width, height: pos.height, x: pos.x, y: pos.y };
+                    g.chartPositions[increment - 1] = { dataId: Number(dataId), width: pos.width, height: pos.height, x: pos.x, y: pos.y };
                 }
             }
         });

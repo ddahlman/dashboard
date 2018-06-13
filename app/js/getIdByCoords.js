@@ -35,11 +35,13 @@ const getSlotIdByCoords = (coords) => {
 
 const getIndexOfChartId = (id) => {
     const len = g.dataId.length;
+    console.log(g.dataId);
     return {
         go: () => {
             for (let i = 0; i < len; i++) {
                 if (g.dataId[i] === id)
-                    return i;
+                    console.log(g.dataId[i] === id);
+                return i;
             }
         }
     };

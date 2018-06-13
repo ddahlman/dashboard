@@ -45,12 +45,12 @@ const arrangeItemsMouseUp = () => {
                 if (isNotOverlapping(i, elWidth, elHeight).check()) {
                     pos = getGridPositions(i, el).go();
                     el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
-                    state.chartPos[state.increment - 1] = { dataId: dataId, width: pos.width, height: pos.height, x: pos.x, y: pos.y };
+                    state.chartPos[state.increment - 1] = { dataId: Number(dataId), width: pos.width, height: pos.height, x: pos.x, y: pos.y };
                 } else {
                     const indx = availableIndex(elWidth, elHeight).get();
                     pos = getGridPositions(indx, el).go();
                     el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
-                    state.chartPos[state.increment - 1] = { dataId: dataId, width: pos.width, height: pos.height, x: pos.x, y: pos.y };
+                    state.chartPos[state.increment - 1] = { dataId: Number(dataId), width: pos.width, height: pos.height, x: pos.x, y: pos.y };
                 }
             }
         })

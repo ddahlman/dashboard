@@ -30,14 +30,23 @@ const getMySavedCharts = (chartResponse) => {
             getRequest("api/?/reports", (reports) => {
                 Object.assign(g.reports, reports.reports);
                 const firstSlots = slotArray();
-                const addFirstSlots = addSlotsToDOM(firstSlots).go();
+                addSlotsToDOM(firstSlots).go();
                 g.allSlots.push(...firstSlots);
-                chartObjects.map(obj => {
+                chartObjects.map((obj, i) => {
                     let div = chartDiv(obj.cssclass).createDiv();
                     div.setAttribute('data-id', obj.id);
+                    let size = chartSize(div).getSize();
+                    let { elWidth, elHeight } = size;
+                    g.chartPositions[i] = {
+                        dataId: Number(obj.id),
+                        width: elWidth,
+                        height: elHeight,
+                        x: Number(obj.x),
+                        y: Number(obj.y)
+                    };
                     let diagram = chart(reports.reports[obj.report], (obj.cssclass === 'pie' ? 'pie' : 'regular'), obj.charttype, div).getChart();
                     addAttributesToChart(div, obj, diagram);
-                    g.dataId.push(obj.id);
+                    g.dataId.push(Number(obj.id));
                     g.allCharts.push(diagram);
                 });
                 const occupied = chartObjects.map(obj => {
@@ -62,14 +71,13 @@ function addFirstCharts() {
     getRequest("api/?/charts", (chartObjects) => {
         console.log(chartObjects.chart !== undefined && chartObjects.chart.length > 0);
         if (chartObjects.chart !== undefined && chartObjects.chart.length > 0) {
-            /* Object.assign(g.chartsFromDB, chartObjects.chart); */
             getMySavedCharts(chartObjects).go();
         } else {
             getRequest("api/?/reports", (data) => {
                 Object.assign(g.reports, data.reports);
 
                 const firstSlots = slot(70).createArray();
-                const addFirstSlots = addSlotsToDOM(firstSlots).go();
+                addSlotsToDOM(firstSlots).go();
                 g.allSlots.push(...firstSlots);
 
                 const divArray = [

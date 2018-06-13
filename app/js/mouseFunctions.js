@@ -5,6 +5,7 @@ function chartMouseDown(e) {
         g.originalClickCoords = { x: e.pageX, y: e.pageY };
         g.originalIndex = getIndexOfChartId(g.selected.getAttribute('data-id')).go();
         g.selected.classList.add('dd-selected');
+        console.log(`g.originalIndex: ${g.originalIndex}, g.dataId: ${g.dataId}`);
         g.selected.classList.remove('dd-transition');
         g.slotObjects.map(slot => slot.status = 'available');
         g.allSlots.map(slot => slot.dataset.status = 'available');

@@ -3,9 +3,9 @@ const addAttributesToChart = (div, pos, chart) => {
     div.classList.add('dd-item', 'dd-transition');
     div.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
     g.wrap().appendChild(div);
-    chart.draw();
     div.addEventListener('mousedown', chartMouseDown);
     div.addEventListener('mouseup', chartMouseUp);
+    chart.draw();
     setTimeout(() => {
         const newEl = div.appendChild(document.createElement('i'));
         newEl.innerHTML = 'close';
@@ -46,7 +46,6 @@ const placeCharts = ({ div, chart, type, report, indx, increment, width, height 
                 }
             };
             xml.send(JSON.stringify(chartData));
-            console.log(chart);
             g.allCharts.push(chart);
         }
     };
