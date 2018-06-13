@@ -4,7 +4,7 @@
 #
 class _charts extends Resource{ // Klassen ärver egenskaper från den generella klassen Resource som finns i resource.class.php
     # Här deklareras de variabler/members som objektet ska ha
-    public $chart, $request;
+    public $chart, $id, $report, $charttype, $cssclass, $x, $y, $slotpositions, $request;
     # Här skapas konstruktorn som körs när objektet skapas
     function __construct($resource_id, $request){
         
@@ -16,26 +16,59 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
     }
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden GET
     function GET($input, $connection){
-        $result = mysqli_query($connection, "SELECT * FROM charts");
-        $data = [];
-        while($row = mysqli_fetch_assoc($result)) {
-            $data[] = $row;
+        $rest_of_result = mysqli_query($connection, "SELECT id, report, charttype, cssclass, x, y, slotpositions FROM charts");
+        $chart = [];
+        while($row = mysqli_fetch_assoc($rest_of_result)) {
+            
+            $slot_array = explode(" | ", $row['slotpositions']);
+            $slot = [];
+            foreach ($slot_array as $item) {
+                list($xPos,$yPos) = explode(", ", $item);
+                $slot[] = ['xPos' => (int)$xPos, 'yPos' => (int)$yPos];
+            }
+            
+            $chart[] = [
+            'id' => $row['id'],
+            'report' => $row['report'],
+            'charttype' => $row['charttype'],
+            'cssclass' => $row['cssclass'],
+            'x' => $row['x'],
+            'y' =>  $row['y'],
+            'slotpositions' => $slot
+            ];
         }
-        $this->chart = $data;
+        
+        $this->chart = $chart;
     }
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden POST
     function POST($input, $connection){
-        # I denna funktion skapar vi en ny user med den input vi fått
-        $item = escape($input['item']);
-        $headersID = escape($input['headersID']);
         
-        $query = "INSERT INTO items (headersID, list_item)
-        VALUES ('$headersID', '$item')";
+        $report = escape($input['report']);
+        $charttype = escape($input['charttype']);
+        $cssclass = escape($input['cssclass']);
+        $x = escape($input['x']);
+        $y = escape($input['y']);
+        
+        $slots = $input['slotpositions'];
+        $implodedSlots = array_map(function($a){
+            return implode(", ", $a);
+        }, $slots);
+        $slotpositions = implode(" | ", $implodedSlots);
+        $slotpositions = escape($slotpositions);
+        
+        $query = "INSERT INTO charts (report, charttype, cssclass, x, y, slotpositions)
+        VALUES ('$report', '$charttype', '$cssclass', '$x', '$y', '$slotpositions')";
         
         if(mysqli_query($connection, $query)) {
-            $this->headersID = $headersID;
-            $this->item = $item;
+            $this->id = mysqli_insert_id($connection);
+            $this->report = $report;
+            $this->charttype = $charttype;
+            $this->cssclass = $cssclass;
+            $this->x = $x;
+            $this->y = $y;
+            $this->slotpositions = $slotpositions;
         }
+        
     }
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden PUT
     function PUT($input, $connection){

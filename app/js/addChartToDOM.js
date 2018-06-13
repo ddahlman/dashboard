@@ -1,3 +1,7 @@
+const cssClassToChartType = (cssClass) => {
+    return cssClass.charAt(0).toUpperCase() + cssClass.slice(1) + 'Chart';
+}
+
 const addChartToDOM = (button) => {
     let state = {
         chartType: button,
@@ -31,6 +35,8 @@ const addChartToDOM = (button) => {
                 let chartAttributes = {
                     div: state.div,
                     chart: graph,
+                    type: cssClassToChartType(selectedChartType),
+                    report: report,
                     indx: indx,
                     increment: state.len + 1,
                     width: elWidth,

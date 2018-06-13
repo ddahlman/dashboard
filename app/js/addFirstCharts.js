@@ -1,27 +1,21 @@
 
 
 
-const getChartsFromDB = () => {
+const getRequest = (url, callback) => {
     const xml = new XMLHttpRequest();
-    xml.open("GET", "api/?/charts");
-    xml.onload = () => {
-        if (xml.status >= 200 && xml.status < 400) {
+    xml.onreadystatechange = () => {
+        if (xml.readyState == 4 && xml.status == 200) {
             const data = JSON.parse(xml.responseText);
-            Object.assign(g.chartsFromDB, data);
-        }
-        else {
-            let div = document.body.appendChild(document.createElement('h1'));
-            div.setAttribute('style', 'color: #ff0000; font: 70px bold arial;');
-            div.innerHTML = 'Det gick tyvärr inte att hämta data...';
+            callback(data);
         }
     };
+    xml.open("GET", url);
     xml.send();
 };
 
 
-const getMySavedCharts = (data) => {
-    const reports = data;
-    const chartObjects = g.chartsFromDB.chart;
+const getMySavedCharts = (chartResponse) => {
+    const chartObjects = chartResponse.chart;
     const len = chartObjects.length;
     const slotArray = () => {
         switch (true) {
@@ -33,41 +27,46 @@ const getMySavedCharts = (data) => {
     };
     return {
         go: () => {
-            const firstSlots = slotArray();
-            const addFirstSlots = addSlotsToDOM(firstSlots).go();
-            g.allSlots.push(...firstSlots);
-
-            const divArray = chartObjects.map(obj => {
-                return chartDiv(obj.cssclass).createDiv();
-            });
-            const chartArray = chartObjects.map((obj, i) => {
-                return chart(reports[obj.report], obj.cssclass, obj.charttype, divArray[i]).getChart();
-            });
-            let increment = 0;
-            g.allSlots.forEach((slotItem, i, arr) => {
-                if (g.slotObjects[i].status === 'occupied') return;
-                increment++;
-
+            getRequest("api/?/reports", (reports) => {
+                Object.assign(g.reports, reports.reports);
+                const firstSlots = slotArray();
+                const addFirstSlots = addSlotsToDOM(firstSlots).go();
+                g.allSlots.push(...firstSlots);
+                chartObjects.map(obj => {
+                    let div = chartDiv(obj.cssclass).createDiv();
+                    div.setAttribute('data-id', obj.id);
+                    let diagram = chart(reports.reports[obj.report], (obj.cssclass === 'pie' ? 'pie' : 'regular'), obj.charttype, div).getChart();
+                    addAttributesToChart(div, obj, diagram);
+                    g.dataId.push(obj.id);
+                });
+                const occupied = chartObjects.map(obj => {
+                    return obj.slotpositions;
+                }).reduce((arr, elem) => {
+                    return arr.concat(elem);
+                }, []);
+                g.slotObjects.filter(obj => {
+                    return occupied.some(o => o.xPos === obj.xPos && o.yPos === obj.yPos);
+                }).map(obj => {
+                    let elem = getSlotElem(obj.xPos, obj.yPos);
+                    obj.status = 'occupied';
+                    elem.dataset.status = 'occupied';
+                });
             });
         }
     };
 };
 
 
-
-
 function addFirstCharts() {
-    const xml = new XMLHttpRequest();
-    xml.open("GET", "api/?/reports");
-    xml.onload = () => {
-        if (xml.status >= 200 && xml.status < 400) {
-            const data = JSON.parse(xml.responseText);
-            Object.assign(g.reports, data.reports);
-            getChartsFromDB();
-            if (g.chartsFromDB.chart) {
-                getMySavedCharts(data.reports).go();
-            }
-            else {
+    getRequest("api/?/charts", (chartObjects) => {
+        console.log(chartObjects.chart !== undefined && chartObjects.chart.length > 0);
+        if (chartObjects.chart !== undefined && chartObjects.chart.length > 0) {
+            /* Object.assign(g.chartsFromDB, chartObjects.chart); */
+            getMySavedCharts(chartObjects).go();
+        } else {
+            getRequest("api/?/reports", (data) => {
+                Object.assign(g.reports, data.reports);
+
                 const firstSlots = slot(70).createArray();
                 const addFirstSlots = addSlotsToDOM(firstSlots).go();
                 g.allSlots.push(...firstSlots);
@@ -105,13 +104,7 @@ function addFirstCharts() {
                         placeCharts(chartAttributes).go();
                     }
                 });
-            }
+            });
         }
-        else {
-            let div = document.body.appendChild(document.createElement('h1'));
-            div.setAttribute('style', 'color: #ff0000; font: 70px bold arial;');
-            div.innerHTML = 'Det gick tyvärr inte att hämta data...';
-        }
-    };
-    xml.send();
+    });
 }
