@@ -1,15 +1,3 @@
-const putRequest = (url, callback) => {
-    const xml = new XMLHttpRequest();
-    xml.open("PUT", url);
-    xml.onreadystatechange = () => {
-        if (xml.readyState == 4 && xml.status == 200) {
-            const data = JSON.parse(xml.responseText);
-            console.log(data);
-        }
-    };
-    xml.send(JSON.stringify(chartData));
-};
-
 
 const changeOnResize = (slotsPerRow, slotWidth, slotHeight) => {
     let state = {

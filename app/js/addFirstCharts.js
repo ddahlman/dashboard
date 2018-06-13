@@ -32,6 +32,7 @@ const getMySavedCharts = (chartResponse) => {
                 const firstSlots = slotArray();
                 addSlotsToDOM(firstSlots).go();
                 g.allSlots.push(...firstSlots);
+                console.log(chartObjects.map(obj => { return { x: obj.x, y: obj.y }; }));
                 chartObjects.map((obj, i) => {
                     let div = chartDiv(obj.cssclass).createDiv();
                     div.setAttribute('data-id', obj.id);
