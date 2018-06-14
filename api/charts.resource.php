@@ -73,21 +73,13 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden PUT
     function PUT($input, $connection){
         # I denna funktion uppdateras en specifik user med den input vi fått
-        # Observera att allt uppdaterad varje gång och att denna borde byggas om så att bara det vi skickar med uppdateras
-        if($this->id){
-            $item = escape($input['item']);
-            
-            $query = "UPDATE items
-            SET list_item = '$item'
-            WHERE id = $this->id
-            ";
-            
-            if(mysqli_query($connection, $query)) {
-                $this->item = $item;
-            }
-        }else{
-            echo "No resource given";
-        }
+        # Observera att allt uppdateras varje gång och att denna borde byggas om så att bara det vi skickar med uppdateras
+        $id = escape($input['id']);
+        $x = escape($input['x']);
+        $y = escape($input['y']);
+        $slotpositions = escape($input['slotpositions']);
+        
+        var_dump(json_encode($input['id']));
     }
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden DELETE
     function DELETE($input, $connection){

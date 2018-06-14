@@ -32,7 +32,7 @@ const getMySavedCharts = (chartResponse) => {
                 const firstSlots = slotArray();
                 addSlotsToDOM(firstSlots).go();
                 g.allSlots.push(...firstSlots);
-                console.log(chartObjects.map(obj => { return { x: obj.x, y: obj.y }; }));
+                /* console.log(chartObjects.map(obj => { return { x: obj.x, y: obj.y }; })); */
                 chartObjects.map((obj, i) => {
                     let div = chartDiv(obj.cssclass).createDiv();
                     div.setAttribute('data-id', obj.id);
@@ -43,7 +43,8 @@ const getMySavedCharts = (chartResponse) => {
                         width: elWidth,
                         height: elHeight,
                         x: Number(obj.x),
-                        y: Number(obj.y)
+                        y: Number(obj.y),
+                        slotpositions: obj.slot
                     };
                     let diagram = chart(reports.reports[obj.report], (obj.cssclass === 'pie' ? 'pie' : 'regular'), obj.charttype, div).getChart();
                     addAttributesToChart(div, obj, diagram);

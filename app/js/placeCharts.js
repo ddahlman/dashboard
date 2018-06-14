@@ -28,20 +28,21 @@ const placeCharts = ({ div, chart, type, report, indx, increment, width, height 
                 y: chartPos.y,
                 slotpositions: chartPos.slot
             };
-            console.log(`${chartData.x}, ${chartData.y}`);
+            /* console.log(`${chartData.x}, ${chartData.y}`); */
             const xml = new XMLHttpRequest();
             xml.open("POST", "api/?/charts");
             xml.onreadystatechange = () => {
                 if (xml.readyState == 4 && xml.status == 200) {
                     const data = JSON.parse(xml.responseText);
-                    console.log(`från DB: ${JSON.stringify(data.x)}, ${JSON.stringify(data.y)}`);
+                    /* console.log(`från DB: ${JSON.stringify(data.x)}, ${JSON.stringify(data.y)}`); */
                     div.setAttribute('data-id', data.id);
                     g.chartPositions[increment - 1] = {
                         dataId: data.id,
                         width: width,
                         height: height,
                         x: chartPos.x,
-                        y: chartPos.y
+                        y: chartPos.y,
+                        slotpositions: chartPos.slot
                     };
                     g.dataId.push(data.id);
                 }
