@@ -34,48 +34,56 @@ const getMySavedCharts = (chartResponse) => {
                 addSlotsToDOM(firstSlots).go();
                 g.allSlots.push(...firstSlots);
 
-                chartObjects.map((obj, i, arr) => {
-                    let div = chartDiv(obj.cssclass).createDiv();
-                    div.setAttribute('data-id', obj.ordernumber);
-                    div.setAttribute('data-chartid', obj.id);
-                    let size = chartSize(div).getSize();
-                    let { elWidth, elHeight } = size;
-                    const ordernumber = Number(obj.ordernumber);
-                    g.chartPositions[i] = {
-                        id: obj.id,
-                        dataId: ordernumber,
-                        report: obj.report,
-                        charttype: obj.charttype,
-                        cssclass: obj.cssclass,
-                        width: elWidth,
-                        height: elHeight,
-                        x: Number(obj.x),
-                        y: Number(obj.y),
-                        slotpositions: obj.slot
-                    };
-                    g.staticChartAttributes[i] = { report: obj.report, charttype: obj.charttype, cssclass: obj.cssclass };
-                    console.log(obj);
-                    console.log(g.staticChartAttributes);
-                    console.log(ordernumber);
-                    let diagram = chart(reports.reports[obj.report], (obj.cssclass === 'pie' ? 'pie' : 'regular'), obj.charttype, div).getChart();
-                    addAttributesToChart(div, obj, diagram);
-                    g.dataId.push(ordernumber);
-                    g.allCharts.push(diagram);
+                let increment = 0;
+                g.allSlots.forEach((slotItem, i) => {
+                    if (g.slotObjects[i].status === 'occupied') return;
+                    increment++;
+                    if (chartObjects[increment - 1]) {
+                        let obj = chartObjects[increment - 1];
+                        let div = chartDiv(obj.cssclass).createDiv();
+                        div.setAttribute('data-id', obj.ordernumber);
+                        div.setAttribute('data-chartid', obj.id);
+                        let size = chartSize(div).getSize();
+                        let { elWidth, elHeight } = size;
+                        const ordernumber = Number(obj.ordernumber);
+
+                        g.chartPositions[i] = {
+                            id: obj.id,
+                            dataId: ordernumber,
+                            report: obj.report,
+                            charttype: obj.charttype,
+                            cssclass: obj.cssclass,
+                            width: elWidth,
+                            height: elHeight,
+                            x: Number(obj.x),
+                            y: Number(obj.y),
+                            slotpositions: obj.slot
+                        };
+                        g.staticChartAttributes[i] = { report: obj.report, charttype: obj.charttype, cssclass: obj.cssclass };
+                        console.log(obj);
+                        console.log(g.staticChartAttributes);
+                        console.log(ordernumber);
+                        let diagram = chart(reports.reports[obj.report], (obj.cssclass === 'pie' ? 'pie' : 'regular'), obj.charttype, div).getChart();
+                        const chartPos = getGridPositions(indx, div).go();
+                        addAttributesToChart(div, chartPos, diagram);
+                        g.dataId.push(ordernumber);
+                        g.allCharts.push(diagram);
+                    }
                 });
                 /* console.log(g.dataId); */
-                const occupied = chartObjects.map(obj => {
-                    return obj.slotpositions;
-                }).reduce((arr, elem) => {
-                    return arr.concat(elem);
-                }, []);
-
-                g.slotObjects.filter(obj => {
-                    return occupied.some(o => o.xPos === obj.xPos && o.yPos === obj.yPos);
-                }).map(obj => {
-                    let elem = getSlotElem(obj.xPos, obj.yPos);
-                    obj.status = 'occupied';
-                    elem.dataset.status = 'occupied';
-                });
+                /*    const occupied = chartObjects.map(obj => {
+                       return obj.slotpositions;
+                   }).reduce((arr, elem) => {
+                       return arr.concat(elem);
+                   }, []);
+   
+                   g.slotObjects.filter(obj => {
+                       return occupied.some(o => o.xPos === obj.xPos && o.yPos === obj.yPos);
+                   }).map(obj => {
+                       let elem = getSlotElem(obj.xPos, obj.yPos);
+                       obj.status = 'occupied';
+                       elem.dataset.status = 'occupied';
+                   }); */
             });
         }
     };

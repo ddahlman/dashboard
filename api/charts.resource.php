@@ -16,15 +16,15 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
     }
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden GET
     function GET($input, $connection){
-        $rest_of_result = mysqli_query($connection, "SELECT id, ordernumber, report, charttype, cssclass, x, y, slotpositions FROM charts");
+        $result = mysqli_query($connection, "SELECT id, ordernumber, report, charttype, cssclass FROM charts");
         $chart = [];
-        while($row = mysqli_fetch_assoc($rest_of_result)) {
-            
-            $slot_array = explode(" | ", $row['slotpositions']);
+        while($row = mysqli_fetch_assoc($result)) {
+            $chart[] = $row;
+            /*  $slot_array = explode(" | ", $row['slotpositions']);
             $slot = [];
             foreach ($slot_array as $item) {
-                list($xPos,$yPos) = explode(", ", $item);
-                $slot[] = ['xPos' => (int)$xPos, 'yPos' => (int)$yPos];
+            list($xPos,$yPos) = explode(", ", $item);
+            $slot[] = ['xPos' => (int)$xPos, 'yPos' => (int)$yPos];
             }
             
             $chart[] = [
@@ -36,7 +36,7 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
             'x' => $row['x'],
             'y' =>  $row['y'],
             'slotpositions' => $slot
-            ];
+            ]; */
         }
         
         $this->chart = $chart;
@@ -47,14 +47,14 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
         $report = escape($input['report']);
         $charttype = escape($input['charttype']);
         $cssclass = escape($input['cssclass']);
-        $x = escape($input['x']);
+        /*   $x = escape($input['x']);
         $y = escape($input['y']);
         
         $slotpositions = implode_array($input['slotpositions']);
-        $slotpositions = escape($slotpositions);
+        $slotpositions = escape($slotpositions); */
         
-        $query = "INSERT INTO charts (ordernumber, report, charttype, cssclass, x, y, slotpositions)
-        VALUES ('$ordernumber', '$report', '$charttype', '$cssclass', '$x', '$y', '$slotpositions')";
+        $query = "INSERT INTO charts (ordernumber, report, charttype, cssclass)
+        VALUES ('$ordernumber', '$report', '$charttype', '$cssclass')";
         
         if(mysqli_query($connection, $query)) {
             $this->id = mysqli_insert_id($connection);
@@ -62,9 +62,9 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
             $this->report = $report;
             $this->charttype = $charttype;
             $this->cssclass = $cssclass;
-            $this->x = $x;
+            /*   $this->x = $x;
             $this->y = $y;
-            $this->slotpositions = $slotpositions;
+            $this->slotpositions = $slotpositions; */
         }
         
     }
@@ -75,20 +75,17 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
         $report = escape($input['report']);
         $charttype = escape($input['charttype']);
         $cssclass = escape($input['cssclass']);
-        $x = escape($input['x']);
+        /*   $x = escape($input['x']);
         $y = escape($input['y']);
         
         $slotpositions = implode_array($input['slotpositions']);
-        $slotpositions = escape($slotpositions);
+        $slotpositions = escape($slotpositions); */
         
         $query = "UPDATE charts
         SET ordernumber = '$ordernumber',
         report = '$report',
         charttype = '$charttype',
-        cssclass = '$cssclass',
-        x = '$x',
-        y = '$y',
-        slotpositions = '$slotpositions'
+        cssclass = '$cssclass'
         WHERE id = $id";
         
         if(mysqli_query($connection, $query)) {
@@ -97,9 +94,9 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
             $this->report = $report;
             $this->charttype = $charttype;
             $this->cssclass = $cssclass;
-            $this->x = $x;
+            /*      $this->x = $x;
             $this->y = $y;
-            $this->slotpositions = $slotpositions;
+            $this->slotpositions = $slotpositions; */
         }
     }
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden DELETE

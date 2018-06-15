@@ -25,10 +25,10 @@ const placeCharts = ({ div, chart, type, report, indx, increment, width, height 
                 ordernumber: increment,
                 report: report,
                 charttype: type,
-                cssclass: type.substring(0, type.length - 5).toLowerCase(),
+                cssclass: type.substring(0, type.length - 5).toLowerCase()/* ,
                 x: chartPos.x,
                 y: chartPos.y,
-                slotpositions: chartPos.slot
+                slotpositions: chartPos.slot */
             };
             /* console.log(`${chartData.x}, ${chartData.y}`); */
             const xml = new XMLHttpRequest();
