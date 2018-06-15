@@ -47,25 +47,44 @@ const getMySavedCharts = (chartResponse) => {
                         let { elWidth, elHeight } = size;
                         const ordernumber = Number(obj.ordernumber);
 
-                        g.chartPositions[i] = {
-                            id: obj.id,
-                            dataId: ordernumber,
-                            report: obj.report,
-                            charttype: obj.charttype,
-                            cssclass: obj.cssclass,
-                            width: elWidth,
-                            height: elHeight,
-                            x: Number(obj.x),
-                            y: Number(obj.y),
-                            slotpositions: obj.slot
-                        };
-                        g.staticChartAttributes[i] = { report: obj.report, charttype: obj.charttype, cssclass: obj.cssclass };
+                        g.staticChartAttributes[increment - 1] = { report: obj.report, charttype: obj.charttype, cssclass: obj.cssclass };
                         console.log(obj);
                         console.log(g.staticChartAttributes);
                         console.log(ordernumber);
                         let diagram = chart(reports.reports[obj.report], (obj.cssclass === 'pie' ? 'pie' : 'regular'), obj.charttype, div).getChart();
-                        const chartPos = getGridPositions(indx, div).go();
-                        addAttributesToChart(div, chartPos, diagram);
+                        let pos;
+                        if (isNotOverlapping(i, elWidth, elHeight).check()) {
+                            pos = getGridPositions(i, div).go();
+                            addAttributesToChart(div, pos, diagram);
+                            g.chartPositions[increment - 1] = {
+                                id: obj.id,
+                                dataId: ordernumber,
+                                report: obj.report,
+                                charttype: obj.charttype,
+                                cssclass: obj.cssclass,
+                                width: elWidth,
+                                height: elHeight,
+                                x: pos.x,
+                                y: pos.y,
+                                slotpositions: obj.slot
+                            };
+                        } else {
+                            const indx = availableIndex(elWidth, elHeight).get();
+                            pos = getGridPositions(indx, div).go();
+                            addAttributesToChart(div, pos, diagram);
+                            g.chartPositions[increment - 1] = {
+                                id: obj.id,
+                                dataId: ordernumber,
+                                report: obj.report,
+                                charttype: obj.charttype,
+                                cssclass: obj.cssclass,
+                                width: elWidth,
+                                height: elHeight,
+                                x: pos.x,
+                                y: pos.y,
+                                slotpositions: obj.slot
+                            };
+                        }
                         g.dataId.push(ordernumber);
                         g.allCharts.push(diagram);
                     }

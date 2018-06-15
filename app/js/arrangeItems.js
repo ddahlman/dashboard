@@ -42,8 +42,7 @@ const arrangeItemsMouseUp = () => {
         allSlots: g.allSlots,
         slotObjects: g.slotObjects,
         chartPos: g.chartPositions,
-        dataId: g.dataId,
-        arrangedItems: g.arrangedItems
+        dataId: g.dataId
     };
     return {
         go: () => state.allSlots.map((slot, i) => {
@@ -78,10 +77,10 @@ const arrangeItemsMouseUp = () => {
                         ordernumber: dataId,
                         report: g.staticChartAttributes[state.increment - 1].report,
                         charttype: g.staticChartAttributes[state.increment - 1].charttype,
-                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass,
+                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass/* ,
                         x: pos.x,
                         y: pos.y,
-                        slotpositions: pos.slot
+                        slotpositions: pos.slot */
                     });
                 } else {
                     const indx = availableIndex(elWidth, elHeight).get();
@@ -104,10 +103,10 @@ const arrangeItemsMouseUp = () => {
                         ordernumber: dataId,
                         report: g.staticChartAttributes[state.increment - 1].report,
                         charttype: g.staticChartAttributes[state.increment - 1].charttype,
-                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass,
+                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass/* ,
                         x: pos.x,
                         y: pos.y,
-                        slotpositions: pos.slot
+                        slotpositions: pos.slot */
                     });
                 }
                 console.log({
@@ -115,10 +114,10 @@ const arrangeItemsMouseUp = () => {
                     ordernumber: dataId,
                     report: g.staticChartAttributes[state.increment - 1].report,
                     charttype: g.staticChartAttributes[state.increment - 1].charttype,
-                    cssclass: g.staticChartAttributes[state.increment - 1].cssclass,
+                    cssclass: g.staticChartAttributes[state.increment - 1].cssclass/* ,
                     x: pos.x,
                     y: pos.y,
-                    slotpositions: pos.slot
+                    slotpositions: pos.slot */
                 });
                 /*  console.log({ id: g.dataId.indexOf(id) + 1, ordernumber: dataId, x: pos.x, y: pos.y, slotpositions: pos.slot }); */
                 /* console.log(g.chartPositions[dataId - 1]); */

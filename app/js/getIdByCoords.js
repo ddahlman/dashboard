@@ -39,7 +39,7 @@ const getIndexOfChartId = (id) => {
     return {
         go: () => {
             for (let i = 0; i < len; i++) {
-                /* console.log(typeof Number(id)); */
+                console.log(typeof g.dataId[i], typeof Number(id));
                 if (g.dataId[i] === Number(id))
                     return i;
             }

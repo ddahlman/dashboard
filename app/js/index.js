@@ -38,7 +38,6 @@ const g = function () {
         allCharts = [],
         chartPositions = [],
         allSlots = [],
-        arrangedItems = [],
         staticChartAttributes = [
             /*  {
                  report: 'sale',
@@ -96,7 +95,6 @@ const g = function () {
         chartPositions: chartPositions,
         slotsPerRow: slotsPerRow,
         allSlots: allSlots,
-        arrangedItems: arrangedItems,
         staticChartAttributes: staticChartAttributes,
         mini: windowMini,
         medium: windowMedium,
