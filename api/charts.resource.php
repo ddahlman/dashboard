@@ -4,7 +4,7 @@
 #
 class _charts extends Resource{ // Klassen ärver egenskaper från den generella klassen Resource som finns i resource.class.php
     # Här deklareras de variabler/members som objektet ska ha
-    public $chart, $id, $report, $charttype, $cssclass, $x, $y, $slotpositions, $request;
+    public $chart, $id, $ordernumber, $report, $charttype, $cssclass, $x, $y, $slotpositions, $request;
     # Här skapas konstruktorn som körs när objektet skapas
     function __construct($resource_id, $request){
         
@@ -16,7 +16,7 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
     }
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden GET
     function GET($input, $connection){
-        $rest_of_result = mysqli_query($connection, "SELECT id, report, charttype, cssclass, x, y, slotpositions FROM charts");
+        $rest_of_result = mysqli_query($connection, "SELECT id, ordernumber, report, charttype, cssclass, x, y, slotpositions FROM charts");
         $chart = [];
         while($row = mysqli_fetch_assoc($rest_of_result)) {
             
@@ -29,6 +29,7 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
             
             $chart[] = [
             'id' => $row['id'],
+            'ordernumber' => $row['ordernumber'],
             'report' => $row['report'],
             'charttype' => $row['charttype'],
             'cssclass' => $row['cssclass'],
@@ -42,25 +43,22 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
     }
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden POST
     function POST($input, $connection){
-        
+        $ordernumber = escape($input['ordernumber']);
         $report = escape($input['report']);
         $charttype = escape($input['charttype']);
         $cssclass = escape($input['cssclass']);
         $x = escape($input['x']);
         $y = escape($input['y']);
         
-        $slots = $input['slotpositions'];
-        $implodedSlots = array_map(function($a){
-            return implode(", ", $a);
-        }, $slots);
-        $slotpositions = implode(" | ", $implodedSlots);
+        $slotpositions = implode_array($input['slotpositions']);
         $slotpositions = escape($slotpositions);
         
-        $query = "INSERT INTO charts (report, charttype, cssclass, x, y, slotpositions)
-        VALUES ('$report', '$charttype', '$cssclass', '$x', '$y', '$slotpositions')";
+        $query = "INSERT INTO charts (ordernumber, report, charttype, cssclass, x, y, slotpositions)
+        VALUES ('$ordernumber', '$report', '$charttype', '$cssclass', '$x', '$y', '$slotpositions')";
         
         if(mysqli_query($connection, $query)) {
             $this->id = mysqli_insert_id($connection);
+            $this->ordernumber = $ordernumber;
             $this->report = $report;
             $this->charttype = $charttype;
             $this->cssclass = $cssclass;
@@ -72,14 +70,37 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
     }
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden PUT
     function PUT($input, $connection){
-        # I denna funktion uppdateras en specifik user med den input vi fått
-        # Observera att allt uppdateras varje gång och att denna borde byggas om så att bara det vi skickar med uppdateras
         $id = escape($input['id']);
+        $ordernumber = escape($input['ordernumber']);
+        $report = escape($input['report']);
+        $charttype = escape($input['charttype']);
+        $cssclass = escape($input['cssclass']);
         $x = escape($input['x']);
         $y = escape($input['y']);
-        $slotpositions = escape($input['slotpositions']);
         
-        var_dump(json_encode($input['id']));
+        $slotpositions = implode_array($input['slotpositions']);
+        $slotpositions = escape($slotpositions);
+        
+        $query = "UPDATE charts
+        SET ordernumber = '$ordernumber',
+        report = '$report',
+        charttype = '$charttype',
+        cssclass = '$cssclass',
+        x = '$x',
+        y = '$y',
+        slotpositions = '$slotpositions'
+        WHERE id = $id";
+        
+        if(mysqli_query($connection, $query)) {
+            $this->id = $id;
+            $this->ordernumber = $ordernumber;
+            $this->report = $report;
+            $this->charttype = $charttype;
+            $this->cssclass = $cssclass;
+            $this->x = $x;
+            $this->y = $y;
+            $this->slotpositions = $slotpositions;
+        }
     }
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden DELETE
     function DELETE($input, $connection){

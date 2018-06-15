@@ -5,7 +5,7 @@ function chartMouseDown(e) {
         g.originalClickCoords = { x: e.pageX, y: e.pageY };
         g.originalIndex = getIndexOfChartId(g.selected.getAttribute('data-id')).go();
         g.selected.classList.add('dd-selected');
-        /* console.log(`g.originalIndex: ${g.originalIndex}, g.dataId: ${g.dataId}`); */
+        console.log(`g.originalIndex: ${g.originalIndex}`);
         g.selected.classList.remove('dd-transition');
         g.slotObjects.map(slot => slot.status = 'available');
         g.allSlots.map(slot => slot.dataset.status = 'available');
@@ -43,6 +43,7 @@ function chartMouseMove(e) {
         if (hoverChartIndex !== undefined && g.lastTouched !== hoverChartIndex) {
             g.lastTouched = hoverChartIndex;
             g.dataId.splice(hoverChartIndex, 0, g.dataId.splice(newIndex, 1)[0]);
+            g.staticChartAttributes.splice(hoverChartIndex, 0, g.staticChartAttributes.splice(newIndex, 1)[0]);
             arrangeItems().go();
         }
         ele.style.transform = `translate3d(${resultX}px, ${resultY}px, 0)`;

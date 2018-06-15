@@ -4,7 +4,7 @@ const putRequest = (url, sendArgs) => {
     xml.onreadystatechange = () => {
         if (xml.readyState == 4 && xml.status == 200) {
             const data = JSON.parse(xml.responseText);
-            console.log(data);
+            /* console.log('putRequest: ' + data); */
         }
     };
     xml.send(JSON.stringify(sendArgs));
@@ -46,54 +46,85 @@ const arrangeItemsMouseUp = () => {
         arrangedItems: g.arrangedItems
     };
     return {
-        go: () => {
-            state.allSlots.map((slot, i) => {
-                if (state.slotObjects[i].status === 'occupied') {
-                    return;
-                }
-                state.increment++;
-                if (state.dataId[state.increment - 1] !== undefined) {
-                    let dataId = state.dataId[state.increment - 1];
-                    let el = document.querySelector(`[data-id="${dataId}"]`);
-                    let size = chartSize(el).getSize();
-                    let { elWidth, elHeight } = size;
-                    let pos;
-                    if (isNotOverlapping(i, elWidth, elHeight).check()) {
-                        pos = getGridPositions(i, el).go();
-                        el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
-                        state.chartPos[state.increment - 1] = {
-                            dataId: Number(dataId),
-                            width: pos.width,
-                            height: pos.height,
-                            x: pos.x,
-                            y: pos.y,
-                            slotpositions: pos.slot
-                        };
-                    } else {
-                        const indx = availableIndex(elWidth, elHeight).get();
-                        pos = getGridPositions(indx, el).go();
-                        el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
-                        state.chartPos[state.increment - 1] = {
-                            dataId: Number(dataId),
-                            width: pos.width,
-                            height: pos.height,
-                            x: pos.x,
-                            y: pos.y,
-                            slotpositions: pos.slot
-                        };
-                    }
-                    state.arrangedItems[state.increment - 1] = {
-                        id: dataId,
+        go: () => state.allSlots.map((slot, i) => {
+            if (state.slotObjects[i].status === 'occupied') {
+                return;
+            }
+            state.increment++;
+            if (state.dataId[state.increment - 1] !== undefined) {
+                let dataId = state.dataId[state.increment - 1];
+                let el = document.querySelector(`[data-id="${dataId}"]`);
+                let size = chartSize(el).getSize();
+                let { elWidth, elHeight } = size;
+                let pos;
+                let id = g.chartPositions[state.increment - 1].id;
+                if (isNotOverlapping(i, elWidth, elHeight).check()) {
+                    pos = getGridPositions(i, el).go();
+                    el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
+                    state.chartPos[state.increment - 1] = {
+                        id: id,
+                        dataId: Number(dataId),
+                        report: g.staticChartAttributes[state.increment - 1].report,
+                        charttype: g.staticChartAttributes[state.increment - 1].charttype,
+                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass,
+                        width: pos.width,
+                        height: pos.height,
                         x: pos.x,
                         y: pos.y,
                         slotpositions: pos.slot
                     };
-
+                    putRequest("api/?/charts", {
+                        id: id,
+                        ordernumber: dataId,
+                        report: g.staticChartAttributes[state.increment - 1].report,
+                        charttype: g.staticChartAttributes[state.increment - 1].charttype,
+                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass,
+                        x: pos.x,
+                        y: pos.y,
+                        slotpositions: pos.slot
+                    });
+                } else {
+                    const indx = availableIndex(elWidth, elHeight).get();
+                    pos = getGridPositions(indx, el).go();
+                    el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
+                    state.chartPos[state.increment - 1] = {
+                        id: id,
+                        dataId: Number(dataId),
+                        report: g.staticChartAttributes[state.increment - 1].report,
+                        charttype: g.staticChartAttributes[state.increment - 1].charttype,
+                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass,
+                        width: pos.width,
+                        height: pos.height,
+                        x: pos.x,
+                        y: pos.y,
+                        slotpositions: pos.slot
+                    };
+                    putRequest("api/?/charts", {
+                        id: id,
+                        ordernumber: dataId,
+                        report: g.staticChartAttributes[state.increment - 1].report,
+                        charttype: g.staticChartAttributes[state.increment - 1].charttype,
+                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass,
+                        x: pos.x,
+                        y: pos.y,
+                        slotpositions: pos.slot
+                    });
                 }
-            });
-            putRequest("api/?/charts", g.arrangedItems);
-            /* console.log(g.arrangedItems); */
-        }
+                console.log({
+                    id: g.chartPositions[state.increment - 1].id,
+                    ordernumber: dataId,
+                    report: g.staticChartAttributes[state.increment - 1].report,
+                    charttype: g.staticChartAttributes[state.increment - 1].charttype,
+                    cssclass: g.staticChartAttributes[state.increment - 1].cssclass,
+                    x: pos.x,
+                    y: pos.y,
+                    slotpositions: pos.slot
+                });
+                /*  console.log({ id: g.dataId.indexOf(id) + 1, ordernumber: dataId, x: pos.x, y: pos.y, slotpositions: pos.slot }); */
+                /* console.log(g.chartPositions[dataId - 1]); */
+                /* console.log(g.dataId); */
+            }
+        })
     };
 };
 

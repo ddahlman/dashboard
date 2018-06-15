@@ -86,15 +86,38 @@ const drawDivs = (state) => ({
                 let size = chartSize(el).getSize();
                 let { elWidth, elHeight } = size;
                 let pos;
+                let id = g.chartPositions[increment - 1].id;
                 if (isNotOverlapping(i, elWidth, elHeight).check()) {
                     pos = getGridPositions(i, el).go();
                     el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
-                    g.chartPositions[increment - 1] = { dataId: Number(dataId), width: pos.width, height: pos.height, x: pos.x, y: pos.y };
+                    g.chartPositions[increment - 1] = {
+                        id: id,
+                        dataId: Number(dataId),
+                        report: g.staticChartAttributes[increment - 1].report,
+                        charttype: g.staticChartAttributes[increment - 1].charttype,
+                        cssclass: g.staticChartAttributes[increment - 1].cssclass,
+                        width: pos.width,
+                        height: pos.height,
+                        x: pos.x,
+                        y: pos.y,
+                        slotpositions: pos.slot
+                    };
                 } else {
                     const indx = availableIndex(elWidth, elHeight).get();
                     pos = getGridPositions(indx, el).go();
                     el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
-                    g.chartPositions[increment - 1] = { dataId: Number(dataId), width: pos.width, height: pos.height, x: pos.x, y: pos.y };
+                    g.chartPositions[increment - 1] = {
+                        id: id,
+                        dataId: Number(dataId),
+                        report: g.staticChartAttributes[increment - 1].report,
+                        charttype: g.staticChartAttributes[increment - 1].charttype,
+                        cssclass: g.staticChartAttributes[increment - 1].cssclass,
+                        width: pos.width,
+                        height: pos.height,
+                        x: pos.x,
+                        y: pos.y,
+                        slotpositions: pos.slot
+                    };
                 }
             }
         });

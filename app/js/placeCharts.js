@@ -20,7 +20,9 @@ const placeCharts = ({ div, chart, type, report, indx, increment, width, height 
         go: () => {
             const chartPos = getGridPositions(indx, div).go();
             addAttributesToChart(div, chartPos, chart);
+            div.setAttribute('data-id', increment);
             const chartData = {
+                ordernumber: increment,
                 report: report,
                 charttype: type,
                 cssclass: type.substring(0, type.length - 5).toLowerCase(),
@@ -34,21 +36,31 @@ const placeCharts = ({ div, chart, type, report, indx, increment, width, height 
             xml.onreadystatechange = () => {
                 if (xml.readyState == 4 && xml.status == 200) {
                     const data = JSON.parse(xml.responseText);
-                    /* console.log(`från DB: ${JSON.stringify(data.x)}, ${JSON.stringify(data.y)}`); */
-                    div.setAttribute('data-id', data.id);
+                    div.setAttribute('data-chartid', data.id);
+
+                    g.staticChartAttributes[increment - 1] = {
+                        report: data.report,
+                        charttype: data.charttype,
+                        cssclass: data.cssclass
+                    };
                     g.chartPositions[increment - 1] = {
-                        dataId: data.id,
+                        id: data.id,
+                        dataId: increment,
+                        report: data.report,
+                        charttype: data.charttype,
+                        cssclass: data.cssclass,
                         width: width,
                         height: height,
                         x: chartPos.x,
                         y: chartPos.y,
                         slotpositions: chartPos.slot
                     };
-                    g.dataId.push(data.id);
                 }
             };
             xml.send(JSON.stringify(chartData));
+
             g.allCharts.push(chart);
+            g.dataId.push(increment);
         }
     };
 };
