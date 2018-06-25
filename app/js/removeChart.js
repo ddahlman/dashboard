@@ -83,7 +83,7 @@ function removeChart() {
         if (xml.readyState == 4 && xml.status == 200) {
             g.dataId.splice(g.dataId.indexOf(dataid), 1);
             console.log('detta är dataId: ' + dataid);
-            const indx = g.chartPositions.findIndex((obj, i) => obj.dataId === dataid);
+            const indx = g.chartPositions.findIndex(obj => obj.dataId === dataid);
             console.log('det här är g.chartPosition indx: ' + indx);
             g.chartPositions.splice(indx, 1);
             g.staticChartAttributes.splice(indx, 1);
