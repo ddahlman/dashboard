@@ -47,11 +47,11 @@ const arrangeItemsMouseUp = () => {
             if (state.dataId[state.increment - 1] !== undefined) {
                 let dataId = state.dataId[state.increment - 1];
                 let el = document.querySelector(`[data-id="${dataId}"]`);
-                el.setAttribute('data-chartid', g.chartPositions[state.increment - 1].id);
                 let size = chartSize(el).getSize();
                 let { elWidth, elHeight } = size;
                 let pos;
                 let id = g.chartPositions[state.increment - 1].id;
+                el.setAttribute('data-chartid', id);
                 if (isNotOverlapping(i, elWidth, elHeight).check()) {
                     pos = getGridPositions(i, el).go();
                     el.style.transform = `translate3d(${pos.x}px, ${pos.y}px,0px)`;
