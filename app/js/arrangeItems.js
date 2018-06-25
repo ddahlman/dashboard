@@ -98,21 +98,6 @@ const arrangeItemsMouseUp = () => {
                         cssclass: g.staticChartAttributes[state.increment - 1].cssclass
                     });
                 }
-                console.log(g.staticChartAttributes);
-                console.log(g.dataId);
-                /* console.log({
-                    id: g.chartPositions[state.increment - 1].id,
-                    ordernumber: dataId,
-                    report: g.staticChartAttributes[state.increment - 1].report,
-                    charttype: g.staticChartAttributes[state.increment - 1].charttype,
-                    cssclass: g.staticChartAttributes[state.increment - 1].cssclass,
-                    x: pos.x,
-                    y: pos.y,
-                    slotpositions: pos.slot
-                }); */
-                /*  console.log({ id: g.dataId.indexOf(id) + 1, ordernumber: dataId, x: pos.x, y: pos.y, slotpositions: pos.slot }); */
-                console.log(g.chartPositions);
-                /* console.log(g.dataId); */
             }
         })
     };

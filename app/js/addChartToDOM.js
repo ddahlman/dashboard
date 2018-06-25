@@ -79,7 +79,6 @@ const addChartToDOM = (button) => {
                     height: elHeight
                 };
                 let coords = placeCharts(chartAttributes).go();
-                /* just nu så loopar jag igenom data jag får från servern men jag kanske inte behöver det om jag kollar is_array på baksidan */
                 postRequest("api/?/charts", g.chartData, (data) => {
                     postCallback(data, coords, state.div);
                     g.chartData = [];
