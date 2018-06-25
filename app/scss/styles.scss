@@ -417,9 +417,10 @@ svg[aria-label="A chart."]>g>g:last-child {
     top: 5%;
     right: 5%;
     color: #fff;
+    transition: opacity 0.3s $cubic;
+    opacity: 0.4;
     &:hover {
-        opacity: 0.6;
-        transition: opacity 0.3s $cubic;
+        opacity: 1;
     }
 }
 
