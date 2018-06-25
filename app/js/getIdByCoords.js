@@ -1,7 +1,6 @@
 const getChartIdByCoords = (coords) => {
     const chartPos = g.chartPositions;
     return {
-        //get the current chart being hovered over  
         go: () => {
             for (var id in chartPos) {
                 var chart = chartPos[id];
