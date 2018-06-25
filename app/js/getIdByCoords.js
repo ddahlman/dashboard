@@ -15,23 +15,6 @@ const getChartIdByCoords = (coords) => {
     };
 };
 
-const getSlotIdByCoords = (coords) => {
-    const slotObjects = g.slotObjects;
-    return {
-        //get the current slot being hovered over  
-        go: () => {
-            for (var id in slotObjects) {
-                var slot = slotObjects[id];
-                if (slot.x <= coords.x &&
-                    coords.x <= slot.x + slot.width &&
-                    slot.y <= coords.y &&
-                    coords.y <= slot.y + slot.height)
-                    return id;
-            }
-        }
-    };
-};
-
 
 const getIndexOfChartId = (id) => {
     const len = g.dataId.length;

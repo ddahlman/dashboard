@@ -23,8 +23,7 @@ function chartMouseMove(e) {
 
         let clickX = pageX - left,
             clickY = pageY - top,
-            hoverChartIndex = getChartIdByCoords({ x: clickX, y: clickY }).go(),
-            hoverSlotId = getSlotIdByCoords({ x: clickX, y: clickY }).go();
+            hoverChartIndex = getChartIdByCoords({ x: clickX, y: clickY }).go();
 
         let ele = g.selected,
             chartId = ele.getAttribute('data-id'),
