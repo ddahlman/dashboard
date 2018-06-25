@@ -43,30 +43,39 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
     }
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden POST
     function POST($input, $connection){
-        $ordernumber = escape($input['ordernumber']);
+        /* $ordernumber = escape($input['ordernumber']);
         $report = escape($input['report']);
         $charttype = escape($input['charttype']);
-        $cssclass = escape($input['cssclass']);
+        $cssclass = escape($input['cssclass']); */
         /*   $x = escape($input['x']);
         $y = escape($input['y']);
-        
         $slotpositions = implode_array($input['slotpositions']);
         $slotpositions = escape($slotpositions); */
         
-        $query = "INSERT INTO charts (ordernumber, report, charttype, cssclass)
-        VALUES ('$ordernumber', '$report', '$charttype', '$cssclass')";
+        $chartdata = $input['chartdata'];
         
-        if(mysqli_query($connection, $query)) {
-            $this->id = mysqli_insert_id($connection);
-            $this->ordernumber = $ordernumber;
-            $this->report = $report;
-            $this->charttype = $charttype;
-            $this->cssclass = $cssclass;
-            /*   $this->x = $x;
-            $this->y = $y;
-            $this->slotpositions = $slotpositions; */
+        $chart = [];
+        foreach ($chartdata as $key) {
+            $ordernumber = escape($key['ordernumber']);
+            $report = escape($key['report']);
+            $charttype = escape($key['charttype']);
+            $cssclass = escape($key['cssclass']);
+            
+            $query = "INSERT INTO charts (ordernumber, report, charttype, cssclass)
+            VALUES ('$ordernumber', '$report', '$charttype', '$cssclass')";
+            
+            if(mysqli_query($connection, $query)) {
+                $chart[] = [
+                'id' => mysqli_insert_id($connection),
+                'ordernumber' => $ordernumber,
+                'report' => $report,
+                'charttype' => $charttype,
+                'cssclass' => $cssclass
+                ];
+            }
         }
         
+        $this->chart = $chart;
     }
     # Denna funktion körs om vi anropat resursen genom HTTP-metoden PUT
     function PUT($input, $connection){
@@ -103,11 +112,11 @@ class _charts extends Resource{ // Klassen ärver egenskaper från den generella
     function DELETE($input, $connection){
         # I denna funktion tar vi bort en specifik user med det ID vi fått med
         if($this->id){
-            $query = "DELETE FROM items
+            $query = "DELETE FROM charts
             WHERE id = $this->id";
             mysqli_query($connection, $query);
         }else{
-            echo "No resource given";
+            echo "Det gick fel... gör något!";
         }
     }
 }

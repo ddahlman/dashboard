@@ -15,52 +15,25 @@ const addAttributesToChart = (div, pos, chart) => {
 };
 
 
-const placeCharts = ({ div, chart, type, report, indx, increment, width, height }) => {
+
+
+const placeCharts = ({ div, chart, type, report, indx, ordernumber, width, height }) => {
     return {
         go: () => {
             const chartPos = getGridPositions(indx, div).go();
             addAttributesToChart(div, chartPos, chart);
-            div.setAttribute('data-id', increment);
+            div.setAttribute('data-id', ordernumber);
+
             const chartData = {
-                ordernumber: increment,
+                ordernumber: ordernumber,
                 report: report,
                 charttype: type,
-                cssclass: type.substring(0, type.length - 5).toLowerCase()/* ,
-                x: chartPos.x,
-                y: chartPos.y,
-                slotpositions: chartPos.slot */
+                cssclass: type.substring(0, type.length - 5).toLowerCase()
             };
-            /* console.log(`${chartData.x}, ${chartData.y}`); */
-            const xml = new XMLHttpRequest();
-            xml.open("POST", "api/?/charts");
-            xml.onreadystatechange = () => {
-                if (xml.readyState == 4 && xml.status == 200) {
-                    const data = JSON.parse(xml.responseText);
-                    div.setAttribute('data-chartid', data.id);
-
-                    g.staticChartAttributes[increment - 1] = {
-                        report: data.report,
-                        charttype: data.charttype,
-                        cssclass: data.cssclass
-                    };
-                    g.chartPositions[increment - 1] = {
-                        id: data.id,
-                        dataId: increment,
-                        report: data.report,
-                        charttype: data.charttype,
-                        cssclass: data.cssclass,
-                        width: width,
-                        height: height,
-                        x: chartPos.x,
-                        y: chartPos.y,
-                        slotpositions: chartPos.slot
-                    };
-                }
-            };
-            xml.send(JSON.stringify(chartData));
-
+            g.chartData.push(chartData);
             g.allCharts.push(chart);
-            g.dataId.push(increment);
+            g.dataId.push(ordernumber);
+            return { x: chartPos.x, y: chartPos.y, width: width, height: height, div };
         }
     };
 };

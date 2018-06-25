@@ -48,9 +48,9 @@ const getMySavedCharts = (chartResponse) => {
                         const ordernumber = Number(obj.ordernumber);
 
                         g.staticChartAttributes[increment - 1] = { report: obj.report, charttype: obj.charttype, cssclass: obj.cssclass };
-                        console.log(obj);
+                        /* console.log(obj);
                         console.log(g.staticChartAttributes);
-                        console.log(ordernumber);
+                        console.log(ordernumber); */
                         let diagram = chart(reports.reports[obj.report], (obj.cssclass === 'pie' ? 'pie' : 'regular'), obj.charttype, div).getChart();
                         let pos;
                         if (isNotOverlapping(i, elWidth, elHeight).check()) {
@@ -65,8 +65,8 @@ const getMySavedCharts = (chartResponse) => {
                                 width: elWidth,
                                 height: elHeight,
                                 x: pos.x,
-                                y: pos.y,
-                                slotpositions: obj.slot
+                                y: pos.y/* ,
+                                slotpositions: obj.slot */
                             };
                         } else {
                             const indx = availableIndex(elWidth, elHeight).get();
@@ -81,28 +81,15 @@ const getMySavedCharts = (chartResponse) => {
                                 width: elWidth,
                                 height: elHeight,
                                 x: pos.x,
-                                y: pos.y,
-                                slotpositions: obj.slot
+                                y: pos.y/* ,
+                                slotpositions: obj.slot */
                             };
                         }
                         g.dataId.push(ordernumber);
                         g.allCharts.push(diagram);
+                        console.log(g.chartPositions);
                     }
                 });
-                /* console.log(g.dataId); */
-                /*    const occupied = chartObjects.map(obj => {
-                       return obj.slotpositions;
-                   }).reduce((arr, elem) => {
-                       return arr.concat(elem);
-                   }, []);
-   
-                   g.slotObjects.filter(obj => {
-                       return occupied.some(o => o.xPos === obj.xPos && o.yPos === obj.yPos);
-                   }).map(obj => {
-                       let elem = getSlotElem(obj.xPos, obj.yPos);
-                       obj.status = 'occupied';
-                       elem.dataset.status = 'occupied';
-                   }); */
             });
         }
     };
@@ -135,6 +122,7 @@ function addFirstCharts() {
                 const typeArray = ['AreaChart', 'GeoChart', 'PieChart'];
                 const reportArray = ['sale', 'nationalities', 'bookings'];
                 let increment = 0;
+                let coords = [];
 
                 g.allSlots.forEach((slotItem, i) => {
                     if (g.slotObjects[i].status === 'occupied') return;
@@ -148,12 +136,37 @@ function addFirstCharts() {
                             type: typeArray[increment - 1],
                             report: reportArray[increment - 1],
                             indx: i,
+                            ordernumber: increment,
                             increment: increment,
                             width: elWidth,
                             height: elHeight
                         };
-                        placeCharts(chartAttributes).go();
+                        coords.push(placeCharts(chartAttributes).go());
                     }
+                });
+                postRequest("api/?/charts", g.chartData, (data) => {
+                    console.log(data);
+                    data.chart.forEach((obj, i) => {
+                        coords[i].div.setAttribute('data-chartid', obj.id);
+
+                        g.staticChartAttributes.push({
+                            report: obj.report,
+                            charttype: obj.charttype,
+                            cssclass: obj.cssclass
+                        });
+                        g.chartPositions.push({
+                            id: obj.id,
+                            dataId: obj.ordernumber,
+                            report: obj.report,
+                            charttype: obj.charttype,
+                            cssclass: obj.cssclass,
+                            width: coords[i].width,
+                            height: coords[i].height,
+                            x: coords[i].x,
+                            y: coords[i].y
+                        });
+                    });
+                    g.chartData = [];
                 });
             });
         }

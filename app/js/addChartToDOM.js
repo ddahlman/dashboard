@@ -1,6 +1,41 @@
+const postRequest = (url, array, callback) => {
+    const xml = new XMLHttpRequest();
+    xml.open("POST", url);
+    xml.onreadystatechange = () => {
+        if (xml.readyState == 4 && xml.status == 200) {
+            const data = JSON.parse(xml.responseText);
+            callback(data);
+        }
+    };
+    xml.send(JSON.stringify({ chartdata: array }));
+};
+
+const postCallback = (data, coords, div) => {
+    data.chart.forEach(obj => {
+        div.setAttribute('data-chartid', obj.id);
+
+        g.staticChartAttributes.push({
+            report: obj.report,
+            charttype: obj.charttype,
+            cssclass: obj.cssclass
+        });
+        g.chartPositions.push({
+            id: obj.id,
+            dataId: obj.ordernumber,
+            report: obj.report,
+            charttype: obj.charttype,
+            cssclass: obj.cssclass,
+            width: coords.width,
+            height: coords.height,
+            x: coords.x,
+            y: coords.y
+        });
+    });
+};
+
 const cssClassToChartType = (cssClass) => {
     return cssClass.charAt(0).toUpperCase() + cssClass.slice(1) + 'Chart';
-}
+};
 
 const addChartToDOM = (button) => {
     let state = {
@@ -38,11 +73,17 @@ const addChartToDOM = (button) => {
                     type: cssClassToChartType(selectedChartType),
                     report: report,
                     indx: indx,
-                    increment: state.len + 1,
+                    ordernumber: (Math.max(...g.dataId) + 1),
+                    increment: (state.len + 1),
                     width: elWidth,
                     height: elHeight
                 };
-                placeCharts(chartAttributes).go();
+                let coords = placeCharts(chartAttributes).go();
+                /* just nu så loopar jag igenom data jag får från servern men jag kanske inte behöver det om jag kollar is_array på baksidan */
+                postRequest("api/?/charts", g.chartData, (data) => {
+                    postCallback(data, coords, state.div);
+                    g.chartData = [];
+                });
             }
         }
     };

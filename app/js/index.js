@@ -38,23 +38,8 @@ const g = function () {
         allCharts = [],
         chartPositions = [],
         allSlots = [],
-        staticChartAttributes = [
-            /*  {
-                 report: 'sale',
-                 charttype: 'AreaChart',
-                 cssclass: 'area'
-             },
-             {
-                 report: 'nationalities',
-                 charttype: 'GeoChart',
-                 cssclass: 'geo'
-             },
-             {
-                 report: 'bookings',
-                 charttype: 'PieChart',
-                 cssclass: 'pie'
-             } */
-        ],
+        staticChartAttributes = [],
+        chartData = [],
         windowMini = window.matchMedia("screen and (max-width: 400px)"),
         windowMedium = window.matchMedia("screen and (min-width: 400px) and (max-width: 1200px)"),
         windowLarge = window.matchMedia("screen and (min-width: 1200px)"),
@@ -96,6 +81,7 @@ const g = function () {
         slotsPerRow: slotsPerRow,
         allSlots: allSlots,
         staticChartAttributes: staticChartAttributes,
+        chartData: chartData,
         mini: windowMini,
         medium: windowMedium,
         large: windowLarge,

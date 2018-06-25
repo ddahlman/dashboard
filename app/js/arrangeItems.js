@@ -1,12 +1,6 @@
 const putRequest = (url, sendArgs) => {
     const xml = new XMLHttpRequest();
     xml.open("PUT", url);
-    xml.onreadystatechange = () => {
-        if (xml.readyState == 4 && xml.status == 200) {
-            const data = JSON.parse(xml.responseText);
-            /* console.log('putRequest: ' + data); */
-        }
-    };
     xml.send(JSON.stringify(sendArgs));
 };
 
@@ -53,6 +47,7 @@ const arrangeItemsMouseUp = () => {
             if (state.dataId[state.increment - 1] !== undefined) {
                 let dataId = state.dataId[state.increment - 1];
                 let el = document.querySelector(`[data-id="${dataId}"]`);
+                el.setAttribute('data-chartid', g.chartPositions[state.increment - 1].id);
                 let size = chartSize(el).getSize();
                 let { elWidth, elHeight } = size;
                 let pos;
@@ -77,10 +72,7 @@ const arrangeItemsMouseUp = () => {
                         ordernumber: dataId,
                         report: g.staticChartAttributes[state.increment - 1].report,
                         charttype: g.staticChartAttributes[state.increment - 1].charttype,
-                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass/* ,
-                        x: pos.x,
-                        y: pos.y,
-                        slotpositions: pos.slot */
+                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass
                     });
                 } else {
                     const indx = availableIndex(elWidth, elHeight).get();
@@ -103,24 +95,23 @@ const arrangeItemsMouseUp = () => {
                         ordernumber: dataId,
                         report: g.staticChartAttributes[state.increment - 1].report,
                         charttype: g.staticChartAttributes[state.increment - 1].charttype,
-                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass/* ,
-                        x: pos.x,
-                        y: pos.y,
-                        slotpositions: pos.slot */
+                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass
                     });
                 }
-                console.log({
+                console.log(g.staticChartAttributes);
+                console.log(g.dataId);
+                /* console.log({
                     id: g.chartPositions[state.increment - 1].id,
                     ordernumber: dataId,
                     report: g.staticChartAttributes[state.increment - 1].report,
                     charttype: g.staticChartAttributes[state.increment - 1].charttype,
-                    cssclass: g.staticChartAttributes[state.increment - 1].cssclass/* ,
+                    cssclass: g.staticChartAttributes[state.increment - 1].cssclass,
                     x: pos.x,
                     y: pos.y,
-                    slotpositions: pos.slot */
-                });
+                    slotpositions: pos.slot
+                }); */
                 /*  console.log({ id: g.dataId.indexOf(id) + 1, ordernumber: dataId, x: pos.x, y: pos.y, slotpositions: pos.slot }); */
-                /* console.log(g.chartPositions[dataId - 1]); */
+                console.log(g.chartPositions);
                 /* console.log(g.dataId); */
             }
         })
