@@ -30,13 +30,14 @@ const arrangeItems = () => {
 };
 
 
-const arrangeItemsMouseUp = () => {
+const rearrangeItems = (array) => {
     let state = {
         increment: 0,
         allSlots: g.allSlots,
         slotObjects: g.slotObjects,
         chartPos: g.chartPositions,
-        dataId: g.dataId
+        dataId: g.dataId,
+        array
     };
     return {
         go: () => state.allSlots.map((slot, i) => {
@@ -58,9 +59,9 @@ const arrangeItemsMouseUp = () => {
                     state.chartPos[state.increment - 1] = {
                         id: id,
                         dataId: Number(dataId),
-                        report: g.staticChartAttributes[state.increment - 1].report,
-                        charttype: g.staticChartAttributes[state.increment - 1].charttype,
-                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass,
+                        report: state.array[state.increment - 1].report,
+                        charttype: state.array[state.increment - 1].charttype,
+                        cssclass: state.array[state.increment - 1].cssclass,
                         width: pos.width,
                         height: pos.height,
                         x: pos.x,
@@ -70,9 +71,9 @@ const arrangeItemsMouseUp = () => {
                     putRequest("api/?/charts", {
                         id: id,
                         ordernumber: dataId,
-                        report: g.staticChartAttributes[state.increment - 1].report,
-                        charttype: g.staticChartAttributes[state.increment - 1].charttype,
-                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass
+                        report: state.array[state.increment - 1].report,
+                        charttype: state.array[state.increment - 1].charttype,
+                        cssclass: state.array[state.increment - 1].cssclass
                     });
                 } else {
                     const indx = availableIndex(elWidth, elHeight).get();
@@ -81,9 +82,9 @@ const arrangeItemsMouseUp = () => {
                     state.chartPos[state.increment - 1] = {
                         id: id,
                         dataId: Number(dataId),
-                        report: g.staticChartAttributes[state.increment - 1].report,
-                        charttype: g.staticChartAttributes[state.increment - 1].charttype,
-                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass,
+                        report: state.array[state.increment - 1].report,
+                        charttype: state.array[state.increment - 1].charttype,
+                        cssclass: state.array[state.increment - 1].cssclass,
                         width: pos.width,
                         height: pos.height,
                         x: pos.x,
@@ -93,9 +94,9 @@ const arrangeItemsMouseUp = () => {
                     putRequest("api/?/charts", {
                         id: id,
                         ordernumber: dataId,
-                        report: g.staticChartAttributes[state.increment - 1].report,
-                        charttype: g.staticChartAttributes[state.increment - 1].charttype,
-                        cssclass: g.staticChartAttributes[state.increment - 1].cssclass
+                        report: state.array[state.increment - 1].report,
+                        charttype: state.array[state.increment - 1].charttype,
+                        cssclass: state.array[state.increment - 1].cssclass
                     });
                 }
             }

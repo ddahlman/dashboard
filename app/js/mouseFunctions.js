@@ -57,6 +57,6 @@ function chartMouseUp() {
         g.selected.childNodes[0].classList.remove('shadow-elevated');
         g.selected = null;
         g.originalClickCoords = null;
-        arrangeItemsMouseUp().go();
+        rearrangeItems(g.staticChartAttributes).go();
     }
 }
