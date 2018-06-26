@@ -93,12 +93,4 @@ function chart_options($result) {
     ];
 }
 
-function implode_array($inputs) {
-    $implodedSlots = array_map(function($a){
-        return implode(", ", $a);
-    }, $inputs);
-    $slotpositions = implode(" | ", $implodedSlots);
-    return $slotpositions;
-}
-
 ?>
