@@ -137,7 +137,7 @@ const resize = (rows, slotWidth, slotHeight) => {
     }, 200);
     setTimeout(() => {
         changeOnResize().charts();
-    }, 500);
+    }, 600);
 };
 
 
