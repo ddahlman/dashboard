@@ -129,7 +129,7 @@ dynamicTabBar.listen("MDCTabBar:change", function (t) {
 
 
 
-(() => {
+/* (() => {
     let counter = 0;
     let c = 0;
     const h1 = document.querySelector('.loading h1');
@@ -148,4 +148,4 @@ dynamicTabBar.listen("MDCTabBar:change", function (t) {
 })();
 setTimeout(() => {
     g.firstLoader.style.display = 'none';
-}, 3000);
+}, 3000); */

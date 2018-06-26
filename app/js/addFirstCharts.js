@@ -13,6 +13,31 @@ const getRequest = (url, callback) => {
     xml.send();
 };
 
+const progressBar = () => {
+    const h1 = document.querySelector('.loading h1');
+    const hr = document.querySelector('.loading hr');
+    document.querySelector('.dots').style.display = 'none';
+    [h1, hr].map(ele => ele.classList.remove('hidden'));
+
+    let counter = 0;
+    let c = 0;
+
+    let i = setInterval(() => {
+        h1.innerHTML = `${c}%`;
+        hr.style.width = `${c}%`;
+        counter++;
+        c++;
+        if (counter === 101) {
+            clearInterval(i);
+            g.firstLoader.classList.add('loaded');
+            [g.box, g.container2, g.toolbar].map(el => el.classList.remove('hidden'));
+        }
+    }, 10);
+    setTimeout(() => {
+        g.firstLoader.style.display = 'none';
+    }, 3000);
+};
+
 
 const getMySavedCharts = (chartResponse) => {
     const chartObjects = chartResponse.chart;
@@ -29,6 +54,7 @@ const getMySavedCharts = (chartResponse) => {
         go: () => {
             getRequest("api/?/reports", (reports) => {
                 Object.assign(g.reports, reports.reports);
+                progressBar();
 
                 const firstSlots = slotArray();
                 addSlotsToDOM(firstSlots).go();
@@ -48,9 +74,6 @@ const getMySavedCharts = (chartResponse) => {
                         const ordernumber = Number(obj.ordernumber);
 
                         g.staticChartAttributes[increment - 1] = { report: obj.report, charttype: obj.charttype, cssclass: obj.cssclass };
-                        /* console.log(obj);
-                        console.log(g.staticChartAttributes);
-                        console.log(ordernumber); */
                         let diagram = chart(reports.reports[obj.report], (obj.cssclass === 'pie' ? 'pie' : 'regular'), obj.charttype, div).getChart();
                         let pos;
                         if (isNotOverlapping(i, elWidth, elHeight).check()) {
@@ -65,8 +88,7 @@ const getMySavedCharts = (chartResponse) => {
                                 width: elWidth,
                                 height: elHeight,
                                 x: pos.x,
-                                y: pos.y/* ,
-                                slotpositions: obj.slot */
+                                y: pos.y
                             };
                         } else {
                             const indx = availableIndex(elWidth, elHeight).get();
@@ -81,13 +103,11 @@ const getMySavedCharts = (chartResponse) => {
                                 width: elWidth,
                                 height: elHeight,
                                 x: pos.x,
-                                y: pos.y/* ,
-                                slotpositions: obj.slot */
+                                y: pos.y
                             };
                         }
                         g.dataId.push(ordernumber);
                         g.allCharts.push(diagram);
-                        console.log(g.chartPositions);
                     }
                 });
             });
@@ -103,6 +123,7 @@ function addFirstCharts() {
             getMySavedCharts(chartObjects).go();
         } else {
             getRequest("api/?/reports", (data) => {
+                progressBar();
                 Object.assign(g.reports, data.reports);
 
                 const firstSlots = slot(70).createArray();
@@ -145,7 +166,6 @@ function addFirstCharts() {
                     }
                 });
                 postRequest("api/?/charts", g.chartData, (data) => {
-                    console.log(data);
                     data.chart.forEach((obj, i) => {
                         coords[i].div.setAttribute('data-chartid', obj.id);
 

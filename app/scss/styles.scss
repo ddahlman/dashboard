@@ -29,6 +29,13 @@ body {
     display: none;
 }
 
+%loaders {
+    display: inline-block;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+}
+
 /* ------------------------------------------------ loading elements --------------------------------------------------------- */
 
 .loading-absolute {
@@ -64,11 +71,45 @@ body {
                 font: 100 20px $trippus-font;
                 color: #ee7365;
             }
+            .dots {
+                .load1 {
+                    background-color: #fff;
+                }
+                .load2 {
+                    background-color: #ee7365;
+                }
+                .load3 {
+                    background-color: #f9b035;
+                }
+                @for $i from 1 through 3 {
+                    @keyframes load-#{$i} {
+                        70% {
+                            transform: translate3d(0px, 0px, 0px)
+                        }
+                        85% {
+                            transform: translate3d(0px, -15px, 0px)
+                        }
+                        100% {
+                            transform: translate3d(0px, 0px, 0px)
+                        }
+                    }
+                    .load:nth-child(#{$i}) {
+                        @extend %loaders;
+                        animation: load-#{$i} 1.5s #{$i/8}s $cubic infinite;
+                    }
+                }
+            }
             h1 {
                 color: $white;
+                &.hidden {
+                    display: none;
+                }
             }
             hr {
                 width: 0;
+                &.hidden {
+                    display: none;
+                }
             }
         }
     }
