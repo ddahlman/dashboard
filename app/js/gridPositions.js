@@ -20,7 +20,6 @@ const getSlotElem = (x, y) => document.querySelector(`[data-slot-x="${x}"][data-
 const getGridPositions = (indx, div) => {
     const i = indx;
     const ele = div;
-    let occupied = [];
     return {
         go: () => {
             let X = g.slotObjects[i];
@@ -57,20 +56,19 @@ const getGridPositions = (indx, div) => {
                     let elem = getSlotElem(obj.xPos, obj.yPos);
                     obj.status = 'occupied';
                     elem.dataset.status = 'occupied';
-                    return { xPos: obj.xPos, yPos: obj.yPos };
                 };
 
                 switch (true) {
-                    case sizeOfDiv(g.medium.matches, 2, 2): occupied = mediumArea.map(occupy); break;
-                    case sizeOfDiv(g.medium.matches, 3, 3): occupied = mediumGeo.map(occupy); break;
-                    case sizeOfDiv(g.medium.matches, 2, 3): occupied = mediumPie.map(occupy); break;
-                    case sizeOfDiv(g.large.matches, 3, 3): occupied = largeArea.map(occupy); break;
-                    case sizeOfDiv(g.large.matches, 4, 4): occupied = largeGeo.map(occupy); break;
-                    case sizeOfDiv(g.large.matches, 3, 4): occupied = largePie.map(occupy); break;
+                    case sizeOfDiv(g.medium.matches, 2, 2): mediumArea.map(occupy); break;
+                    case sizeOfDiv(g.medium.matches, 3, 3): mediumGeo.map(occupy); break;
+                    case sizeOfDiv(g.medium.matches, 2, 3): mediumPie.map(occupy); break;
+                    case sizeOfDiv(g.large.matches, 3, 3): largeArea.map(occupy); break;
+                    case sizeOfDiv(g.large.matches, 4, 4): largeGeo.map(occupy); break;
+                    case sizeOfDiv(g.large.matches, 3, 4): largePie.map(occupy); break;
                     default: break;
                 }
             }
-            return { x: X.x, y: X.y, width: elWidth, height: elHeight, slot: occupied };
+            return { x: X.x, y: X.y, width: elWidth, height: elHeight };
         }
     };
 };

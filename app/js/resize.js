@@ -99,8 +99,7 @@ const drawDivs = (state) => ({
                         width: pos.width,
                         height: pos.height,
                         x: pos.x,
-                        y: pos.y,
-                        slotpositions: pos.slot
+                        y: pos.y
                     };
                 } else {
                     const indx = availableIndex(elWidth, elHeight).get();
@@ -115,8 +114,7 @@ const drawDivs = (state) => ({
                         width: pos.width,
                         height: pos.height,
                         x: pos.x,
-                        y: pos.y,
-                        slotpositions: pos.slot
+                        y: pos.y
                     };
                 }
             }
