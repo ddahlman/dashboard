@@ -1,6 +1,3 @@
-
-
-
 const getRequest = (url, callback) => {
     const xml = new XMLHttpRequest();
     xml.onreadystatechange = () => {
@@ -12,6 +9,7 @@ const getRequest = (url, callback) => {
     xml.open("GET", url);
     xml.send();
 };
+
 
 const progressBar = () => {
     const h1 = document.querySelector('.loading h1');
@@ -118,7 +116,6 @@ const getMySavedCharts = (chartResponse) => {
 
 function addFirstCharts() {
     getRequest("api/?/charts", (chartObjects) => {
-        console.log(chartObjects.chart !== undefined && chartObjects.chart.length > 0);
         if (chartObjects.chart !== undefined && chartObjects.chart.length > 0) {
             getMySavedCharts(chartObjects).go();
         } else {

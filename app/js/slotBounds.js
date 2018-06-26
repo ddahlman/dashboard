@@ -46,7 +46,7 @@ const addToSlotObjects = (state) => ({
             right: slotBound.right - state.wrapBounds.right,
             width: slotBound.width,
             height: slotBound.height
-        }); /* ändrat här det var inte Math förut */
+        });
     })
 });
 
