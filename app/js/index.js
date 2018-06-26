@@ -127,25 +127,3 @@ dynamicTabBar.listen("MDCTabBar:change", function (t) {
     updatePanel(nthChildIndex);
 });
 
-
-
-/* (() => {
-    let counter = 0;
-    let c = 0;
-    const h1 = document.querySelector('.loading h1');
-    const hr = document.querySelector('.loading hr');
-    let i = setInterval(() => {
-        h1.innerHTML = `${c}%`;
-        hr.style.width = `${c}%`;
-        counter++;
-        c++;
-        if (counter === 101) {
-            clearInterval(i);
-            g.firstLoader.classList.add('loaded');
-            [g.box, g.container2, g.toolbar].map(el => el.classList.remove('hidden'));
-        }
-    }, 10);
-})();
-setTimeout(() => {
-    g.firstLoader.style.display = 'none';
-}, 3000); */
