@@ -403,6 +403,10 @@ svg[aria-label="A chart."]>g>g:last-child {
     pointer-events: none;
 }
 
+svg g text {
+    font-weight: 300;
+}
+
 .dd-transition {
     transition: all .3s ease;
 }
@@ -422,7 +426,7 @@ svg[aria-label="A chart."]>g>g:last-child {
     -moz-user-select: none;
     user-select: none;
     position: relative;
-    background-color: rgba(68, 79, 99, 0.03);
+    background-color: rgba(68, 79, 99, 0.3686274509803922);
 }
 
 .dd-slot-num {
@@ -452,9 +456,9 @@ svg[aria-label="A chart."]>g>g:last-child {
     position: absolute;
     top: 5%;
     right: 5%;
-    color: #fff;
+    color: $theme-primary-color;
     transition: opacity 0.3s $cubic;
-    opacity: 0.4;
+    opacity: 0.1;
     &:hover {
         opacity: 1;
     }
