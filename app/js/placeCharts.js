@@ -7,6 +7,7 @@ const addAttributesToChart = (div, pos, chart) => {
     div.addEventListener('mouseup', chartMouseUp);
     chart.draw();
     setTimeout(() => {
+        div.childNodes[0].classList.add('chart-styles');
         const newEl = div.appendChild(document.createElement('i'));
         newEl.innerHTML = 'close';
         newEl.className += 'close-container md-36 material-icons';

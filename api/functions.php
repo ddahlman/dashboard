@@ -88,7 +88,10 @@ function chart_options($result) {
     "duration" => (int) $result["pie_animation_duration"],
     "easing" => $result["pie_animation_easing"]
     ],
-    "pieHole" => $result["pie_pieHole"]
+    "pieHole" => $result["pie_pieHole"],
+    "pieSliceTextStyle" => (object)[
+    "color" => $result["pie_pieSliceTextStyle"]
+    ]
     ]
     ];
 }

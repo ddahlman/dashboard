@@ -408,8 +408,9 @@ svg[aria-label="A chart."]>g>g:last-child {
     transition: all .3s ease;
 }
 
-.shadow {
+.chart-styles {
     box-shadow: $google-shadow;
+    border-radius: 5px;
 }
 
 .shadow-elevated {
