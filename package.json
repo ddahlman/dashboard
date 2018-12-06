@@ -24,12 +24,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/therealDaze/dashboard.git"
+    "url": "git+https://github.com/ddahlman/dashboard.git"
   },
   "author": "Daniel Dahlman",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/therealDaze/dashboard/issues"
+    "url": "https://github.com/ddahlman/dashboard/issues"
   },
-  "homepage": "https://github.com/therealDaze/dashboard#readme"
+  "homepage": "https://github.com/ddahlman/dashboard#readme"
 }
