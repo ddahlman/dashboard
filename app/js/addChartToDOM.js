@@ -73,7 +73,7 @@ const addChartToDOM = (button) => {
                     type: cssClassToChartType(selectedChartType),
                     report: report,
                     indx: indx,
-                    ordernumber: (Math.max(...g.dataId) + 1),
+                    ordernumber: state.len === 0 ? 1 : (Math.max(...g.dataId) + 1),
                     increment: (state.len + 1),
                     width: elWidth,
                     height: elHeight

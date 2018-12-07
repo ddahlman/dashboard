@@ -10,7 +10,7 @@ const availableIndex = (width, height) => {
     const w = width;
     const h = height;
     return {
-        get: () => g.allSlots.findIndex((slot, i) => !isNotOverlapping(i, w, h).check() ? '' : i)
+        get: () => g.allSlots.findIndex((slot, i) => isNotOverlapping(i, w, h).check())
     };
 };
 
